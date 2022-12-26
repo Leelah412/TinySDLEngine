@@ -1,0 +1,25 @@
+﻿  WorldObject.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\core\math\Vector.h(31,29): warning C4244: "return": Konvertierung von "double" in "float", möglicher Datenverlust
+  SDLData.cpp
+  CollisionHandler.cpp
+  CollisionBox.cpp
+  CollisionShape.cpp
+  GameLoop.cpp
+  main.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\core\math\Vector.h(31,29): warning C4244: "return": Konvertierung von "double" in "float", möglicher Datenverlust
+  DynamicObject.cpp
+  Node.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\nodes\Node.cpp(236,13): warning C4244: "=": Konvertierung von "const int" in "float", möglicher Datenverlust
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\nodes\Node.cpp(237,13): warning C4244: "=": Konvertierung von "const int" in "float", möglicher Datenverlust
+  PhysicsObject.cpp
+  Sprite.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\nodes\Sprite.cpp(18,17): warning C4150: Löschen eines Zeigers auf den nicht definierten Typ "SDL_Texture". Destruktor wurde nicht aufgerufen.
+C:\Users\Halil\Documents\Visual Studio 2019\libs\include\SDL_render.h(147): message : Siehe Deklaration von "SDL_Texture"
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\nodes\Sprite.cpp(44,28): warning C4244: "Argument": Konvertierung von "float" in "const int", möglicher Datenverlust
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\nodes\Sprite.cpp(44,18): warning C4244: "Argument": Konvertierung von "float" in "const int", möglicher Datenverlust
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\nodes\Sprite.cpp(92,8): warning C4244: "Initialisierung": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\nodes\Sprite.cpp(92,26): warning C4244: "Initialisierung": Konvertierung von "float" in "int", möglicher Datenverlust
+  Object.cpp
+  Code wird generiert...
+GameLoop.obj : error LNK2019: Verweis auf nicht aufgelöstes externes Symbol "__imp__glClearColor@16" in Funktion ""private: bool __thiscall GameLoop::init_gl(void)" (?init_gl@GameLoop@@AAE_NXZ)".
+C:\Users\Halil\source\repos\TinySDLEngine\Debug\TinySDLEngine.exe : fatal error LNK1120: 1 nicht aufgelöste Externe

@@ -1,0 +1,27 @@
+﻿  WorldObject.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\core\world\WorldObject.h(4,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "math/Vector.h": No such file or directory
+  SDLData.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\core\SDLData.h(4,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "SDL.h": No such file or directory
+  SDLEventManager.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\core\SDLEventManager.h(6,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "SDL.h": No such file or directory
+  CollisionHandler.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\core\world\collision\CollisionHandler.h(8,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "Object.h": No such file or directory
+  CollisionBox.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\core\world\shapes\CollisionShape.h(4,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "SDL.h": No such file or directory
+  CollisionShape.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\core\world\shapes\CollisionShape.h(4,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "SDL.h": No such file or directory
+  GameLoop.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\GameLoop.h(4,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "SDLData.h": No such file or directory
+  main.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\main.cpp(1,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "GameLoop.h": No such file or directory
+  DynamicObject.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\nodes\DynamicObject.h(4,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "nodes/PhysicsObject.h": No such file or directory
+  Node.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\nodes\Node.h(4,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "SDLData.h": No such file or directory
+  PhysicsObject.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\nodes\PhysicsObject.h(4,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "nodes/Node.h": No such file or directory
+  Sprite.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\nodes\Sprite.h(4,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "nodes/Node.h": No such file or directory
+  Object.cpp
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\Object.h(5,10): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "SDLEventManager.h": No such file or directory
+  BMPReader.cpp
