@@ -1,0 +1,46 @@
+// Each material resource holds a shader and a set of uniform values to be applied to the shader
+{
+	"type": "material",
+	"body": {
+		"shader": {
+			// Holds the path to the shader to be used
+			"ubershader_path": "src/res/shaders/shader.glsl",
+			// Alternatively, shader can be passed directly as a string to the material, though it is not recommended, as a shader will be created for each unique material type
+			"ubershader_string": ""
+
+			// Alternatively, an own file can be passed for each shader type, though they will only be used, if the ubershader does not exist or have the given shader
+
+			//"vertex_shader_path": "src/res/shaders/vertex_shader.glsl",
+			//"vertex_shader_string": "",
+			//"fragment_shader_path": "src/res/shaders/fragment_shader.glsl",
+			//"fragment_shader_string": ""
+		},
+		"uniforms": {
+			// Name of the material in the shader (used as key)
+			"u_albedo": {
+				// "gl_enum" represents the uniform datatype (here: "sampler2D")
+				"gl_enum": 35678,
+				// For sampler* uniforms, "value" holds the path to the texture resource, if it exists
+				"value": "src/res/textures/texture.bmp"
+				// In case the secondary UV coordinates should be used, set this to true
+				//"use_uv2": false
+			},
+			"u_color": {
+				// vec4 (RGBA)
+				"gl_enum": 6408,
+				"value": {
+					"r": 0.5,
+					"g": 0.5,
+					"b": 0.5,
+					"a": 0.5
+				}
+			},
+			"u_shininess": {
+				// float
+				"gl_enum": 5126,
+				"value": 0.5
+			}
+
+		}
+	}
+}

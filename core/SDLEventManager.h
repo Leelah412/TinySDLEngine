@@ -185,7 +185,7 @@ protected:
 	// Handle the given event and possibly notify listeners
 	virtual void handle_event(const SDL_Event& event);
 	// Fire the events and notify listeners
-	virtual void notify(SEM_EVENT event, SEM_EVENT_EXT ext, SDL_Event sdl_event);
+	virtual void notify(SEM_EVENT event, SEM_EVENT_EXT ext, const SDL_Event& sdl_event);
 	// Helper function to correctly identify the listeners of a given event
 	virtual void notify_helper(const SDL_Event& event);
 

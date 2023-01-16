@@ -12,7 +12,7 @@ PhysicsObject::~PhysicsObject(){
 
 }
 
-void PhysicsObject::handle_collision(PhysicsObject* colliding_with, time_t collision_time, SDL_FPoint collision_point){
+void PhysicsObject::handle_collision(const PhysicsObject* colliding_with, time_t collision_time, const glm::vec3& collision_point){
 
 }
 
@@ -29,12 +29,19 @@ void PhysicsObject::update_global_scale(){
 	Node::update_global_scale();
 }
 
+float PhysicsObject::get_mass() const{
+	return m_mass;
+}
+void PhysicsObject::set_mass(float mass){
+	m_mass = mass;
+}
+
 bool PhysicsObject::is_dynamic(){
 	return m_is_dynamic;
 }
 
 
-CollisionShape* PhysicsObject::get_collision_shape(){
+const CollisionShape* PhysicsObject::get_collision_shape() const{
 	return m_collision_shape;
 }
 void PhysicsObject::set_collision_shape(CollisionShape* collision_shape){
@@ -51,13 +58,13 @@ SDL_FRect PhysicsObject::get_global_aabb(){
 	return rect;
 }
 
-bool PhysicsObject::colliding(PhysicsObject* obj1, PhysicsObject* obj2){
+bool PhysicsObject::colliding(const PhysicsObject* obj1, const PhysicsObject* obj2){
 	if(!obj1 || !obj2) return false;
 	// Can't have collision, if there is no collision shape
-	CollisionShape* obj1_cs = obj1->get_collision_shape(), * obj2_cs = obj2->get_collision_shape();
+	const CollisionShape* obj1_cs = obj1->get_collision_shape(), * obj2_cs = obj2->get_collision_shape();
 	if(!obj1_cs || !obj2_cs) return false;
 	// Compare AABB first
-	SDL_FPoint obj1_pos = obj1->get_global_position(), obj2_pos = obj2->get_global_position();
+	glm::vec3 obj1_pos = obj1->get_global_position(), obj2_pos = obj2->get_global_position();
 	SDL_FRect obj1_aabb = obj1_cs->get_aabb(), obj2_aabb = obj2_cs->get_aabb();
 	// right border of obj1 to the left of left border of obj2 -> not colliding
 	if(obj1_pos.x + obj1_aabb.x + obj1_aabb.w < obj2_pos.x + obj2_aabb.x) return false;

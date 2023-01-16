@@ -14,29 +14,31 @@ public:
 	Sprite(std::string path, SPRITE_ORIGIN origin = SPRITE_ORIGIN::TOP_LEFT, float origin_distance_x = 0, float origin_distance_y = 0);
 	virtual ~Sprite();
 
-	virtual void draw();
-	virtual void update(const time_t& delta);
+	virtual void draw() override;
+	virtual void update(const time_t& delta) override;
 
 	const SDL_Texture* get_sprite();
 	void set_sprite(SDL_Texture* sprite, SPRITE_ORIGIN origin = SPRITE_ORIGIN::TOP_LEFT, float origin_distance_x = 0, float origin_distance_y = 0);
 	void set_sprite(std::string path, SPRITE_ORIGIN origin = SPRITE_ORIGIN::TOP_LEFT, float origin_distance_x = 0, float origin_distance_y = 0);
 
-	void set_size(const SDL_FPoint& size) override;
-	void set_size(const int& w, const int& h) override;
+	virtual const glm::vec2& get_size() const;
+	virtual void set_size(const glm::vec2& size);
+	virtual void set_size(int w, int h);
 
 	SPRITE_ORIGIN get_origin();
 	void set_origin(SPRITE_ORIGIN origin);
-	SDL_FPoint get_origin_distance();
-	void set_origin_distance(SDL_FPoint distance);
+	glm::vec2 get_origin_distance();
+	void set_origin_distance(glm::vec2 distance);
 	void set_origin_distance(float x = 0, float y = 0);
 
 private:
-	void calc_origin();				// helper function to recalculate origin
+	void calc_origin();					// helper function to recalculate origin
 
-	SDL_Texture* m_sprite;			// the sprite texture
+	SDL_Texture* m_sprite;				// Sprite texture
+	glm::vec2 m_size = glm::vec2();		// Sprite size
 
-	SPRITE_ORIGIN m_origin;			// the origin of the sprite
-	SDL_FPoint m_origin_distance;	// set origin manually relative to the origin set in "m_origin"
+	SPRITE_ORIGIN m_origin;				// Sprite origin of the sprite
+	glm::vec2 m_origin_distance;		// Set origin manually relative to "m_origin"
 };
 
 

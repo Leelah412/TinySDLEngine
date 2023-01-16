@@ -17,28 +17,24 @@ public:
 
 	// PHYSICS
 	virtual void move(const time_t& delta);
-	virtual void apply_force(const SDL_FPoint& force);				// apply a two dimensional force onto the object
-	virtual void apply_force(const float& x, const float& y);
+	virtual void apply_force(const glm::vec3& force);					// apply a two dimensional force onto the object
+	virtual void apply_force(float x, float y, float z);
 
-	virtual SDL_FPoint get_velocity();
-	virtual void set_velocity(const SDL_FPoint& velocity);
-	virtual void set_velocity(const float& x, const float& y);
-	virtual SDL_FPoint get_velocity_normalized();					// return the normalized velocity vector
-	virtual float get_speed();										// length of velocity vector
+	virtual const glm::vec3& get_velocity() const;
+	virtual void set_velocity(const glm::vec3& velocity);
+	virtual void set_velocity(float x, float y, float z);
+	virtual const glm::vec3& get_velocity_normalized() const;			// return the normalized velocity vector
+	virtual float get_speed() const;									// length of velocity vector
 
-	virtual float get_mass();
-	virtual void set_mass(const float& mass);
-
-	virtual SDL_FPoint get_center_of_mass();
-	virtual void set_center_of_mass(const SDL_FPoint& center_of_mass);
-	virtual void set_center_of_mass(const float& x, const float& y);
+	virtual const glm::vec3& get_center_of_mass() const;
+	virtual void set_center_of_mass(const glm::vec3& center_of_mass);
+	virtual void set_center_of_mass(float x, float y, float z);
 
 	static bool move_and_collide(DynamicObject* obj1, PhysicsObject* obj2, time_t delta, time_t& collision_time);
 
 private:
-	SDL_FPoint m_velocity = SDL_FPoint();							// current velocity of the object (pixel/sec)
-	float m_mass = 1;												// mass of the object, needed for applying force
-	SDL_FPoint m_center_of_mass = SDL_FPoint();						// center of mass relative to center of object (i.e. position)
+	glm::vec3 m_velocity = glm::vec3();								// current velocity of the object (pixel/sec)
+	glm::vec3 m_center_of_mass = glm::vec3();						// center of mass relative to center of object (i.e. position)
 
 };
 

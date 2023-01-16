@@ -1,5 +1,11 @@
 #include "GameLoop.h"
 
+#include "nodes/FirstPersonCamera.h"
+#include "nodes/ModelNode.h"
+#include "renderer/VertexArray.h"
+#include "renderer/Mesh.h"
+#include "renderer/defaults.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -40,9 +46,7 @@ class SEMImGuiAdapter : public SDLEventManager{
 	}
 };
 
-GameLoop::GameLoop(){
-
-}
+GameLoop::GameLoop(){}
 
 GameLoop::~GameLoop(){
 	if(m_initialized) quit();
@@ -56,11 +60,13 @@ void GameLoop::handle_event(SDL_Event sdl_event, SEM_EVENT event, SEM_EVENT_EXT 
 int GameLoop::init(const char* title, int x, int y){
 
 	// Initialize event manager first!
+	delete EventManager;
 	EventManager = new SEMImGuiAdapter();
 	// Listen to Quit interrupt to be able to close the program
 	listen_event(SEM_QUIT);
 	listen_event(SEM_KEY_PRESSED, SEM_EVENT_EXT(SDLK_ESCAPE));
 
+	// TODO: remove
 	// Initialize SDL Data 
 	if(!SDL_Data) SDL_Data = new SDLData();
 
@@ -69,13 +75,10 @@ int GameLoop::init(const char* title, int x, int y){
 		std::cout << SDL_GetError() << std::endl;
 		return 1;
 	}
-	/*
-	if(IMG_Init(IMG_INIT_PNG) != 2){
-		std::cout << IMG_GetError() << std::endl;
-		return 2;
-	}
-	*/
 
+	cout << "SDL initialized" << endl;
+
+	// TODO: replace with "Window" class
 	SDL_Data->set_window(SDL_CreateWindow(title, x, y, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN));
 	if(!SDL_Data->get_window()){
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -83,10 +86,15 @@ int GameLoop::init(const char* title, int x, int y){
 		return 3;
 	}
 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+
+	cout << "SDL Window initialized" << endl;
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
+	// TODO: replace with "Window" class
 	// Must create OpenGL context BEFORE initializing glew!!!
 	SDL_Data->set_context(SDL_GL_CreateContext(SDL_Data->get_window()));
 	if(!SDL_Data->get_context()){
@@ -94,6 +102,11 @@ int GameLoop::init(const char* title, int x, int y){
 		SDL_Quit();
 		return 4;
 	}
+
+	// Initialize Node Tree
+	if(!INodeTree) INodeTree = new NodeTree();
+	// Initialize Collision Handler
+	if(!ICollisionHandler) ICollisionHandler = new CollisionHandler();
 
 	//Initialize GLEW
 	glewExperimental = GL_TRUE;
@@ -106,22 +119,21 @@ int GameLoop::init(const char* title, int x, int y){
 
 	cout << glGetString(GL_VERSION) << endl;
 
-	/*
 	//Use Vsync
 	if(SDL_GL_SetSwapInterval(1) < 0){
 		printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 	}
-	*/
+
+	cout << "VSync enabled" << std::endl;
 
 	//Initialize OpenGL
-	if(!init_gl())
-	{
+	if(!init_gl())	{
 		printf("Unable to initialize OpenGL!\n");
 		SDL_Quit();
 		return 6;
 	}
 
-	printf("OpenGL initialized\n");
+	cout << "OpenGL initialized" << endl;
 
 	// Initialize ImGui
 	ImGui::CreateContext();
@@ -130,18 +142,14 @@ int GameLoop::init(const char* title, int x, int y){
 	ImGui_ImplSDL2_InitForOpenGL(SDL_Data->get_window(), SDL_Data->get_context());
 	ImGui_ImplOpenGL3_Init("#version 460");
 
-
-	// Initialize Node Tree
-	if(!INodeTree) INodeTree = new NodeTree();
-	// Initialize Collision Handler
-	if(!ICollisionHandler) ICollisionHandler = new CollisionHandler();
+	cout << "ImGui initialized" << endl;
 
 	// TODO: connect collision handler with static parent/child mutation signals of physics object,
 	// such that the collision handler lists get updated any time a physics object gets added to/removed from the node tree
 
 	m_initialized = true;
 
-	cout << "SDL initialized" << endl;
+	std::cout << "Application initialized" << std::endl;
 
 	return 0;
 }
@@ -180,26 +188,21 @@ void GameLoop::input(){
 	EventManager->poll_events();
 }
 
-float r = 0.5f;
-float inc = 0.05f;
-
 // TODO: delete, example!
-// Our state
 bool show_demo_window = true;
 bool open = true;
+
+USE_RENDERER
 
 // renders all objects
 void GameLoop::render(){
 
-	if(r > 1.0f) inc = -0.05f;
-	else if(r < 0.0f) inc = 0.05f;
-	r += inc;
+	//m_vertex_array->get_buffer_object((unsigned int)0)->get_shader()->set_uniform_4f("u_color", 0.8, 0.8, 0.2, 1.0);
 
-	m_shader->bind();
-	m_shader->set_uniform_4f("u_color", r, 0.1f, 0.8f, 1.0f);
+	IRenderer->clear();
+	IRenderer->draw();
 
-	Renderer::render(*m_vertex_array, *m_index_buffer, *m_shader);
-
+	/*
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
@@ -224,31 +227,10 @@ void GameLoop::render(){
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	*/
 
 	// Render OpenGL on SDL Window
-	SDL_GL_SwapWindow(SDL_Data->get_window());
-
-	/*
-		//Bind program
-		glUseProgram(m_program_id);
-		//Enable vertex position
-		glEnableVertexAttribArray(m_vertex_pos_2d_location);
-
-		//Set vertex data
-		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-		glVertexAttribPointer(m_vertex_pos_2d_location, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);
-
-		//Set index data and render
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-		glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, NULL);
-
-		//Disable vertex position
-		glDisableVertexAttribArray(m_vertex_pos_2d_location);
-
-		//Unbind program
-		glUseProgram(NULL);
-	*/
-	
+	SDL_GL_SwapWindow(SDL_Data->get_window());	
 }
 
 int GameLoop::loop(){
@@ -260,7 +242,7 @@ int GameLoop::loop(){
 		// update, if delta is above fps
 		if( (m_delta = m_curtime - m_prevtime) > (1000 / m_max_fps) ){
 			m_prevtime = m_curtime;
-			//update(m_delta);
+			update(m_delta);
 			render();
 		}
 	}
@@ -311,13 +293,10 @@ int GameLoop::quit(){
 	ImGui::DestroyContext();
 
 	drop_event(SEM_QUIT);
-	delete SDL_Data;
-	delete ICollisionHandler;
+	drop_event(SEM_KEY_PRESSED);
 
-	// TODO: when moving to renderer, move following lines to the deconstructor or whatever of the renderer
-	delete m_vertex_array;
-	delete m_index_buffer;
-	delete m_shader;
+	//delete SDL_Data;
+	delete ICollisionHandler;
 
 	SDL_Quit();
 	
@@ -342,155 +321,124 @@ time_t GameLoop::get_delta(){
 	return m_delta;
 }
 
+USE_RENDER_MANAGER
+
 bool GameLoop::init_gl(){
 
-	// Enable 2D Textures
-	glEnable(GL_TEXTURE_2D);
-	// Enable transparency
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	using namespace tse;
+
+	/* Initialize default VAOs and buffer entities */ 
+	// TODO: create default framebuffers
+
+	// Create World VAO
+	//VertexArray* world = new VertexArray();
+	// Create static, dynamic and particle buffer entities and add them to world VAO
+	//BufferEntity *st = new BufferEntity(), *dy = new BufferEntity(), *prt = new BufferEntity();
+	//world->add_buffer_entity(st, TSE_BUFFER_ENTITY_STATIC);
+	//world->add_buffer_entity(dy, TSE_BUFFER_ENTITY_DYNAMIC);
+	//world->add_buffer_entity(prt, TSE_BUFFER_ENTITY_PARTICLE);
+	// Create VBOs, IBOs and default shaders for buffer entities
+	// TODO: adjust later on, but for now, use same shader and layout for every entity
+	//Shader* sh = new Shader("src/res/shader/shader.glsl");
+	//VertexAttributeLayout ly = VertexAttributeLayout();
+	//ly.push(3, GL_FLOAT, false);		// position
+	//ly.push(2, GL_FLOAT, false);		// tex coord
+	//
+	//st->set_shader(sh);
+	//st->create_vertex_buffer(2000 * ly.get_stride(), ly);
+	//st->create_index_buffer(1998);
+	//
+	//dy->set_shader(sh);
+	//dy->create_vertex_buffer(1000 * ly.get_stride(), ly);
+	//dy->create_index_buffer(999);
+	//
+	//prt->set_shader(sh);
+	//prt->create_vertex_buffer(10 * ly.get_stride(), ly);
+	//prt->create_index_buffer(999);
+	//
+	//// Add VAO incl. buffer entities to render manager
+	//IRenderManager->add_vertex_array(world, TSE_VERTEX_ARRAY_WORLD, true);
+	//
+	// Default renderer setup
+	IRenderer->setup();
+	// Create default shader
+	// TODO: make some kind of static "Settings" interface, where we save basic settings for loading stuff, e.g. default shader
+	IRenderManager->create_default_shader("src/res/shader/shader.glsl", false);
+	IRenderManager->bind(IRenderManager->get_default_shader());
+	IModelManager->init_world();
+	// Push ModelManager render operation to render list
+	// TODO: create default mesh render operation, which can be overwritten by others, and push that into the list
+	IRenderManager->add_render_operation(new MeshRender());
 
 	/* TEST */
+	float vertices[] = {
+			-0.5f,0.5f,-0.5f,	0,0,
+			-0.5f,-0.5f,-0.5f,	0,1,
+			0.5f,-0.5f,-0.5f,	1,1,
+			0.5f,0.5f,-0.5f,	1,0,
+								
+			-0.5f,0.5f,0.5f,	0,0,
+			-0.5f,-0.5f,0.5f,	0,1,
+			0.5f,-0.5f,0.5f,	1,1,
+			0.5f,0.5f,0.5f,		1,0,
+								
+			0.5f,0.5f,-0.5f,	0,0,
+			0.5f,-0.5f,-0.5f,	0,1,
+			0.5f,-0.5f,0.5f,	1,1,
+			0.5f,0.5f,0.5f,		1,0,
+								
+			-0.5f,0.5f,-0.5f,	0,0,
+			-0.5f,-0.5f,-0.5f,	0,1,
+			-0.5f,-0.5f,0.5f,	1,1,
+			-0.5f,0.5f,0.5f,	1,0,
+								
+			-0.5f,0.5f,0.5f,	0,0,
+			-0.5f,0.5f,-0.5f,	0,1,
+			0.5f,0.5f,-0.5f,	1,1,
+			0.5f,0.5f,0.5f,		1,0,
 
-	// Vertex array containing 2D positions
-	float tri[] = {
-		//       x,    y
-			-0.5f, -0.5f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 1.0f, 0.0f,
-			 0.5f,  0.5f, 1.0f, 1.0f,
-			-0.5f,  0.5f, 0.0f, 1.0f
+			-0.5f,-0.5f,0.5f,	0,0,
+			-0.5f,-0.5f,-0.5f,	0,1,
+			0.5f,-0.5f,-0.5f,	1,1,
+			0.5f,-0.5f,0.5f,	1,0
+
 	};
-	// Index array containing a list of triangles
-	unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0
-	};
-
-	// TODO: maybe add some kind of reference manager, which tracks all pointers given to it
-	// and deletes them at the end of the program, if they haven't been deleted
-	m_vertex_array = new VertexArray(); 
-	VertexBuffer* vb = new VertexBuffer(tri, 4 * 4 * sizeof(float));
-	m_index_buffer = new IndexBuffer(indices, 6);
-
-	BufferLayout layout = BufferLayout();
-	layout.push(2, GL_FLOAT, true);
-	layout.push(2, GL_FLOAT, true);
-	m_vertex_array->add_buffer(vb, layout);
-
-	m_shader = new Shader("src/res/shader/shader.glsl");
-	// Use the shader
-	m_shader->bind();
-	// bottom is negative, since opengl uses your usual coordinate system
-	glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
-	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-0.4f, 0.0f, 0.0f));
-	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.4f, 0.0f, 0.0f));
-	m_shader->set_uniform_mat4f("u_proj", proj * view * model);
-
-	m_texture = new Texture("src/res/textures/karte.PNG");
-	m_texture->bind();
-	m_shader->set_uniform_1i("u_texture", 0);
-
-	/*
-	// Graphics program
-	m_program_id = glCreateProgram();
-
-	//Create vertex shader
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
-	//Get vertex source
-	const GLchar* vertexShaderSource[] =
-	{
-		"#version 140\nin vec2 LVertexPos2D; void main() { gl_Position = vec4( LVertexPos2D.x, LVertexPos2D.y, 0, 1 ); }"
+	std::vector<GLuint> indices = {
+			0,1,3,
+			3,1,2,
+			4,5,7,
+			7,5,6,
+			8,9,11,
+			11,9,10,
+			12,13,15,
+			15,13,14,
+			16,17,19,
+			19,17,18,
+			20,21,23,
+			23,21,22
 	};
 
-	//Set vertex source
-	glShaderSource(vertexShader, 1, vertexShaderSource, NULL);
+	// TEST load nodes
+	// Create test cube with default material
+	Material* def_mat = new Material(IRenderManager->get_default_shader());
+	// note: do NOT create new textures with the material, as it won't be tracked by resource manager
+	// in case of a texture change, the given texture will NOT be deleted!
+	// therfore set texture MUST already exist, if we want at least the possibility of avoiding a mem leak!
+	def_mat->set_texture("u_texture", new Texture("src/res/textures/karte.PNG"));
+	Mesh* mesh = new Mesh((const void*)vertices, sizeof(vertices), indices);
+	Model* model = new Model(mesh);
+	model->assign_material(*mesh->get_submesh_list().begin(), def_mat);
 
-	//Compile vertex source
-	glCompileShader(vertexShader);
+	ModelNode* parent = new ModelNode(model);
+	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);
+	camnode->set_unique_name("fps_camera");
+	parent->add_child(camnode);
+	camnode->set_position(glm::vec3(-2.0f, 2.0f, 0.0f));
+	camnode->get_camera()->set_pitch(45.0f);
+	INodeTree->get_root_node()->add_child(parent);
 
-	//Check vertex shader for errors
-	GLint vShaderCompiled = GL_FALSE;
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &vShaderCompiled);
-	if(vShaderCompiled != GL_TRUE){
-		printf("Unable to compile vertex shader %d!\n", vertexShader);
-		return false;
-	}
-
-	//Attach vertex shader to program
-	glAttachShader(m_program_id, vertexShader);
-
-	//Create fragment shader
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-	//Get fragment source
-	const GLchar* fragmentShaderSource[] =
-	{
-		"#version 140\nout vec4 LFragment; void main() { LFragment = vec4( 1.0, 1.0, 1.0, 1.0 ); }"
-	};
-
-	//Set fragment source
-	glShaderSource(fragmentShader, 1, fragmentShaderSource, NULL);
-
-	//Compile fragment source
-	glCompileShader(fragmentShader);
-
-	//Check fragment shader for errors
-	GLint fShaderCompiled = GL_FALSE;
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &fShaderCompiled);
-	if(fShaderCompiled != GL_TRUE)	{
-		printf("Unable to compile fragment shader %d!\n", fragmentShader);
-		return false;
-	}
-
-	//Attach fragment shader to program
-	glAttachShader(m_program_id, fragmentShader);
-
-	//Link program
-	glLinkProgram(m_program_id);
-
-	//Check for errors
-	GLint programSuccess = GL_TRUE;
-	glGetProgramiv(m_program_id, GL_LINK_STATUS, &programSuccess);
-	if(programSuccess != GL_TRUE)
-	{
-		printf("Error linking program %d!\n", m_program_id);
-		return false;
-	}
-	//Get vertex attribute location
-	m_vertex_pos_2d_location = glGetAttribLocation(m_program_id, "LVertexPos2D");
-	if(m_vertex_pos_2d_location == -1)
-	{
-		printf("LVertexPos2D is not a valid glsl program variable!\n");
-		return false;
-	}
-
-	//Initialize clear color
-	glClearColor(0.f, 0.f, 0.f, 1.f);
-
-	//VBO data
-	GLfloat vertexData[] =
-	{
-		-0.5f, -0.5f,
-		 0.5f, -0.5f,
-		 0.5f,  0.5f,
-		-0.5f,  0.5f
-	};
-
-	//IBO data
-	GLuint indexData[] = {0, 1, 2, 3};
-
-	//Create VBO
-	glGenBuffers(1, &m_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), vertexData, GL_STATIC_DRAW);
-
-	//Create IBO
-	glGenBuffers(1, &m_ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(GLuint), indexData, GL_STATIC_DRAW);
-	
-	*/
+	// render on screen using camera of camnode
+	camnode->activate_camera();
 
 	return true;
 }

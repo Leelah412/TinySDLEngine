@@ -44,17 +44,6 @@ protected:
 
 	map<SIGNAL, OBSERVER_LIST> m_signal_observers;							// list of objects observing a signal for each signal
 
-	/*
-	// STATIC OBSERVER
-	static void emit_static_signal(SIGNAL signal, Object* subject);				// subject emits static signal
-
-	static void add_static_listener(SIGNAL signal, Object* observer);			// observer listens to static signal
-	static void remove_static_listener(SIGNAL signal, Object* observer);
-
-	static map<SIGNAL, OBSERVER_LIST> m_static_signal_observers;				// list of objects observing a signal for each signal
-	//static map<const Object*, set<SIGNAL>> m_static_observed_signals;			// list of signals observed by an observer TODO: currently not needed
-	*/
-
 private:
 
 };

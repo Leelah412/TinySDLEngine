@@ -1,14 +1,14 @@
 #ifndef __GAME_LOOP_H__
 #define __GAME_LOOP_H__
 
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_sdl.h>
-#include <imgui/imgui_impl_opengl3.h>
-
 #include <SDLData.h>
 #include <nodes/Node.h>
 #include <SDLEventManager.h>
 #include <world/collision/CollisionHandler.h>
+
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_sdl.h>
+#include <imgui/imgui_impl_opengl3.h>
 
 #include <renderer/Renderer.h>
 #include <renderer/Buffer.h>
@@ -72,10 +72,6 @@ private:
 	/* OPEN GL (TODO: variables to be refactored into an own renderer class) */
 
 	bool init_gl();
-
-	VertexArray* m_vertex_array = nullptr;
-	IndexBuffer* m_index_buffer = nullptr;
-	Shader* m_shader = nullptr;
 
 	Texture* m_texture = nullptr;	// TODO: only temporary solution of course
 

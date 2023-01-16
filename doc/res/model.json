@@ -1,0 +1,13 @@
+// Models hold submesh - material combinations for a given mesh
+{
+    "type": "model",
+    "body": {
+        "mesh": "src/meshes/mesh.msh",
+        // List of submesh - material pairs for the given submeshes in the "msh" file
+        // If nothing specified for a submesh, default material set in "msh" file is used
+        "vertex_materials": {
+            // Ex.: set second submesh to material "material.json"
+            "2": "src/materials/material.json"
+        }
+    }
+}

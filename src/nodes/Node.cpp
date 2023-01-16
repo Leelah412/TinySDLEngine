@@ -94,11 +94,11 @@ NodeTree* default_node_tree = nullptr;
 
 
 uint64_t Node::m_node_count = 0;
-set<string> Node::m_used_unique_names = {};
+std::set<std::string> Node::m_used_unique_names = {};
 
 Node::Node(){
 	m_ID = ++m_node_count;
-	string name_extender = to_string(m_ID);
+	std::string name_extender = to_string(m_ID);
 	while(!set_unique_name("node_" + name_extender)){
 		// just add the id multiple times, if default name is given somehow
 		name_extender += to_string(m_ID);
@@ -133,39 +133,59 @@ void Node::update(const time_t& delta){
 
 
 
-SDL_FPoint Node::get_position(){
+const glm::vec2& Node::get_position_2d() const{
+	return glm::vec2(m_position.x, m_position.y);
+}
+
+const glm::vec3& Node::get_position() const{
 	return m_position;
 }
-float Node::get_position_x(){
+float Node::get_position_x() const{
 	return m_position.x;
 }
-float Node::get_position_y(){
+float Node::get_position_y() const{
 	return m_position.y;
 }
-void Node::set_position(const SDL_FPoint& position){
-	set_position(position.x, position.y);
+float Node::get_position_z() const{
+	return m_position.z;
 }
-void Node::set_position(const float& x, const float& y){
-	SDL_FPoint p;
-	p.x = x;
-	p.y = y;
-	m_position = p;
+void Node::set_position_2d(const glm::vec2& position){
+	m_position = glm::vec3(position.x, position.y, 0.0f);
 	update_global_position();
 }
-void Node::set_position_x(const float& x){
-	set_position(x, m_position.y);
+void Node::set_position_2d(float x, float y){
+	m_position = glm::vec3(x, y, 0.0f);
+	update_global_position();
 }
-void Node::set_position_y(const float& y){
-	set_position(m_position.x, y);
+void Node::set_position(const glm::vec3& position){
+	m_position = position;
+	update_global_position();
 }
-SDL_FPoint Node::get_global_position(){
+void Node::set_position(float x, float y, float z){
+	m_position = glm::vec3(x, y, z);
+	update_global_position();
+}
+void Node::set_position_x(float x){
+	set_position(x, m_position.y, m_position.z);
+}
+void Node::set_position_y(float y){
+	set_position(m_position.x, y, m_position.z);
+}
+void Node::set_position_z(float z){
+	set_position(m_position.x, m_position.y, z);
+}
+const glm::vec2& Node::get_global_position_2d() const{
+	return glm::vec2(m_global_position.x, m_global_position.y);
+}
+const glm::vec3& Node::get_global_position() const{
 	return m_global_position;
 }
 void Node::update_global_position(){
-	SDL_FPoint p;
+	glm::vec3 p;
 	if(m_parent == NULL){
 		p.x = 0;
 		p.y = 0;
+		p.z = 0;
 	}
 	else{
 		p = m_parent->m_global_position;
@@ -173,26 +193,30 @@ void Node::update_global_position(){
 	// set global position to parent global position + new relative position
 	m_global_position.x = p.x + m_position.x;
 	m_global_position.y = p.y + m_position.y;
+	m_global_position.z = p.y + m_position.z;
 	// update global positions of all children, too
 	for(auto ch : m_children){
 		ch->update_global_position();
 	}
 }
-float Node::get_global_position_x(){
+float Node::get_global_position_x() const{
 	return m_global_position.x;
 }
-float Node::get_global_position_y(){
+float Node::get_global_position_y() const{
 	return m_global_position.y;
 }
+float Node::get_global_position_z() const{
+	return m_global_position.z;
+}
 
-float Node::get_scale(){
+float Node::get_scale() const{
 	return m_scale;
 }
-void Node::set_scale(const float& scale){
+void Node::set_scale(float scale){
 	m_scale = scale;
 	update_global_scale();
 }
-float Node::get_global_scale(){
+float Node::get_global_scale() const{
 	return m_global_scale;
 }
 void Node::update_global_scale(){
@@ -203,15 +227,15 @@ void Node::update_global_scale(){
 	}
 }
 
-float Node::get_rotation(){
+float Node::get_rotation() const{
 	return m_rotation;
 }
-void Node::set_rotation(const float& rotation){
+void Node::set_rotation(float rotation){
 	// make sure the rotations are in (-360, 360)
 	m_rotation = rotation - ( int(rotation / 360) * 360 );
 	update_global_rotation();
 }
-float Node::get_global_rotation(){
+float Node::get_global_rotation() const{
 	return m_global_rotation;
 }
 void Node::update_global_rotation(){
@@ -224,27 +248,14 @@ void Node::update_global_rotation(){
 }
 
 
-SDL_FPoint Node::get_size(){
-	return m_size;
-}
-
-void Node::set_size(const SDL_FPoint& size){
-	m_size = size;
-}
-
-void Node::set_size(const int& w, const int& h){
-	m_size.x = w;
-	m_size.y = h;
-}
-
-uint64_t Node::get_ID(){
+uint64_t Node::get_ID() const{
 	return m_ID;
 }
 
-string Node::get_unique_name(){
+std::string Node::get_unique_name() const{
 	return m_unique_name;
 }
-bool Node::set_unique_name(string name){
+bool Node::set_unique_name(std::string name){
 	if(m_used_unique_names.count(name)) return false;
 	// remove old name from list
 	m_used_unique_names.erase(m_unique_name);
@@ -254,13 +265,13 @@ bool Node::set_unique_name(string name){
 	return true;
 }
 
-string Node::get_class_name(){
+std::string Node::get_class_name() const{
 	return m_class;
 }
 
 /* PARENT/CHILD MUTATORS */
 
-Node* Node::get_parent(){
+Node* Node::get_parent() const{
 	return m_parent;
 }
 
@@ -288,20 +299,22 @@ void Node::set_parent(Node* parent){
 }
 
 void Node::switch_parent(Node* parent, bool keep_gl_pos, bool keep_gl_rot, bool keep_gl_scale){
+	// call "set_parent", when you want node to have no parent
+	if(!parent) return;
 	// if keeping dimensions, save current global positions in tmp. vars
-	SDL_FPoint pos = get_global_position();
+	glm::vec3 pos = get_global_position();
 	float rot = get_global_rotation();
 	float scale = get_global_scale();
 
 	set_parent(parent);
 
 	// set local dimensions to new parent minus current global dimensions, if desired
-	if(keep_gl_pos)	set_position(pos.x - parent->get_global_position().x, pos.y - parent->get_global_position().y);
+	if(keep_gl_pos)	set_position(pos.x - parent->get_global_position().x, pos.y - parent->get_global_position().y, pos.z - parent->get_global_position().z);
 	if(keep_gl_rot) set_rotation(rot - parent->get_global_rotation());
 	if(keep_gl_scale) set_scale(scale/parent->get_global_scale());
 }
 
-const vector<Node*>& Node::get_children(){
+const vector<Node*>& Node::get_children() const{
 	return m_children;
 }
 Node* Node::add_child(Node* child){
@@ -314,6 +327,7 @@ Node* Node::add_child(Node* child){
 		return child;
 	}
 	child->set_parent(this);
+	// update
 	NTEventManager->child_added(this, child);
 	return child;
 }
@@ -337,7 +351,7 @@ void Node::delete_child(Node* child){
 	NTEventManager->node_to_delete(child);
 	delete child;
 }
-void Node::delete_child_by_id(const uint64_t& id){
+void Node::delete_child_by_id(uint64_t id){
 
 }
 void Node::remove_all_children(){
@@ -347,8 +361,8 @@ void Node::remove_all_children(){
 	m_children.clear();
 }
 
-vector<Node*> Node::get_all_children_of_class(string class_name, bool recursive){
-	vector<Node*> vec = {};
+std::vector<Node*> Node::get_all_children_of_class(const std::string& class_name, bool recursive){
+	std::vector<Node*> vec = {};
 
 	// Simple, non-recursive: Only get children of current node with given class name
 	if(!recursive){
@@ -360,7 +374,7 @@ vector<Node*> Node::get_all_children_of_class(string class_name, bool recursive)
 	}
 
 	// Recursive: Get all nodes with given class name in subtree with current node as root 
-	queue<Node*> q = {};
+	std::queue<Node*> q = {};
 	Node* front;
 	q.push(this);
 	while(!q.empty()){

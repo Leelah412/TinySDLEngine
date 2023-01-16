@@ -111,7 +111,8 @@ vector<pair<SEM_EVENT, SEM_EVENT_EXT>> SDLEventManager::get_listened_events(SEMO
 
 void SDLEventManager::poll_next_event(){
 	SDL_Event ev;
-	if(SDL_PollEvent(&ev)) handle_event(ev);
+	if(SDL_PollEvent(&ev))
+		handle_event(ev);
 }
 void SDLEventManager::poll_events(){
 	SDL_Event ev;
@@ -131,7 +132,7 @@ void SDLEventManager::loop(){
 }
 
 
-void SDLEventManager::notify(SEM_EVENT event, SEM_EVENT_EXT ext, SDL_Event sdl_event){
+void SDLEventManager::notify(SEM_EVENT event, SEM_EVENT_EXT ext, const SDL_Event& sdl_event){
 	//cout << "notifying listeners" << endl;
 	auto lst = m_listeners[event];
 	map<SEM_EVENT_EXT, set<SEMObject*>>::iterator it;
@@ -203,6 +204,10 @@ void SDLEventManager::notify_helper(const SDL_Event& event){
 			notify(SEM_MOUSE_UP, SEM_EVENT_EXT(SEMEX_MOUSEBUTTON, ext), event);
 			notify(SEM_MOUSE_PRESSED, SEM_EVENT_EXT(SEMEX_MOUSEBUTTON, ext), event);
 			notify(SEM_ANY_PRESSED, SEM_EVENT_EXT(SEMEX_MOUSEBUTTON, ext), event);
+			break;
+		case SDL_MOUSEMOTION:
+			ext.mousebutton = event.button.button;
+			notify(SEM_MOUSE_MOVE, SEM_EVENT_EXT(), event);
 			break;
 
 		default: break;

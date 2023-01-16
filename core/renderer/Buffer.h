@@ -1,55 +1,55 @@
 #ifndef __BUFFER_H__
 #define __BUFFER_H__
 
+#include "VertexData.h"
+
 #include <GL/glew.h>
 #include <string>
 #include <vector>
+#include <map>
 #include <iostream>
 
 /* Contains VertexArray, VertexBuffer, IndexBuffer classes */
-/* Contains BufferLayout class and BufferElement struct */
+/* Contains VertexAttributeLayout class and VertexAttribute struct */
 
-
-struct BufferElement{
+// Buffer element corresponding to a single vertex attribute
+typedef struct VertexAttribute{
 	std::string name;		// Name of the variable name in the shader file (i think idk)
-	uint32_t type;			// OpenGL type (e.g. GL_UNSIGNED_INT)
-	uint32_t count;			// Number of entries for the vertex attribute
+	GLuint type;			// OpenGL type (e.g. GL_UNSIGNED_INT)
+	GLuint count;			// Number of entries for the vertex attribute
 	size_t offset;			// Element offset in the array
-	uint32_t normalized;	// Value is normalized (between -1.0 and 1.0)
+	GLuint normalized;		// Value is normalized?
 
-	uint32_t get_full_size(){
+	// Return total number of bytes of the VBE
+	GLuint get_bytes(){
 		return get_size(type) * count;
 	}
 
-	static uint32_t get_size(uint32_t _type){
+	// Return size of the OpenGL datatype
+	static GLuint get_size(GLuint _type){
 		switch(_type){
 			case GL_UNSIGNED_INT:
 			case GL_FLOAT: return 4;
 			default:{
-				std::cerr << "ERROR: Given BufferElement type does not exist!" << std::endl;
+				std::cerr << "ERROR: Given VertexAttribute type does not exist!" << std::endl;
 				return 0;
 			}
 		}
 	}
-};
+} VertexAttribute;
 
-// Basically, a vertex buffer is just a meaningless row of bytes completely useless in its form to OpenGL,
-// while a buffer layout gives information about how the data is actually structured and which parts are connected,
-// where each buffer element represents a single vertex ATTRIBUTE (NOT necessarily the vertex itself!).
-// A vertex attribute is e.g. the position of a vertex in the 2D plane consisting of two floats á 4 bytes,
-// and the buffer element "encapsulates" parts of the vertex buffer with information about the start (offset)
-// and end (offset + count * sizeof(type)) of the attribute.
-class BufferLayout{
+// Layout representing the attribute order per vertex
+class VertexAttributeLayout{
 
 public:
-	BufferLayout(){}
-	virtual ~BufferLayout(){}
+	VertexAttributeLayout(){}
+	virtual ~VertexAttributeLayout(){}
 
-	const std::vector<BufferElement> get_elements() const{ return m_elements; }
-	uint32_t get_stride() const{ return m_stride; }
+	const std::vector<VertexAttribute>& get_elements() const{ return m_elements; }
+	GLuint get_stride() const{ return m_stride; }
 
-	void push(uint32_t count, uint32_t type, unsigned char normalized = false){
-		BufferElement el = BufferElement();
+	void push(GLuint count, GLuint type, unsigned char normalized = false){
+		VertexAttribute el = VertexAttribute();
 		el.name = "";
 		el.type = type;
 		el.count = count;
@@ -58,25 +58,24 @@ public:
 
 		m_elements.push_back(el);
 		// don't forget to increment stride!
-		m_stride += el.get_full_size();
+		m_stride += el.get_bytes();
 	}
 
 private:
-	std::vector<BufferElement> m_elements;
-	uint32_t m_stride = 0;
+	std::vector<VertexAttribute> m_elements;
+	GLuint m_stride = 0;
 
 	void calc_offsets(){
 		m_stride = 0;
-		for(uint32_t i = 0; i < m_elements.size(); i++){
-			// Note: offset is an unsigned long long, while m_stride is an unsigned int,
-			// meaning for buffers greater than 4.2 GB, a wrap around would happen for m_stride and this is going to fail
+		for(GLuint i = 0; i < m_elements.size(); i++){
 			m_elements.at(i).offset = m_stride;
-			m_stride += m_elements.at(i).get_full_size();
+			m_stride += m_elements.at(i).get_bytes();
 		}
 	}
 };
 
 
+// Base class for all buffer-type classes (incl. VertexArray)
 class Buffer{
 
 public:
@@ -86,62 +85,65 @@ public:
 	virtual void bind() const = 0;
 	virtual void unbind() const = 0;
 
-	const unsigned int& get_renderer_id() const { return m_renderer_id; }
+	const GLuint& get_buffer_id() const { return m_buffer_id; }
 
 protected:
-	unsigned int m_renderer_id;				// This is the buffer object!
+	GLuint m_buffer_id;				// This is the buffer object!
 };
 
-
+// VertexBuffer class responsible for data management inside the corresponding VBO
+// Does not care about what's inside the buffer, only responsible for allocation and writing of data into the buffer
 class VertexBuffer : public Buffer{
 
 public:
-	VertexBuffer(){ m_layout = BufferLayout(); }
-	VertexBuffer(const void* data, unsigned int size);
+	VertexBuffer(GLuint size, bool is_static = false);
 	virtual ~VertexBuffer();
 
 	void bind() const override;
 	void unbind() const override;
 
-	const BufferLayout& get_buffer_layout() const{ return m_layout; }
-	void set_buffer_layout(const BufferLayout& layout){ m_layout = layout; }
+	// Push the given data with the given offset and size into the buffer
+	bool push(const void* data, GLuint offset, GLuint size);
+	// Resets data to zero starting at given offset with given size
+	void pop(GLuint offset, GLuint size);
+	// Allocate new buffer memory; deletes previous buffer
+	bool alloc_buffer(GLuint size, bool is_static = false);				
+
+	const VertexAttributeLayout& get_layout() const;
+	void set_layout(const VertexAttributeLayout& layout);
+
+	GLuint get_size() const;
+	bool is_static() const;
 
 private:
-	BufferLayout m_layout;
+	VertexAttributeLayout m_layout;
+	GLuint m_size;								// Complete size of the buffer
+	bool m_static;
 };
-
 
 class IndexBuffer : public Buffer{
 
 public:
-	IndexBuffer(const unsigned int* data, unsigned int count);
+	// Construct index buffer passing the max. number of possible indices, start data, and the datasize in bytes
+	IndexBuffer(GLuint max_indices, bool is_static = false);
 	virtual ~IndexBuffer();
 
 	void bind() const override;
 	void unbind() const override;
 
-	unsigned int get_count() const { return m_count; }
+	// Like in VertexBuffer, but with index count instead of byte count (i.e. multiply by sizeof(GLuint))
+	bool push(const void* data, GLuint index, GLuint count);
+	void pop(GLuint index, GLuint count);
+	// Allocate new buffer memory; deletes previous array
+	bool alloc_buffer(GLuint count, bool is_static = false);
+
+	GLuint get_max_indices() const;
+	bool is_static() const;
 
 private:
-	unsigned int m_count;
+	GLuint m_max_indices;							// Max. number of indices, that can be stored
+	bool m_static;
 };
 
-class VertexArray : public Buffer{
-
-public:
-	VertexArray();
-	virtual ~VertexArray();
-
-	void add_buffer(VertexBuffer* vertex_buffer, const BufferLayout& layout);
-
-	void bind() const override;
-	void unbind() const override;
-
-	const VertexBuffer* get_vertex_buffer() const { return m_vertex_buffer; }
-
-private:
-	std::vector<VertexBuffer*> m_vertex_buffer;
-
-};
 
 #endif // !__BUFFER_H__

@@ -1,58 +1,57 @@
 #ifndef __MESH_H__
 #define __MESH_H__
 
-#include "ResourceManager.h"
-#include "Texture.h"
-#include "Shader.h"
-#include "Buffer.h"
-#include <glm/glm.hpp>
+#include "Resource.h"
+#include "VertexData.h"
+#include "Material.h"
 
-// Meshes hold vertex data for an object, which can be bound to the vertex buffer for render
-// They can also hold specific shaders; if no shader specified, default shaders are used
-// Each vertex has the following structure:
-// - 3 floats x,y,z for 3D position (if 2D, just set z value to 0)
-// - 2 floats u,v for UV coordinates for texture map
-// - 2 floats u,v for UV coordinates for normal map
-// - 1 unsigned int for transform index in transform buffer
-// - 1 unsigned int for material ID
+#include <string>
+#include <vector>
+#include <set>
 
-struct MeshVertex{
-	glm::vec3 position;
-	glm::vec2 uv_tex;
-	glm::vec3 uv_normal;
-	GLuint transform_index;
-	GLuint material_id;
-};
+namespace tse{
 
-struct MeshObject{
-	std::vector<MeshVertex> m_vertices;
-	std::vector<uint32_t> m_indices;
-};
 
-class Mesh{
+// Meshes are containers holding VertexData - Material pairings for a single complete mesh object.
+// A single VertexData would be seen as a submesh of a complete mesh object.
+// For example, a house mesh may contain multiple different submeshes (like doors, windows, walls), all with different materials and maybe even different shaders.
+// Each submesh (i.e. VertexData) would then get a material assigned. If no specific material is used, the default material will be assigend
+class Mesh : public Resource{
 
 public:
 	Mesh();
-	Mesh(MeshObject mesh);
+	// Construct mesh from file
+	Mesh(const std::string& path);
+	// Construct mesh from raw vertex and index data
+	Mesh(const void* vertex_data, GLuint vertex_size, const std::vector<GLuint>& indices);
 	virtual ~Mesh();
 
-	virtual void bind() const;			// Bind mesh to vertex buffer
-	virtual void unbind() const;		// Remove mesh from vertex buffer
-
-	// Load the mesh from given path
+	// Load mesh from file
 	virtual void load_mesh(const std::string& path);
-	// Load texture; if desired, with resource manager
-	virtual void load_texture(const std::string& path, bool unique = false);
-	virtual void load_normal(const std::string& path, bool unique = false);
-	// Load the same resources again, if resource manager contains it, but this time don't bind it to RM
-	virtual void make_texture_unique();
-	virtual void make_normal_unique();
+	// Add submesh
+	virtual void add_submesh(VertexData* mesh);
+	// Add a submesh from raw data
+	virtual void add_submesh(const void* vertex_data, GLuint vertex_size, const std::vector<GLuint>& indices);
+	// Return submesh at given index
+	const VertexData* get_submesh(VertexData* mesh) const;
+	// Check, if submesh is part of mesh
+	bool has_submesh(VertexData* mesh) const;
+	// Remove submesh at given index
+	virtual void remove_submesh(VertexData* mesh);
+	const std::set<VertexData*>& get_submesh_list() const;
+	// Remove all currently attached submeshes
+	virtual bool delete_mesh();
+
+	// Return the size of the mesh in bytes
+	unsigned int mesh_vertex_size() const;
+	// Return the number of the mesh indices 
+	unsigned int mesh_index_count() const;
 
 private:
-	MeshObject m_mesh_object;
-	Texture* m_texture = nullptr;		// Reference to texture containing texture map
-	Texture* m_normal = nullptr;		// Reference to texture containing normal map
-
+	std::set<VertexData*> m_submeshes;					// Submeshes of the mesh
 };
+
+}
+
 
 #endif // !__MESH_H__

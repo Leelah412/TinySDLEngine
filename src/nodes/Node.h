@@ -3,7 +3,10 @@
 
 #include <SDLData.h>
 #include <Object.h>
+#include <renderer/RenderManager.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <SDL.h>
 #include <vector>
 #include <set>
@@ -12,7 +15,7 @@
 #include <string>
 #include <algorithm>
 
-using namespace std;
+
 USE_SDL_DATA
 
 // Event manager for node tree event.
@@ -87,80 +90,82 @@ public:
 	virtual void draw();								// directly draws on the screen
 	virtual void update(const time_t& delta);			// updates physics n stuff
 
-	virtual SDL_FPoint get_position();
-	virtual float get_position_x();
-	virtual float get_position_y();
-	virtual void set_position(const SDL_FPoint& position);
-	virtual void set_position(const float& x, const float& y);
-	virtual void set_position_x(const float& x);
-	virtual void set_position_y(const float& y);
-	virtual SDL_FPoint get_global_position();
-	virtual float get_global_position_x();
-	virtual float get_global_position_y();
+	virtual const glm::vec2& get_position_2d() const;
+	virtual const glm::vec3& get_position() const;
+	virtual float get_position_x() const;
+	virtual float get_position_y() const;
+	virtual float get_position_z() const;
+	virtual void set_position_2d(const glm::vec2& position);
+	virtual void set_position_2d(float x, float y);
+	virtual void set_position(const glm::vec3& position);
+	virtual void set_position(float x, float y, float z);
+	virtual void set_position_x(float x);
+	virtual void set_position_y(float y);
+	virtual void set_position_z(float z);
+	virtual const glm::vec2& get_global_position_2d() const;
+	virtual const glm::vec3& get_global_position() const;
+	virtual float get_global_position_x() const;
+	virtual float get_global_position_y() const;
+	virtual float get_global_position_z() const;
 	virtual void update_global_position();
 
-	virtual float get_scale();
-	virtual void set_scale(const float& scale);
-	virtual float get_global_scale();
+	virtual float get_scale() const;
+	virtual void set_scale(float scale);
+	virtual float get_global_scale() const;
 	virtual void update_global_scale();
 
-	virtual float get_rotation();
-	virtual void set_rotation(const float& rotation);
-	virtual float get_global_rotation();
+	virtual float get_rotation() const;
+	virtual void set_rotation(float rotation);
+	virtual float get_global_rotation() const;
 	virtual void update_global_rotation();
 
-	virtual SDL_FPoint get_size();
-	virtual void set_size(const SDL_FPoint& size);
-	virtual void set_size(const int& w, const int& h);
+	uint64_t get_ID() const;
+	std::string get_unique_name() const;
+	bool set_unique_name(std::string name);						// assign a new unique name for the node | returns false, if name already exists
+	std::string get_class_name() const;
 
-	uint64_t get_ID();
-	string get_unique_name();
-	bool set_unique_name(string name);						// assign a new unique name for the node | returns false, if name already exists
-	string get_class_name();
-
-	Node* get_parent();
+	Node* get_parent() const;
 	virtual void set_parent(Node* parent);
 	// switch parent and possibly keep the global dimensions of the node
 	virtual void switch_parent(Node* parent, bool keep_gl_pos = false, bool keep_gl_rot = false, bool keep_gl_scale = false);
 
-	const vector<Node*>& get_children();
+	const std::vector<Node*>& get_children() const;
 	Node* add_child(Node* child);					// add the given object as the child of the current object and return the new child
 	void disown_child(Node* child);					// child object stops being child of current, but still exists
 	void delete_child(Node* child);					// delete the child and its entire existence
-	void delete_child_by_id(const uint64_t& id);
+	void delete_child_by_id(uint64_t id);
 	void remove_all_children();						// deletes all children and their entire existence
-	vector<Node*> get_all_children_of_class(string class_name, bool recursive = false);		// return all children of the given class type
+	std::vector<Node*> get_all_children_of_class(const std::string& class_name, bool recursive = false);		// return all children of the given class type
 
 protected:
-	string m_class;										// save class name for limiting the number necessary include directives
+	std::string m_class;										// save class name for limiting the number necessary include directives
 
 private:
 	static uint64_t m_node_count;
-	static set<string> m_used_unique_names;				// set of unique names already in use to avoid duplicats
+	static std::set<std::string> m_used_unique_names;			// set of unique names already in use to avoid duplicats
 
 	uint64_t m_ID;
-	string m_unique_name;								// unique name for direct access
+	std::string m_unique_name;								// unique name for direct access
 
 	Node* m_parent;
-	vector<Node*> m_children;
+	std::vector<Node*> m_children;
 
 	// IMPORTANT: Do NOT allow direct access to dimensional properties, even for derived classes,
 	// since with each relative change, the global dimensions also need to be altered,
 	// and the calculations for them are done inside the setters!
 
-	SDL_FPoint m_position = SDL_FPoint();				// the position of the object relative to the parent
+	glm::vec3 m_position = glm::vec3();					// the position of the object relative to the parent
 	float m_scale = 1;									// scale the object by the given amount
 	float m_rotation = 0;								// rotate the object by the given amount (in deg)
-	SDL_FPoint m_size = SDL_FPoint();					// the size of the node
 
 	// global versions relative to immovable root element
-	SDL_FPoint m_global_position = SDL_FPoint();
+	glm::vec3 m_global_position = glm::vec3();
 	float m_global_scale = 1;
 	float m_global_rotation = 0;
 };
 
 
-// NodeTree holds and is responsible for the root object and scene switches
+// NodeTree is responsible for the root object, scene switches and render setup
 class NodeTree : public Object{
 
 public:
@@ -171,6 +176,11 @@ public:
 	}
 	virtual ~NodeTree(){
 		delete m_root_node;
+	}
+
+	// Pre-Scene setup
+	void render_setup(){
+
 	}
 
 	Node* get_root_node(){

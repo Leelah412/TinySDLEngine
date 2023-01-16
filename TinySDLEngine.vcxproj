@@ -20,10 +20,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\renderer\Buffer.cpp" />
+    <ClCompile Include="core\renderer\Camera.cpp" />
+    <ClCompile Include="core\renderer\Framebuffer.cpp" />
+    <ClCompile Include="core\renderer\Material.cpp" />
     <ClCompile Include="core\renderer\Mesh.cpp" />
+    <ClCompile Include="core\renderer\Model.cpp" />
+    <ClCompile Include="core\renderer\ModelManager.cpp" />
     <ClCompile Include="core\renderer\Renderer.cpp" />
+    <ClCompile Include="core\renderer\RenderManager.cpp" />
+    <ClCompile Include="core\renderer\TextureArray.cpp" />
+    <ClCompile Include="core\renderer\VertexData.cpp" />
     <ClCompile Include="core\renderer\Shader.cpp" />
     <ClCompile Include="core\renderer\Texture.cpp" />
+    <ClCompile Include="core\renderer\VertexArray.cpp" />
+    <ClCompile Include="core\renderer\VertexMaterial.cpp" />
     <ClCompile Include="core\ResourceManager.cpp" />
     <ClCompile Include="core\world\WorldObject.cpp" />
     <ClCompile Include="core\SDLData.cpp" />
@@ -33,12 +43,14 @@
     <ClCompile Include="core\world\shapes\CollisionShape.cpp" />
     <ClCompile Include="src\GameLoop.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\nodes\CameraNode.cpp" />
     <ClCompile Include="src\nodes\DynamicObject.cpp" />
+    <ClCompile Include="src\nodes\FirstPersonCamera.cpp" />
+    <ClCompile Include="src\nodes\ModelNode.cpp" />
     <ClCompile Include="src\nodes\Node.cpp" />
     <ClCompile Include="src\nodes\PhysicsObject.cpp" />
     <ClCompile Include="src\nodes\Sprite.cpp" />
     <ClCompile Include="src\Object.cpp" />
-    <ClCompile Include="util\ArduinoReader.c" />
     <ClCompile Include="util\BMPReader.cpp" />
     <ClCompile Include="util\glm\detail\glm.cpp" />
     <ClCompile Include="util\imgui\imgui.cpp" />
@@ -51,11 +63,24 @@
     <ClCompile Include="util\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="core\math\Interval.h" />
     <ClInclude Include="core\renderer\Buffer.h" />
+    <ClInclude Include="core\renderer\Camera.h" />
+    <ClInclude Include="core\renderer\defaults.h" />
+    <ClInclude Include="core\renderer\Framebuffer.h" />
+    <ClInclude Include="core\renderer\Material.h" />
     <ClInclude Include="core\renderer\Mesh.h" />
+    <ClInclude Include="core\renderer\Model.h" />
     <ClInclude Include="core\renderer\Renderer.h" />
+    <ClInclude Include="core\renderer\RenderManager.h" />
+    <ClInclude Include="core\renderer\ModelManager.h" />
+    <ClInclude Include="core\renderer\TextureArray.h" />
+    <ClInclude Include="core\renderer\VertexData.h" />
+    <ClInclude Include="core\renderer\Resource.h" />
     <ClInclude Include="core\renderer\Shader.h" />
     <ClInclude Include="core\renderer\Texture.h" />
+    <ClInclude Include="core\renderer\VertexArray.h" />
+    <ClInclude Include="core\renderer\VertexMaterial.h" />
     <ClInclude Include="core\ResourceManager.h" />
     <ClInclude Include="core\Window.h" />
     <ClInclude Include="core\world\collision\CollisionObject.h" />
@@ -68,12 +93,14 @@
     <ClInclude Include="core\world\shapes\CollisionShape.h" />
     <ClInclude Include="core\world\shapes\collision_shapes.h" />
     <ClInclude Include="src\GameLoop.h" />
+    <ClInclude Include="src\nodes\CameraNode.h" />
     <ClInclude Include="src\nodes\DynamicObject.h" />
+    <ClInclude Include="src\nodes\FirstPersonCamera.h" />
+    <ClInclude Include="src\nodes\ModelNode.h" />
     <ClInclude Include="src\nodes\Node.h" />
     <ClInclude Include="src\nodes\PhysicsObject.h" />
     <ClInclude Include="src\nodes\Sprite.h" />
     <ClInclude Include="src\Object.h" />
-    <ClInclude Include="util\ArduinoReader.h" />
     <ClInclude Include="util\BMPReader.h" />
     <ClInclude Include="core\math\Vector.h" />
     <ClInclude Include="util\glm\common.hpp" />
@@ -375,7 +402,6 @@
     <ClInclude Include="util\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\res\shader\shader.glsl" />
     <None Include="util\glm\detail\func_common.inl" />
     <None Include="util\glm\detail\func_common_simd.inl" />
     <None Include="util\glm\detail\func_exponential.inl" />
@@ -516,9 +542,6 @@
     <None Include="util\glm\gtx\vector_query.inl" />
     <None Include="util\glm\gtx\wrap.inl" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="src\res\textures\karte.PNG" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -598,7 +621,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -619,7 +642,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
@@ -628,7 +651,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

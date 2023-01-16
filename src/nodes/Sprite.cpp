@@ -57,13 +57,18 @@ void Sprite::set_sprite(std::string path, SPRITE_ORIGIN origin, float origin_dis
 	//set_sprite(text, origin, origin_distance_x, origin_distance_y);
 }
 
-void Sprite::set_size(const SDL_FPoint& size){
-	Node::set_size(size);
+const glm::vec2& Sprite::get_size() const{
+	return m_size;
+}
+
+void Sprite::set_size(const glm::vec2& size){
+	m_size = size;
 	calc_origin();
 }
 
-void Sprite::set_size(const int& w, const int& h){
-	Node::set_size(w, h);
+void Sprite::set_size(int w, int h){
+	m_size.x = w;
+	m_size.y = h;
 	calc_origin();
 }
 
@@ -74,15 +79,15 @@ void Sprite::set_origin(SPRITE_ORIGIN origin){
 	m_origin = origin;
 	calc_origin();
 }
-SDL_FPoint Sprite::get_origin_distance(){
+glm::vec2 Sprite::get_origin_distance(){
 	return m_origin_distance;
 }
-void Sprite::set_origin_distance(SDL_FPoint distance){
+void Sprite::set_origin_distance(glm::vec2 distance){
 	m_origin_distance = distance;
 	calc_origin();
 }
 void Sprite::set_origin_distance(float x, float y){
-	SDL_FPoint p = SDL_FPoint();
+	glm::vec2 p = glm::vec2();
 	p.x = x;
 	p.y = y;
 	set_origin_distance(p);
@@ -93,34 +98,34 @@ void Sprite::calc_origin(){
 	// set new position based on size
 	switch(m_origin){
 		case SPRITE_ORIGIN::TOP_LEFT:
-			set_position(m_origin_distance);
+			set_position_2d(m_origin_distance);
 			break;
 		case SPRITE_ORIGIN::TOP:
-			set_position(-x / 2 + m_origin_distance.x, m_origin_distance.y);
+			set_position_2d(-x / 2 + m_origin_distance.x, m_origin_distance.y);
 			break;
 		case SPRITE_ORIGIN::TOP_RIGHT:
-			set_position(-x + m_origin_distance.x, m_origin_distance.y);
+			set_position_2d(-x + m_origin_distance.x, m_origin_distance.y);
 			break;
 		case SPRITE_ORIGIN::LEFT:
-			set_position(m_origin_distance.x, -y / 2 + m_origin_distance.y);
+			set_position_2d(m_origin_distance.x, -y / 2 + m_origin_distance.y);
 			break;
 		case SPRITE_ORIGIN::CENTER:
-			set_position(-x / 2 + m_origin_distance.x, -y / 2 + m_origin_distance.y);
+			set_position_2d(-x / 2 + m_origin_distance.x, -y / 2 + m_origin_distance.y);
 			break;
 		case SPRITE_ORIGIN::RIGHT:
-			set_position(-x + m_origin_distance.x, -y / 2 + m_origin_distance.y);
+			set_position_2d(-x + m_origin_distance.x, -y / 2 + m_origin_distance.y);
 			break;
 		case SPRITE_ORIGIN::BOTTOM_LEFT:
-			set_position(m_origin_distance.x, -y + m_origin_distance.y);
+			set_position_2d(m_origin_distance.x, -y + m_origin_distance.y);
 			break;
 		case SPRITE_ORIGIN::BOTTOM:
-			set_position(-x / 2 + m_origin_distance.x, -y + m_origin_distance.y);
+			set_position_2d(-x / 2 + m_origin_distance.x, -y + m_origin_distance.y);
 			break;
 		case SPRITE_ORIGIN::BOTTOM_RIGHT:
-			set_position(-x + m_origin_distance.x, -y + m_origin_distance.y);
+			set_position_2d(-x + m_origin_distance.x, -y + m_origin_distance.y);
 			break;
 		default:
-			set_position(m_origin_distance);
+			set_position_2d(m_origin_distance);
 			break;
 	}
 }

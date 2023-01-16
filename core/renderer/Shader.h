@@ -1,6 +1,8 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
+#include "Resource.h"
+
 #include <GL/glew.h>
 #include <string>
 #include <unordered_map>
@@ -34,11 +36,6 @@ IDEAS TO ORGANIZE SHADER:
 	- each vertex gets the ID corresponding to the filename-ID mapping for the material they use 
 	- anytime the material changes, the ID value inside the buffer changes
 	- 0 is reserved for default shader
-- vertex buffer layout:
-	- 3d positions
-	- uv coordinates
-	- material ID
-	- MVP ID
 
 */
 
@@ -48,31 +45,38 @@ struct ShaderSources{
 	std::string fragment;
 };
 
-class Shader{
+// TODO: don't use inheritance, but instead use names, and set name of default shader to "default"
+// this will allow us to easily use the resourcemanager for loading shaders
+class Shader final : public Resource{
 
 public:
-	Shader(const std::string& file);
+	// TODO: implement shader loading from string
+	// Load the shader from the given file, or from string, if the string is the shader.
+	Shader(const std::string& path, bool path_is_shader = false);
 	virtual ~Shader();
 
-	virtual void bind() const;
-	virtual void unbind() const;
+	// Load up the uniform values of a shader, if needed
+	//void load_uniforms();
 
-	virtual void set_uniform_1i(const std::string& name, int i);
-	virtual void set_uniform_4f(const std::string& name, float f1, float f2, float f3, float f4);
-	virtual void set_uniform_mat4f(const std::string& name, const glm::mat4& proj);
+	void bind() const;
+	void unbind() const;
 
-	virtual int get_uniform_location(const std::string& name);
+	void set_uniform_1i(const std::string& name, int i);
+	void set_uniform_4f(const std::string& name, float f1, float f2, float f3, float f4);
+	void set_uniform_mat4f(const std::string& name, const glm::mat4& proj);
 
-	uint32_t get_renderer_id() const { return m_renderer_id; };
+	int get_uniform_location(const std::string& name);
+
+	GLuint get_program_id() const { return m_program_id; };
 
 private:
-	uint32_t m_renderer_id;
-	std::string m_file;
-	std::unordered_map<std::string, int> m_cache;		// maybe limit cache size to avoid overhead
+	GLuint m_program_id;
+	std::unordered_map<std::string, int> m_cache;		// Uniform location cache
 
 	ShaderSources parse_shader();
-	uint32_t compile_shader(uint32_t type, const std::string& source);
+	GLuint compile_shader(GLenum type, const std::string& source);
 	void create_shader();
+
 
 };
 

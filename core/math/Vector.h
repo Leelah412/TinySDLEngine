@@ -3,6 +3,8 @@
 
 #include <math.h>
 
+// deprecated, use glm instead
+
 typedef struct Vector2{
 	float x;
 	float y;

@@ -1,0 +1,22 @@
+// Mesh data created from .obj files
+// Hold submeshes and materials applied to them per default
+// To use different materials, create "Model" files for each unique mesh - material combination
+// Vertex attributes of each submesh are the following:
+//  - 3D Position (float x3)
+//  - Vertex Normals (float x3)
+//  - UV Coordinate 1 (float x2)
+//  - UV Coordinate 2 (float x2)
+
+#submesh-start
+
+#vertices
+
+#normals
+
+#tris
+
+
+#material
+src/materials/material.json
+
+#submesh-end

@@ -16,55 +16,49 @@ void DynamicObject::update(const time_t& delta){
 
 
 void DynamicObject::move(const time_t& delta){
-	SDL_FPoint pos = get_position();
+	glm::vec3 pos = get_position();
 	// divide by 1000 to get velocity in pixel/second
 	pos.x += m_velocity.x * (delta/1000.0f);
 	pos.y += m_velocity.y * (delta/1000.0f);
 	set_position(pos);
 }
 
-void DynamicObject::apply_force(const SDL_FPoint& force){
-	apply_force(force.x, force.y);
+void DynamicObject::apply_force(const glm::vec3& force){
+	apply_force(force.x, force.y, force.z);
 }
-void DynamicObject::apply_force(const float& x, const float& y){
+void DynamicObject::apply_force(float x, float y, float z){
 	m_velocity.x += x / m_mass;
 	m_velocity.y += y / m_mass;
 }
 
-SDL_FPoint DynamicObject::get_velocity(){
+const glm::vec3& DynamicObject::get_velocity() const{
 	return m_velocity;
 }
-void DynamicObject::set_velocity(const SDL_FPoint& velocity){
+void DynamicObject::set_velocity(const glm::vec3& velocity){
 	m_velocity = velocity;
 }
-void DynamicObject::set_velocity(const float& x, const float& y){
-	set_velocity({x, y});
+void DynamicObject::set_velocity(float x, float y, float z){
+	set_velocity(glm::vec3(x, y, z));
 }
-SDL_FPoint DynamicObject::get_velocity_normalized(){
+const glm::vec3& DynamicObject::get_velocity_normalized() const{
 	float norm = sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
-	SDL_FPoint p;
+	glm::vec3 p;
 	p.x = m_velocity.x / norm;
 	p.y = m_velocity.y / norm;
 	return p;
 }
-float DynamicObject::get_speed(){
+float DynamicObject::get_speed() const{
 	return sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
 }
 
-float DynamicObject::get_mass(){
-	return m_mass;
-}
-void DynamicObject::set_mass(const float& mass){
-	m_mass = mass;
-}
-SDL_FPoint DynamicObject::get_center_of_mass(){
+const glm::vec3& DynamicObject::get_center_of_mass() const{
 	return m_center_of_mass;
 }
-void DynamicObject::set_center_of_mass(const SDL_FPoint& center_of_mass){
+void DynamicObject::set_center_of_mass(const glm::vec3& center_of_mass){
 	m_center_of_mass = center_of_mass;
 }
-void DynamicObject::set_center_of_mass(const float& x, const float& y){
-	SDL_FPoint p;
+void DynamicObject::set_center_of_mass(float x, float y, float z){
+	glm::vec3 p;
 	p.x = x;
 	p.y = y;
 	set_center_of_mass(p);
@@ -86,10 +80,10 @@ bool DynamicObject::move_and_collide(DynamicObject* obj1, PhysicsObject* obj2, t
 	}
 
 	// Can't have collision, if there is no collision shape
-	CollisionShape *obj1_cs = obj1->get_collision_shape(), *obj2_cs = obj2->get_collision_shape();
+	const CollisionShape *obj1_cs = obj1->get_collision_shape(), *obj2_cs = obj2->get_collision_shape();
 	if(!obj1_cs || !obj2_cs) return false;
 	SDL_FRect obj1_aabb = obj1_cs->get_aabb(), obj2_aabb = obj2_cs->get_aabb();
-	SDL_FPoint obj1_pos = obj1->get_global_position(), obj2_pos = obj2->get_global_position();
+	glm::vec3 obj1_pos = obj1->get_global_position(), obj2_pos = obj2->get_global_position();
 
 	// Get the entry and exit distances between both objects for both axes
 	float x_entry = (obj2_pos.x + obj2_aabb.x) - (obj1_pos.x + obj1_aabb.x + obj1_aabb.w);

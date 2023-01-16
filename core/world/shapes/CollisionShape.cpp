@@ -8,13 +8,13 @@ CollisionShape::~CollisionShape(){
 
 }
 
-const vector<SDL_FPoint>& CollisionShape::get_polygon(){
+const std::vector<glm::vec2>& CollisionShape::get_polygon() const{
 	return m_polygon;
 }
-void CollisionShape::set_polygon(vector<SDL_FPoint> polygon){
+void CollisionShape::set_polygon(const std::vector<glm::vec2>& polygon){
 	m_polygon = polygon;
 }
 
-SDL_FRect CollisionShape::get_aabb(){
+const SDL_FRect& CollisionShape::get_aabb() const{
 	return m_aabb;
 }
