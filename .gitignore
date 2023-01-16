@@ -1,3 +1,6 @@
 .vs
 x64
 Debug
+doc/TODO
+src/res/shader/light_shader.glsl
+examples

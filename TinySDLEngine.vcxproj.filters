@@ -141,6 +141,9 @@
     <ClCompile Include="core\renderer\TextureArray.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="util\ObjLoader.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GameLoop.h">
@@ -1152,6 +1155,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="core\renderer\TextureArray.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="util\ObjLoader.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

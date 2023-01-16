@@ -371,6 +371,7 @@ bool GameLoop::init_gl(){
 	IRenderManager->add_render_operation(new MeshRender());
 
 	/* TEST */
+#if 0
 	float vertices[] = {
 			-0.5f,0.5f,-0.5f,	0,0,
 			-0.5f,-0.5f,-0.5f,	0,1,
@@ -417,6 +418,7 @@ bool GameLoop::init_gl(){
 			20,21,23,
 			23,21,22
 	};
+#endif
 
 	// TEST load nodes
 	// Create test cube with default material
@@ -424,10 +426,10 @@ bool GameLoop::init_gl(){
 	// note: do NOT create new textures with the material, as it won't be tracked by resource manager
 	// in case of a texture change, the given texture will NOT be deleted!
 	// therfore set texture MUST already exist, if we want at least the possibility of avoiding a mem leak!
-	def_mat->set_texture("u_texture", new Texture("src/res/textures/karte.PNG"));
-	Mesh* mesh = new Mesh((const void*)vertices, sizeof(vertices), indices);
-	Model* model = new Model(mesh);
-	model->assign_material(*mesh->get_submesh_list().begin(), def_mat);
+	def_mat->set_texture("u_texture", new Texture("src/res/textures/example.PNG"));
+	//Mesh* mesh = new Mesh((const void*)vertices, sizeof(vertices), indices);
+	Model* model = new Model("src/res/mesh/example.obj");
+	model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
 
 	ModelNode* parent = new ModelNode(model);
 	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);

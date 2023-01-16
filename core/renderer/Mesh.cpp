@@ -18,6 +18,12 @@ Mesh::~Mesh(){}
 
 void Mesh::load_mesh(const std::string& path){
 	m_filepath = path;
+	ObjLoader::Obj* obj = ObjLoader::load(path);
+	// remove previous mesh
+	delete_mesh();
+	// add new one
+	// TODO: currently adding only one mesh, enhance this to include multiple submeshes
+	add_submesh((const void*) obj->vertices.data(), obj->vertices.size() * sizeof(float), obj->indices);
 	// TODO: convert obj to own mesh type
 
 }
@@ -49,6 +55,11 @@ const std::set<VertexData*>& Mesh::get_submesh_list() const{
 }
 
 bool Mesh::delete_mesh(){
+	// TODO: delete, or not delete, that is here the question
+	for(auto sm : m_submeshes){
+		delete sm;
+	}
+	m_submeshes = {};
 	return false;
 }
 

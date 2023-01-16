@@ -60,6 +60,7 @@
     <ClCompile Include="util\imgui\imgui_impl_sdl.cpp" />
     <ClCompile Include="util\imgui\imgui_tables.cpp" />
     <ClCompile Include="util\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="util\ObjLoader.cpp" />
     <ClCompile Include="util\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -399,6 +400,7 @@
     <ClInclude Include="util\imgui\imstb_rectpack.h" />
     <ClInclude Include="util\imgui\imstb_textedit.h" />
     <ClInclude Include="util\imgui\imstb_truetype.h" />
+    <ClInclude Include="util\ObjLoader.h" />
     <ClInclude Include="util\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
