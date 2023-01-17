@@ -39,7 +39,7 @@ void Mesh::load_mesh(const std::string& path){
 		std::memcpy(&vdata[i * 8 + 7], &vert.normal.z, 4);
 	}
 	// TODO: currently adding only one mesh, enhance this to include multiple submeshes
-	add_submesh(vdata, obj->vertices.size() * sizeof(float), obj->indices);
+	add_submesh(vdata, obj->vertices.size() * 8 * sizeof(float), obj->indices);
 	// TODO: convert obj to own mesh type
 
 	delete[] vdata;

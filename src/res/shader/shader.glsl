@@ -3,6 +3,7 @@
 
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec2 tex_coord;
+layout(location = 2) in vec4 normals;
 
 out vec2 v_tex_coord;
 

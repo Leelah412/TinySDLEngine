@@ -373,35 +373,35 @@ bool GameLoop::init_gl(){
 	/* TEST */
 #if 0
 	float vertices[] = {
-			-0.5f,0.5f,-0.5f,	0,0,
-			-0.5f,-0.5f,-0.5f,	0,1,
-			0.5f,-0.5f,-0.5f,	1,1,
-			0.5f,0.5f,-0.5f,	1,0,
-								
-			-0.5f,0.5f,0.5f,	0,0,
-			-0.5f,-0.5f,0.5f,	0,1,
-			0.5f,-0.5f,0.5f,	1,1,
-			0.5f,0.5f,0.5f,		1,0,
-								
-			0.5f,0.5f,-0.5f,	0,0,
-			0.5f,-0.5f,-0.5f,	0,1,
-			0.5f,-0.5f,0.5f,	1,1,
-			0.5f,0.5f,0.5f,		1,0,
-								
-			-0.5f,0.5f,-0.5f,	0,0,
-			-0.5f,-0.5f,-0.5f,	0,1,
-			-0.5f,-0.5f,0.5f,	1,1,
-			-0.5f,0.5f,0.5f,	1,0,
-								
-			-0.5f,0.5f,0.5f,	0,0,
-			-0.5f,0.5f,-0.5f,	0,1,
-			0.5f,0.5f,-0.5f,	1,1,
-			0.5f,0.5f,0.5f,		1,0,
-
-			-0.5f,-0.5f,0.5f,	0,0,
-			-0.5f,-0.5f,-0.5f,	0,1,
-			0.5f,-0.5f,-0.5f,	1,1,
-			0.5f,-0.5f,0.5f,	1,0
+			-0.5f,0.5f,-0.5f,	0,0, 0,0,0,
+			-0.5f,-0.5f,-0.5f,	0,1, 0,1,0,
+			0.5f,-0.5f,-0.5f,	1,1, 1,1,1,
+			0.5f,0.5f,-0.5f,	1,0, 1,0,1,
+									 
+			-0.5f,0.5f,0.5f,	0,0, 0,0,0,
+			-0.5f,-0.5f,0.5f,	0,1, 0,1,0,
+			0.5f,-0.5f,0.5f,	1,1, 1,1,1,
+			0.5f,0.5f,0.5f,		1,0, 1,0,1,
+									 
+			0.5f,0.5f,-0.5f,	0,0, 0,0,0,
+			0.5f,-0.5f,-0.5f,	0,1, 0,1,0,
+			0.5f,-0.5f,0.5f,	1,1, 1,1,1,
+			0.5f,0.5f,0.5f,		1,0, 1,0,1,
+									 
+			-0.5f,0.5f,-0.5f,	0,0, 0,0,0,
+			-0.5f,-0.5f,-0.5f,	0,1, 0,1,0,
+			-0.5f,-0.5f,0.5f,	1,1, 1,1,1,
+			-0.5f,0.5f,0.5f,	1,0, 1,0,1,
+									 
+			-0.5f,0.5f,0.5f,	0,0, 0,0,0,
+			-0.5f,0.5f,-0.5f,	0,1, 0,1,0,
+			0.5f,0.5f,-0.5f,	1,1, 1,1,1,
+			0.5f,0.5f,0.5f,		1,0, 1,0,1,
+									 
+			-0.5f,-0.5f,0.5f,	0,0, 0,0,0,
+			-0.5f,-0.5f,-0.5f,	0,1, 0,1,0,
+			0.5f,-0.5f,-0.5f,	1,1, 1,1,1,
+			0.5f,-0.5f,0.5f,	1,0, 1,1,0
 
 	};
 	std::vector<GLuint> indices = {
@@ -428,7 +428,8 @@ bool GameLoop::init_gl(){
 	// therfore set texture MUST already exist, if we want at least the possibility of avoiding a mem leak!
 	def_mat->set_texture("u_texture", new Texture("src/res/textures/example.PNG"));
 	//Mesh* mesh = new Mesh((const void*)vertices, sizeof(vertices), indices);
-	Model* model = new Model("src/res/mesh/example.obj");
+	//Model* model = new Model(mesh);
+	Model* model = new Model("src/res/mesh/untitled.obj");
 	model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
 
 	ModelNode* parent = new ModelNode(model);
