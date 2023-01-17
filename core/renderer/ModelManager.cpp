@@ -20,6 +20,7 @@ void ModelManager::init_world(){
 	VertexAttributeLayout layout;
 	layout.push(3, GL_FLOAT, false);		// Position
 	layout.push(2, GL_FLOAT, false);		// UV1
+	layout.push(3, GL_FLOAT, false);		// Normal
 	//layout.push(2, GL_FLOAT, false);		// UV2
 
 	m_vao->create_vertex_buffer(m_expected_max_vertices * layout.get_stride(), layout);
