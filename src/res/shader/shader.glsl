@@ -28,7 +28,7 @@ in vec4 v_normals;
 uniform vec4 u_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform sampler2D u_texture;
 
-layout(std140, binding = 0) uniform Light{
+layout(std140, binding = 2) uniform Light{
     vec3 direction;
   
     vec3 ambient;
@@ -45,4 +45,5 @@ void main(){
 
 	vec4 tex_color = texture(u_texture, v_tex_coord);
 	color = tex_color * u_color;
+	color *= ambient;
 };

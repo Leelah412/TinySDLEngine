@@ -2,6 +2,7 @@
 
 #include "nodes/FirstPersonCamera.h"
 #include "nodes/ModelNode.h"
+#include "nodes/LightNode.h"
 #include "renderer/VertexArray.h"
 #include "renderer/Mesh.h"
 #include "renderer/defaults.h"
@@ -188,12 +189,6 @@ void GameLoop::input(){
 	EventManager->poll_events();
 }
 
-// TODO: delete, example!
-bool show_demo_window = true;
-bool open = true;
-
-USE_RENDERER
-
 // renders all objects
 void GameLoop::render(){
 
@@ -321,8 +316,6 @@ time_t GameLoop::get_delta(){
 	return m_delta;
 }
 
-USE_RENDER_MANAGER
-
 bool GameLoop::init_gl(){
 
 	using namespace tse;
@@ -434,12 +427,19 @@ bool GameLoop::init_gl(){
 
 	ModelNode* parent = new ModelNode(model);
 	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);
+	
 	camnode->set_unique_name("fps_camera");
 	parent->add_child(camnode);
 	camnode->set_position(glm::vec3(-2.0f, 2.0f, 0.0f));
 	camnode->get_camera()->set_pitch(45.0f);
 	INodeTree->get_root_node()->add_child(parent);
-
+	
+	Light light = Light();
+	light.ambient = glm::vec3(0.8, 0.2, 0.5);
+	LightNode* lightnode = new LightNode(light);
+	lightnode->turn_on();
+	INodeTree->get_root_node()->add_child(lightnode);
+	
 	// render on screen using camera of camnode
 	camnode->activate_camera();
 
