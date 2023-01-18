@@ -97,6 +97,8 @@ void RenderManager::bind(VertexArray* vao){
 		return;
 	}
 	vao->bind();
+	// bind index array too
+	vao->get_index_buffer()->bind();
 	set_vertex_array_state(vao);
 }
 void RenderManager::unbind(VertexArray* vao){

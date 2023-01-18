@@ -1,4 +1,4 @@
-﻿  GameLoop.cpp
+﻿  ModelManager.cpp
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\utility(193,48): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "_Ty2", Datenverlust möglich
           with
           [
@@ -20,4 +20,49 @@ C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\util\ObjLoader.h(161
               _Other1=glm::ivec3,
               _Other2=unsigned __int64
           ]
+  RenderManager.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\utility(193,48): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "_Ty2", Datenverlust möglich
+          with
+          [
+              _Ty2=unsigned int
+          ]
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\util\ObjLoader.h(161): message : Siehe Verweis auf die gerade kompilierte Instanziierung "std::pair<_Kty,_Ty>::pair<glm::ivec3,unsigned __int64,0>(_Other1 &&,_Other2 &&) noexcept" der Funktions-Vorlage.
+          with
+          [
+              _Kty=glm::ivec3,
+              _Ty=unsigned int,
+              _Other1=glm::ivec3,
+              _Other2=unsigned __int64
+          ]
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\util\ObjLoader.h(161): message : Siehe Verweis auf die gerade kompilierte Instanziierung "std::pair<_Kty,_Ty>::pair<glm::ivec3,unsigned __int64,0>(_Other1 &&,_Other2 &&) noexcept" der Funktions-Vorlage.
+          with
+          [
+              _Kty=glm::ivec3,
+              _Ty=unsigned int,
+              _Other1=glm::ivec3,
+              _Other2=unsigned __int64
+          ]
+  main.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\utility(193,48): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "_Ty2", Datenverlust möglich
+          with
+          [
+              _Ty2=unsigned int
+          ]
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\util\ObjLoader.h(161): message : Siehe Verweis auf die gerade kompilierte Instanziierung "std::pair<_Kty,_Ty>::pair<glm::ivec3,unsigned __int64,0>(_Other1 &&,_Other2 &&) noexcept" der Funktions-Vorlage.
+          with
+          [
+              _Kty=glm::ivec3,
+              _Ty=unsigned int,
+              _Other1=glm::ivec3,
+              _Other2=unsigned __int64
+          ]
+C:\Users\Halil\source\repos\TinySDLEngine\TinySDLEngine\src\util\ObjLoader.h(161): message : Siehe Verweis auf die gerade kompilierte Instanziierung "std::pair<_Kty,_Ty>::pair<glm::ivec3,unsigned __int64,0>(_Other1 &&,_Other2 &&) noexcept" der Funktions-Vorlage.
+          with
+          [
+              _Kty=glm::ivec3,
+              _Ty=unsigned int,
+              _Other1=glm::ivec3,
+              _Other2=unsigned __int64
+          ]
+  Code wird generiert...
   TinySDLEngine.vcxproj -> C:\Users\Halil\source\repos\TinySDLEngine\x64\Debug\TinySDLEngine.exe

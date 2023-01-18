@@ -2,7 +2,6 @@
 #define __VERTEX_ARRAY_H__
 
 #include "Buffer.h"
-#include "Shader.h"
 
 namespace tse{
 
@@ -15,10 +14,6 @@ public:
 
 	void bind() const override;
 	void unbind() const override;
-	// Bind attributes of VBO to shader
-	void bind_shader(Shader* shader, bool rebind = false);
-	// Only removes shader from list of bound shaders
-	void unbind_shader(Shader* shader);
 
 	/*****************/
 	/* VERTEX BUFFER */
@@ -52,7 +47,6 @@ public:
 private:
 	VertexBuffer* m_vbo = nullptr;
 	IndexBuffer* m_ibo = nullptr;
-	std::set<Shader*> m_bound_shaders;			// Shaders, to which we've bound the attribute locations of the current VBO (to avoid multiple bounds)
 };
 
 }

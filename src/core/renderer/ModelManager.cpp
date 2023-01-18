@@ -634,13 +634,6 @@ void ModelManager::move_vertex_materials_in_ibo(VertexMaterial* vm, const Disjoi
 		add_free_vbo_space(DisjointInterval(used_iv.end + 1, old.end));
 	if(used_iv.start != old.start)
 		add_free_vbo_space(DisjointInterval(old.start, used_iv.start - 1));
-
-	// bind materials shader to VAO (otherwise we won't see ANYTHING!)
-	if(vm->material)
-		m_vao->bind_shader(vm->material->get_shader_mutable());
-	// material doesn't exist: bind default shader
-	else
-		m_vao->bind_shader(IRenderManager->get_default_shader());
 }
 
 void ModelManager::concat_free_vbo_space(){
