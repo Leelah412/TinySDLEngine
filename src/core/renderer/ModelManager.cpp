@@ -6,7 +6,10 @@ ModelManager* ModelManager::s_default = new ModelManager();
 
 ModelManager::ModelManager(){}
 
-ModelManager::~ModelManager(){}
+ModelManager::~ModelManager(){
+	delete m_vao;
+	delete m_light_ubo;
+}
 
 /**********/
 /* PUBLIC */
@@ -39,6 +42,10 @@ void ModelManager::init_world(){
 	m_ibo_space = {};
 	m_free_ibo_intervals = {};
 	add_free_ibo_space( DisjointInterval(0, m_expected_max_indices - 1) );
+
+	// Light UBO
+	// TODO: implement dingens
+	m_light_ubo = new UniformBuffer(0);
 }
 
 void ModelManager::add_model(Model* model){

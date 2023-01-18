@@ -29,18 +29,19 @@
     <ClCompile Include="src\core\renderer\Renderer.cpp" />
     <ClCompile Include="src\core\renderer\RenderManager.cpp" />
     <ClCompile Include="src\core\renderer\TextureArray.cpp" />
+    <ClCompile Include="src\core\renderer\UniformBuffer.cpp" />
     <ClCompile Include="src\core\renderer\VertexData.cpp" />
     <ClCompile Include="src\core\renderer\Shader.cpp" />
     <ClCompile Include="src\core\renderer\Texture.cpp" />
     <ClCompile Include="src\core\renderer\VertexArray.cpp" />
     <ClCompile Include="src\core\renderer\VertexMaterial.cpp" />
     <ClCompile Include="src\core\ResourceManager.cpp" />
-    <ClCompile Include="src\core\world\WorldObject.cpp" />
     <ClCompile Include="src\core\SDLData.cpp" />
-    <ClCompile Include="src\util\SDLEventManager.cpp" />
     <ClCompile Include="src\core\world\collision\CollisionHandler.cpp" />
     <ClCompile Include="src\core\world\shapes\CollisionBox.cpp" />
     <ClCompile Include="src\core\world\shapes\CollisionShape.cpp" />
+    <ClCompile Include="src\core\world\WorldObject.cpp" />
+    <ClCompile Include="src\util\SDLEventManager.cpp" />
     <ClCompile Include="src\GameLoop.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\core\nodes\CameraNode.cpp" />
@@ -64,6 +65,15 @@
     <ClCompile Include="src\util\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\renderer\Light.h" />
+    <ClInclude Include="src\core\renderer\UniformBuffer.h" />
+    <ClInclude Include="src\core\world\collision\CollisionHandler.h" />
+    <ClInclude Include="src\core\world\collision\CollisionObject.h" />
+    <ClInclude Include="src\core\world\Grid.h" />
+    <ClInclude Include="src\core\world\shapes\CollisionBox.h" />
+    <ClInclude Include="src\core\world\shapes\CollisionShape.h" />
+    <ClInclude Include="src\core\world\shapes\collision_shapes.h" />
+    <ClInclude Include="src\core\world\WorldObject.h" />
     <ClInclude Include="src\math\Interval.h" />
     <ClInclude Include="src\core\renderer\Buffer.h" />
     <ClInclude Include="src\core\renderer\Camera.h" />
@@ -84,15 +94,8 @@
     <ClInclude Include="src\core\renderer\VertexMaterial.h" />
     <ClInclude Include="src\core\ResourceManager.h" />
     <ClInclude Include="src\core\Window.h" />
-    <ClInclude Include="src\core\world\collision\CollisionObject.h" />
-    <ClInclude Include="src\core\world\Grid.h" />
-    <ClInclude Include="src\core\world\WorldObject.h" />
     <ClInclude Include="src\core\SDLData.h" />
     <ClInclude Include="src\util\SDLEventManager.h" />
-    <ClInclude Include="src\core\world\collision\CollisionHandler.h" />
-    <ClInclude Include="src\core\world\shapes\CollisionBox.h" />
-    <ClInclude Include="src\core\world\shapes\CollisionShape.h" />
-    <ClInclude Include="src\core\world\shapes\collision_shapes.h" />
     <ClInclude Include="src\GameLoop.h" />
     <ClInclude Include="src\core\nodes\CameraNode.h" />
     <ClInclude Include="src\core\nodes\DynamicObject.h" />
@@ -404,6 +407,7 @@
     <ClInclude Include="src\util\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\res\shader\shader.glsl" />
     <None Include="src\util\glm\detail\func_common.inl" />
     <None Include="src\util\glm\detail\func_common_simd.inl" />
     <None Include="src\util\glm\detail\func_exponential.inl" />

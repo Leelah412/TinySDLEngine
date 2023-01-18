@@ -6,19 +6,21 @@
 class UniformBuffer : public Buffer{
 
 public:
-	UniformBuffer(GLuint size, GLuint binding);
+	UniformBuffer(GLuint size);
 	virtual ~UniformBuffer();
 
-	virtual void bind() const override;
-	virtual void unbind() const override;
+	void bind() const override;
+	void unbind() const override;
 
-	virtual void rebind(GLuint binding);
-
-	virtual bool alloc_buffer(GLuint size, GLuint binding);
+	// Push the given data with the given offset and size into the buffer
+	bool push(const void* data, GLuint offset, GLuint size);
+	// Resets data to zero starting at given offset with given size
+	void pop(GLuint offset, GLuint size);
+	// Allocate new buffer memory; deletes previous buffer
+	bool alloc_buffer(GLuint size);
 
 private:
 	GLuint m_size;
-	GLuint m_binding;
 
 };
 

@@ -4,8 +4,6 @@
 #include "Buffer.h"
 #include "Shader.h"
 
-//#include "BufferEntity.h"
-
 namespace tse{
 
 // VertexArray class holding a single VertexBuffer and an IndexBuffer.
@@ -51,38 +49,10 @@ public:
 	// Allocate new buffer memory; deletes previous array
 	bool alloc_index_buffer(GLuint count, bool is_static = false);
 
-
-#ifdef __BUFFER_OBJECT_H__
-	// Update buffer entities
-	void update();
-	// Render all buffer entities connected to this array
-	void render() const;
-
-	// Push, replace or erase buffer entities
-	void add_buffer_entity(BufferEntity* entity, const std::string& name, int index = -1);
-	void remove_buffer_entity(unsigned int index);
-	void remove_buffer_entity(const std::string& name);
-	void remove_buffer_entity(BufferEntity* entity);
-
-	const std::vector<BufferEntity*>& get_buffer_entity_list() const;
-	BufferEntity* get_buffer_entity(BufferEntity* entity) const;
-	BufferEntity* get_buffer_entity(unsigned int index) const;
-	const std::string& get_buffer_entity_name(BufferEntity* entity) const;
-	const std::string& get_buffer_entity_name(unsigned int index) const;
-
-
-	BufferEntity* operator[](unsigned int index);
-
-	std::vector<BufferEntity*>::iterator begin();
-	std::vector<BufferEntity*>::iterator end();
-
-	const std::map<std::string, unsigned int>& get_entity_names() const;
-#endif
-
 private:
 	VertexBuffer* m_vbo = nullptr;
 	IndexBuffer* m_ibo = nullptr;
-	std::set<Shader*> m_bound_shaders;			// Shaders, to which we've been the attribute locations of the current VBO (to avoid multiple bounds)
+	std::set<Shader*> m_bound_shaders;			// Shaders, to which we've bound the attribute locations of the current VBO (to avoid multiple bounds)
 };
 
 }

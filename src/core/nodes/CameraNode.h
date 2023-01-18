@@ -6,6 +6,8 @@
 
 #include <string>
 
+USE_RENDER_MANAGER
+
 namespace tse{
 
 

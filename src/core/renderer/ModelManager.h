@@ -4,6 +4,8 @@
 #include "RenderManager.h"
 #include "Model.h"
 #include "VertexArray.h"
+#include "UniformBuffer.h"
+#include "Light.h"
 
 #include <vector>
 #include <map>
@@ -11,11 +13,12 @@
 
 #define IModelManager tse::ModelManager::get_default_model_manager()
 
+USE_RENDER_MANAGER
 
 namespace tse{
 
 
-struct MeshRender;
+//struct MeshRender;
 
 // Manages the models in the world.
 // Should be used to add or remove Models, or to update a Mesh, VertexData, Naterial or Shader of a Model instance.
@@ -47,6 +50,18 @@ public:
 	const DisjointInterval& get_vertex_buffer_interval(VertexMaterial* vm) const;
 	const DisjointInterval& get_index_buffer_interval(VertexMaterial* vm) const;
 
+	const UniformBuffer* get_light_ubo() const{ return m_light_ubo; };
+	// Resizes the light uniform buffer and passes the given data 
+	// TODO: instead of resizing every frame, set a maximum to the nr. of possible lights, make ubo persistent,
+	// pass an integer indicating the number of lights at the front of the uniform, and subdata all lights behind it
+	void resize_light_ubo(GLuint size, const void* data, GLuint offset, GLuint data_size){
+		m_light_ubo->alloc_buffer(size);
+		m_light_ubo->push(data, offset, data_size);
+	}
+	void bind_base_light_ubo(GLuint index){
+		glBindBufferBase(GL_UNIFORM_BUFFER, index, m_light_ubo->get_buffer_id());
+	}
+
 	static ModelManager* get_default_model_manager();
 
 private:
@@ -55,7 +70,7 @@ private:
 	std::unordered_map<Model*, std::set<VertexMaterial*>> m_cur_submeshes = {};	// Currently saved submeshes of the model
 	std::set<VertexMaterial*, VertexMaterial::less> m_world = {};				// Contains all vertex and material information to be rendered in the game world
 
-	VertexArray* m_vao = nullptr;												// Reference to the VAO containing the models
+	VertexArray* m_vao = nullptr;												// VAO containing the models
 	
 	// The following lists follow the spaces in the buffers, which VertexData is assigned at which interval, and where we have empty spaces.
 	// Since we follow the intervals for VertexMaterials, and not for Meshes or Models, we can safely fragment a Mesh to use the entire space of a buffer.
@@ -72,6 +87,8 @@ private:
 
 	GLuint m_expected_max_vertices = 0xFFFFFF;									// Max. vertices expected to be in the world throughout a scene | Default: 2^24 (~16.7mil)
 	GLuint m_expected_max_indices = 0xFFFFFF;									// Max. indices expected to be in the world throughout a scene
+
+	UniformBuffer* m_light_ubo = nullptr;										// UBO holding light structs
 
 	static ModelManager* s_default;												// Default ModelManager 
 
@@ -153,9 +170,20 @@ typedef struct MeshRender : public RenderOperation{
 	virtual void render() override{
 		if(!IModelManager->get_vertex_array()) return;
 
+		// get cameras
 		const std::set<Camera*>& cameras = IRenderManager->get_active_cameras();
 		// no camera -> nothing to capture scene with
 		if(!cameras.size()) return;
+
+		// get light sources
+		const std::set<Light*>& lights = IRenderManager->get_active_lights();
+		// set light ubo
+		std::vector<Light*> l_vec;
+		for(auto l : lights){
+			l_vec.push_back(l);
+		}
+		IModelManager->resize_light_ubo(lights.size() * sizeof(Light), (const void*)l_vec.data(), 0, lights.size() * sizeof(Light));
+		IModelManager->bind_base_light_ubo(0);
 
 		// bind vao
 		IRenderManager->bind(IModelManager->get_vertex_array());
@@ -192,11 +220,13 @@ typedef struct MeshRender : public RenderOperation{
 					vm->material->bind();
 				}
 
-				// if bound new shader, set camera uniform 
+				// if bound new shader, set camera uniform and bind lights
 				if(prev_sh != IRenderManager->get_shader_state()){
 					prev_sh = IRenderManager->get_shader_state();
 					// "activate" camera by setting mvp matrix uniform in current shader
 					prev_sh->set_uniform_mat4f(TSE_DEFAULT_SHADER_MVP_UNIFORM, cam->get_camera_view());
+					// bind lights
+					glUniformBlockBinding(prev_sh->get_program_id(), IModelManager->get_light_ubo()->get_buffer_id(), 0);
 				}
 
 				// render submesh				

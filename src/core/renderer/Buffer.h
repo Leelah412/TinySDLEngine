@@ -118,7 +118,7 @@ public:
 private:
 	VertexAttributeLayout m_layout;
 	GLuint m_size;								// Complete size of the buffer
-	bool m_static;
+	bool m_static;								// True: static buffer, False: dynamic buffer
 };
 
 class IndexBuffer : public Buffer{

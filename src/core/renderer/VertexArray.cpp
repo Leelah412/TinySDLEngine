@@ -36,6 +36,7 @@ void VertexArray::bind_shader(Shader* shader, bool rebind){
 	bind();
 	m_vbo->bind();
 
+	// TODO: hההה wtf am i doing here?!?
 	// Set attributes
 	const VertexAttributeLayout& layout = m_vbo->get_layout();
 	GLuint stride = layout.get_stride();
@@ -80,6 +81,22 @@ void VertexArray::create_vertex_buffer(GLuint size, const VertexAttributeLayout&
 
 void VertexArray::set_vertex_buffer(VertexBuffer* vbo){
 	m_vbo = vbo;
+
+	// Set attributes
+	//const VertexAttributeLayout& layout = m_vbo->get_layout();
+	//GLuint stride = layout.get_stride();
+	//const std::vector<VertexAttribute>& elements = layout.get_elements();
+	//for(GLuint i = 0; i < elements.size(); i++){
+	//	glEnableVertexAttribArray(i);
+	//	glVertexAttribPointer(
+	//		i,
+	//		elements.at(i).count,
+	//		elements.at(i).type,
+	//		elements.at(i).normalized ? GL_TRUE : GL_FALSE,
+	//		stride,
+	//		(const void*)elements.at(i).offset
+	//	);
+	//}
 
 	// Rebind VBO attribs. to shaders
 	for(auto sh : m_bound_shaders){

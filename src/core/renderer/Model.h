@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "math/Interval.h"
 #include "VertexMaterial.h"
+#include "defaults.h"
 
 #include <vector>
 #include <map>
@@ -12,9 +13,6 @@
 
 
 namespace tse{
-
-template<typename T>
-using Ref = std::reference_wrapper<T>;
 
 class Model{
 
