@@ -178,12 +178,24 @@ typedef struct MeshRender : public RenderOperation{
 		// get light sources
 		const std::set<Light*>& lights = IRenderManager->get_active_lights();
 		// set light ubo
-		std::vector<Light*> l_vec;
+		int sizeoflight = lights.size() * sizeof(Light);
+		//float* data = new float[sizeoflight / 4];
+		//int i = 0;
+		std::vector<Light> l_vec;
 		for(auto l : lights){
-			l_vec.push_back(l);
+			l_vec.push_back(*l);
+			//std::memcpy(&data[i * sizeof(Light) / 4 + 0], &l->direction, 16);
+			//std::memcpy(&data[i * sizeof(Light) / 4 + 4], &l->ambient, 12);
+			//std::memcpy(&data[i * sizeof(Light) / 4 + 7], &l->diffuse, 12);
+			//std::memcpy(&data[i * sizeof(Light) / 4 + 10], &l->specular, 12);
+			//std::memcpy(&data[i * sizeof(Light) / 4 + 13], &l->constant, 4);
+			//std::memcpy(&data[i * sizeof(Light) / 4 + 14], &l->linear, 4);
+			//std::memcpy(&data[i * sizeof(Light) / 4 + 15], &l->quadratic, 4);
+			//i++;
 		}
-		IModelManager->resize_light_ubo(lights.size() * sizeof(Light), (const void*)l_vec.data(), 0, lights.size() * sizeof(Light));
+		IModelManager->resize_light_ubo(sizeoflight, (const void*)l_vec.data(), 0, sizeoflight);
 		IModelManager->bind_base_light_ubo(0);
+		//delete[] data;
 
 		// bind vao
 		IRenderManager->bind(IModelManager->get_vertex_array());

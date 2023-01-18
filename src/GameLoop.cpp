@@ -435,7 +435,7 @@ bool GameLoop::init_gl(){
 	INodeTree->get_root_node()->add_child(parent);
 	
 	Light light = Light();
-	light.ambient = glm::vec3(0.8, 0.2, 0.5);
+	light.ambient = glm::vec3(0.4);
 	LightNode* lightnode = new LightNode(light);
 	lightnode->turn_on();
 	INodeTree->get_root_node()->add_child(lightnode);
