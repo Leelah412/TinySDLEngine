@@ -436,9 +436,9 @@ bool GameLoop::init_gl(){
 	
 	Light light = Light();
 	light.direction = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	light.ambient = glm::vec3(0.4);
-	light.diffuse = glm::vec3(0.1);
-	light.specular = glm::vec3(1.0, 0.09, 0.032);
+	light.ambient = glm::vec4(0.4);
+	light.diffuse = glm::vec4(0.2);
+	light.specular = glm::vec4(0.4);
 	light.constant = 1.0f;
 	light.linear = 0.09f;
 	light.quadratic = 0.032f;

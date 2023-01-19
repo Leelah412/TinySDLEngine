@@ -179,24 +179,12 @@ typedef struct MeshRender : public RenderOperation{
 		const std::set<Light*>& lights = IRenderManager->get_active_lights();
 		// set light ubo
 		int sizeoflight = lights.size() * sizeof(Light);
-		float* data = new float[sizeoflight / 4];
-		int i = 0;
 		std::vector<Light> l_vec;
 		for(auto l : lights){
-			//l_vec.push_back(*l);
-			std::memcpy(&data[i * sizeof(Light) / 4 + 0], &l->direction, 16);
-			std::memcpy(&data[i * sizeof(Light) / 4 + 4], &l->ambient, 12);
-			std::memcpy(&data[i * sizeof(Light) / 4 + 7], &l->diffuse, 12);
-			std::memcpy(&data[i * sizeof(Light) / 4 + 10], &l->specular, 12);
-			std::memcpy(&data[i * sizeof(Light) / 4 + 13], &l->constant, 4);
-			std::memcpy(&data[i * sizeof(Light) / 4 + 14], &l->linear, 4);
-			std::memcpy(&data[i * sizeof(Light) / 4 + 15], &l->quadratic, 4);
-			i++;
+			l_vec.push_back(*l);
 		}
-		//IModelManager->resize_light_ubo(sizeoflight, (const void*)l_vec.data(), 0, sizeoflight);
-		IModelManager->resize_light_ubo(sizeoflight, (const void*)data, 0, sizeoflight);
+		IModelManager->resize_light_ubo(sizeoflight, (const void*)l_vec.data(), 0, sizeoflight);
 		IModelManager->bind_base_light_ubo(0);
-		delete[] data;
 
 		// bind vao
 		IRenderManager->bind(IModelManager->get_vertex_array());
@@ -238,6 +226,7 @@ typedef struct MeshRender : public RenderOperation{
 					prev_sh = IRenderManager->get_shader_state();
 					// "activate" camera by setting mvp matrix uniform in current shader
 					prev_sh->set_uniform_mat4f(TSE_DEFAULT_SHADER_MVP_UNIFORM, cam->get_camera_view());
+					//prev_sh->set_uniform_4f("u_view_pos", cam->get_position().x, cam->get_position().y, cam->get_position().z, 0.0f);
 					// bind lights
 					glUniformBlockBinding(prev_sh->get_program_id(), IModelManager->get_light_ubo()->get_buffer_id(), 0);
 				}

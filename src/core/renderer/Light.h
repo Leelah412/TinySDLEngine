@@ -10,13 +10,14 @@ struct Light{
     // w = 1.0: position vector
     glm::vec4 direction;
 
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
+    glm::vec4 ambient;
+    glm::vec4 diffuse;
+    glm::vec4 specular;
 
     float constant = 1.0;
     float linear;
     float quadratic;
+    float dummy = 0.0;
 };
 
 }
