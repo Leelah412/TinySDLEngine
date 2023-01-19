@@ -183,17 +183,13 @@ const glm::vec3& Node::get_global_position() const{
 void Node::update_global_position(){
 	glm::vec3 p;
 	if(m_parent == NULL){
-		p.x = 0;
-		p.y = 0;
-		p.z = 0;
+		p = glm::vec3(0.0f);
 	}
 	else{
 		p = m_parent->m_global_position;
 	}
 	// set global position to parent global position + new relative position
-	m_global_position.x = p.x + m_position.x;
-	m_global_position.y = p.y + m_position.y;
-	m_global_position.z = p.z + m_position.z;
+	m_global_position = p + m_position;
 	// update global positions of all children, too
 	for(auto ch : m_children){
 		ch->update_global_position();
@@ -227,21 +223,21 @@ void Node::update_global_scale(){
 	}
 }
 
-float Node::get_rotation() const{
+glm::vec3 Node::get_rotation() const{
 	return m_rotation;
 }
-void Node::set_rotation(float rotation){
+void Node::set_rotation(glm::vec3 rotation){
 	// make sure the rotations are in (-360, 360)
-	m_rotation = rotation - ( int(rotation / 360) * 360 );
+	m_rotation = rotation - glm::vec3( glm::ivec3(rotation / 360.0f) * 360 );
 	update_global_rotation();
 }
-float Node::get_global_rotation() const{
+glm::vec3 Node::get_global_rotation() const{
 	return m_global_rotation;
 }
 void Node::update_global_rotation(){
-	float p = m_parent ? m_parent->m_rotation : 0;
-	float gl = p + m_rotation;
-	m_global_rotation = gl - (int(gl / 360) * 360);
+	glm::vec3 p = m_parent ? m_parent->m_rotation : glm::vec3();
+	glm::vec3 gl = p + m_rotation;
+	m_global_rotation = gl - glm::vec3(glm::ivec3(gl / 360.0f) * 360);
 	for(auto ch : m_children){
 		ch->update_global_rotation();
 	}
@@ -303,7 +299,7 @@ void Node::switch_parent(Node* parent, bool keep_gl_pos, bool keep_gl_rot, bool 
 	if(!parent) return;
 	// if keeping dimensions, save current global positions in tmp. vars
 	glm::vec3 pos = get_global_position();
-	float rot = get_global_rotation();
+	glm::vec3 rot = get_global_rotation();
 	float scale = get_global_scale();
 
 	set_parent(parent);

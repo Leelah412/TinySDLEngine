@@ -114,9 +114,10 @@ public:
 	virtual float get_global_scale() const;
 	virtual void update_global_scale();
 
-	virtual float get_rotation() const;
-	virtual void set_rotation(float rotation);
-	virtual float get_global_rotation() const;
+	// X: Pitch, Y: Yaw, Z: Roll
+	virtual glm::vec3 get_rotation() const;
+	virtual void set_rotation(glm::vec3 rotation);
+	virtual glm::vec3 get_global_rotation() const;
 	virtual void update_global_rotation();
 
 	uint64_t get_ID() const;
@@ -145,7 +146,7 @@ private:
 	static std::set<std::string> m_used_unique_names;			// set of unique names already in use to avoid duplicats
 
 	uint64_t m_ID;
-	std::string m_unique_name;								// unique name for direct access
+	std::string m_unique_name;									// unique name for direct access
 
 	Node* m_parent;
 	std::vector<Node*> m_children;
@@ -154,14 +155,14 @@ private:
 	// since with each relative change, the global dimensions also need to be altered,
 	// and the calculations for them are done inside the setters!
 
-	glm::vec3 m_position = glm::vec3();					// the position of the object relative to the parent
-	float m_scale = 1;									// scale the object by the given amount
-	float m_rotation = 0;								// rotate the object by the given amount (in deg)
+	glm::vec3 m_position = glm::vec3();							// Position of the node relative to parent
+	float m_scale = 1;											// TODO: implement 3D scale Scale of the node relative to parent
+	glm::vec3 m_rotation = glm::vec3();							// X: Pitch, Y: Yaw, Z: Roll
 
 	// global versions relative to immovable root element
 	glm::vec3 m_global_position = glm::vec3();
-	float m_global_scale = 1;
-	float m_global_rotation = 0;
+	float m_global_scale = 1;									// TODO: implement 3D scale
+	glm::vec3 m_global_rotation = glm::vec3();					// X: Pitch, Y: Yaw, Z: Roll
 };
 
 

@@ -6,8 +6,7 @@
 namespace tse{
 
 struct Light{
-    // w = 0.0: direction vector
-    // w = 1.0: position vector
+    glm::vec4 position;
     glm::vec4 direction;
 
     glm::vec4 ambient;

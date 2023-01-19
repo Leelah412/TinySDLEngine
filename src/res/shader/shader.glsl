@@ -31,10 +31,10 @@ in vec3 v_normal;
 //uniform vec4 u_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform sampler2D u_texture;
 uniform mat4 U_VIEW;
-//uniform vec4 u_view_pos;
+uniform vec4 u_view_pos;
 
 struct Light{
-
+    vec4 position;
     vec4 direction;
   
     vec4 ambient;
@@ -59,14 +59,14 @@ void main(){
         
     // diffuse 
     vec3 norm = normalize(v_normal);
-    vec3 lightDir;
+    vec3 lightDir = normalize(u_light[0].position.xyz - v_position);
     
-    if(u_light[0].direction.w == 0.0){
-        lightDir = normalize(-u_light[0].direction.xyz);
-    }
-    else{
-        lightDir = normalize(u_light[0].direction.xyz - v_position);
-    }
+    //if(u_light[0].direction.w == 0.0){
+    //    lightDir = normalize(-u_light[0].direction.xyz);
+    //}
+    //else{
+    //    lightDir = normalize(u_light[0].direction.xyz - v_position);
+    //}
     
     float diff = max(dot(norm, lightDir), 0.0);
     // TODO: when implementing materials, use this
@@ -74,13 +74,12 @@ void main(){
     vec3 dfs = u_light[0].diffuse.rgb * diff;
     //
     // specular
-    //vec3 viewPos = vec3(U_VIEW[3][0], U_VIEW[3][1], U_VIEW[3][2]);
-    vec3 viewPos = vec3(-2.0f, 2.0f, 0.0f);
-    vec3 viewDir = normalize(viewPos - v_position);
+    //vec3 viewPos = vec3(-2.0f, 2.0f, 0.0f);
+    vec3 viewDir = normalize(u_view_pos.xyz - v_position);
     vec3 reflectDir = reflect(-lightDir, norm);  
     //float spec = pow(max(dot(vec3(U_VIEW.m03, U_VIEW.m13, U_VIEW.m23), reflectDir), 0.0), material.shininess);
     //vec3 specular = u_light[0].specular * spec * texture(material.specular, TexCoords).rgb;  
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 256);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 64);
     vec3 specular = u_light[0].specular.rgb * spec; 
     
     // spotlight (soft edges)
@@ -99,7 +98,7 @@ void main(){
     dfs *= attenuation;
     specular *= attenuation;   
     //    
-    vec3 result = amb + dfs /*+ specular*/;
+    vec3 result = amb + dfs + specular;
     //FragColor = vec4(result, 1.0);
 
 

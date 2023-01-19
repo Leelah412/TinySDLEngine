@@ -86,11 +86,12 @@ void FirstPersonCamera::update(const time_t& delta){
 	float z_factor = sec * (m_down - m_up) * speed;
 	float y_factor = sec * (m_out - m_in) * speed;
 
-
 	// ROTATION
 
-	m_camera->set_yaw(m_camera->get_yaw() + m_angle_x);
-	m_camera->set_pitch(m_camera->get_pitch() + m_angle_y);
+	// calc new relative rotation by adding difference between new and old rotation to curretn relative rotation
+	// we do NOT want to set the rotation of the camera with its own functions, instead use "set_rotation", such that node and all its childrens rotations get updated
+	glm::vec3 l_rot = glm::vec3(get_rotation().x + m_angle_y, get_rotation().y + m_angle_x, 0);
+	set_rotation(l_rot);
 	m_angle_x = 0;
 	m_angle_y = 0;
 
@@ -127,15 +128,16 @@ void FirstPersonCamera::update(const time_t& delta){
 	// multiply z factor by forwards vector, if we don't want to "lift up"
 	// otherwise multiply by front vector
 	glm::vec3 pos = get_global_position();
-	//pos -= forwards * z_factor;				// move in direction of view (2D)
-	pos -= forwards_alt * z_factor /*y_factor*/;			// move in direction of view (3D)
+	//pos -= forwards * z_factor;							// move in direction of view (2D)
+	pos -= forwards_alt * z_factor ;						// move in direction of view (3D)
 	pos -= glm::normalize(glm::cross(front, up)) * x_factor;
 	// pos is now, what new global position of node and cam should be
 	// we want to add the difference between the new and the old global positions to the relative position
 	pos = get_position() + pos - get_global_position();
 	set_position(pos);
+	glm::mat4 look_at = glm::lookAt(pos, pos + front, up);
 
-	m_camera->set_view_matrix(glm::lookAt(pos, pos + front, up));
+	m_camera->set_view_matrix(look_at);
 }
 
 

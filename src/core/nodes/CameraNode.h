@@ -24,6 +24,7 @@ public:
 
 	// Update camera position anytime global position is updated
 	virtual void update_global_position() override;
+	virtual void update_global_rotation() override;
 
 	Camera* get_camera() const;
 	virtual void set_camera(Camera* camera);

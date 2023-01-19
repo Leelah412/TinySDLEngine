@@ -228,6 +228,9 @@ typedef struct MeshRender : public RenderOperation{
 					prev_sh->set_uniform_mat4f(TSE_DEFAULT_SHADER_MVP_UNIFORM, cam->get_camera_view());
 					//prev_sh->set_uniform_4f("u_view_pos", cam->get_position().x, cam->get_position().y, cam->get_position().z, 0.0f);
 					// bind lights
+					glm::mat4 cam_view = cam->get_camera_view();
+					glm::vec3 cam_pos = cam->get_position();
+					prev_sh->set_uniform_4f("u_view_pos", cam_pos.x, cam_pos.y, cam_pos.z, 0.0f);
 					glUniformBlockBinding(prev_sh->get_program_id(), IModelManager->get_light_ubo()->get_buffer_id(), 0);
 				}
 

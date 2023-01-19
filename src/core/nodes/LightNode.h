@@ -21,6 +21,7 @@ public:
 	virtual void set_light(const Light& light);
 
 	virtual void update_global_position() override;
+	virtual void update_global_rotation() override;
 
 	// Turn the light on
 	virtual void turn_on();

@@ -435,6 +435,7 @@ bool GameLoop::init_gl(){
 	INodeTree->get_root_node()->add_child(camnode);
 	
 	Light light = Light();
+	light.position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	light.direction = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	light.ambient = glm::vec4(0.4);
 	light.diffuse = glm::vec4(0.2);

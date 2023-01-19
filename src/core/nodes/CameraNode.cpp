@@ -24,6 +24,15 @@ void CameraNode::update_global_position(){
 	m_camera->set_position(get_global_position());
 }
 
+void CameraNode::update_global_rotation(){
+	Node::update_global_rotation();
+	if(!m_camera) return;
+	glm::vec3 rot = get_global_rotation();
+	m_camera->set_pitch(rot.x);
+	m_camera->set_yaw(rot.y);
+	m_camera->set_roll(rot.z);
+}
+
 Camera* CameraNode::get_camera() const{
 	return m_camera;
 }
