@@ -130,6 +130,9 @@ void FirstPersonCamera::update(const time_t& delta){
 	//pos -= forwards * z_factor;				// move in direction of view (2D)
 	pos -= forwards_alt * z_factor /*y_factor*/;			// move in direction of view (3D)
 	pos -= glm::normalize(glm::cross(front, up)) * x_factor;
+	// pos is now, what new global position of node and cam should be
+	// we want to add the difference between the new and the old global positions to the relative position
+	pos = get_position() + pos - get_global_position();
 	set_position(pos);
 
 	m_camera->set_view_matrix(glm::lookAt(pos, pos + front, up));

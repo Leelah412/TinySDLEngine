@@ -193,7 +193,7 @@ void Node::update_global_position(){
 	// set global position to parent global position + new relative position
 	m_global_position.x = p.x + m_position.x;
 	m_global_position.y = p.y + m_position.y;
-	m_global_position.z = p.y + m_position.z;
+	m_global_position.z = p.z + m_position.z;
 	// update global positions of all children, too
 	for(auto ch : m_children){
 		ch->update_global_position();

@@ -32,6 +32,20 @@ in vec3 v_normal;
 uniform sampler2D u_texture;
 uniform mat4 U_VIEW;
 
+//struct Light{
+//
+//    vec4 direction;
+//  
+//    vec3 ambient;
+//    vec3 diffuse;
+//    vec3 specular;
+//	
+//	float constant;
+//    float linear;
+//    float quadratic;
+//};
+//layout(std140, binding = 0) uniform Light u_light;
+
 layout(std140, binding = 0) uniform Light{
     vec4 direction;
   
@@ -42,29 +56,29 @@ layout(std140, binding = 0) uniform Light{
 	float constant;
     float linear;
     float quadratic;
-};
+} u_light;
 
 void main(){
 	//vec3 lightDir = normalize(-light.direction);
 
 	vec4 tex_color = texture(u_texture, v_tex_coord);
-	vec3 amb = ambient * tex_color.rgb;
+	vec3 amb = u_light.ambient * tex_color.rgb;
         
     // diffuse 
     vec3 norm = normalize(v_normal);
     vec3 lightDir;
     
-    if(direction.w == 0.0){
-        lightDir = normalize(-direction.xyz);
+    if(u_light.direction.w == 0.0){
+        lightDir = normalize(-u_light.direction.xyz);
     }
     else{
-        lightDir = normalize(direction.xyz - v_position);
+        lightDir = normalize(u_light.direction.xyz - v_position);
     }
     
     float diff = max(dot(norm, lightDir), 0.0);
     // TODO: when implementing materials, use this
     //vec3 diffuse = light.diffuse * diff * texture(material.diffuse, TexCoords).rgb; 
-    vec3 dfs = diffuse * diff;  
+    vec3 dfs = u_light.diffuse * diff;  
     //
     //// specular
     //vec3 viewDir = normalize(U_VIEW - v_position);
@@ -81,8 +95,8 @@ void main(){
     
     // attenuation
     float dist    = length(lightDir - v_position);
-    //float attenuation = 1.0 / (constant + linear * dist + quadratic * (dist * dist));  
-    float attenuation = 1.0 / (specular.x + specular.y * dist + specular.z * (dist * dist));    
+    //float attenuation = 1.0 / (u_light.constant + u_light.linear * dist + u_light.quadratic * (dist * dist));  
+    float attenuation = 1.0 / (u_light.specular.x + u_light.specular.y * dist + u_light.specular.z * (dist * dist));    
     amb *= attenuation; 
     dfs *= attenuation;
     //specular *= attenuation;   
