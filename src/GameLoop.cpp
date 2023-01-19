@@ -429,16 +429,22 @@ bool GameLoop::init_gl(){
 	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);
 	
 	camnode->set_unique_name("fps_camera");
-	parent->add_child(camnode);
 	camnode->set_position(glm::vec3(-2.0f, 2.0f, 0.0f));
 	camnode->get_camera()->set_pitch(45.0f);
 	INodeTree->get_root_node()->add_child(parent);
+	INodeTree->get_root_node()->add_child(camnode);
 	
 	Light light = Light();
+	light.direction = glm::vec4(-4.0f, 4.0f, 0.0f, 1.0f);
 	light.ambient = glm::vec3(0.4);
+	light.diffuse = glm::vec3(0.1);
+	light.specular = glm::vec3(1.0, 0.09, 0.032);
+	light.constant = 1.0f;
+	light.linear = 0.09f;
+	light.quadratic = 0.032f;
 	LightNode* lightnode = new LightNode(light);
 	lightnode->turn_on();
-	INodeTree->get_root_node()->add_child(lightnode);
+	camnode->add_child(lightnode);
 	
 	// render on screen using camera of camnode
 	camnode->activate_camera();

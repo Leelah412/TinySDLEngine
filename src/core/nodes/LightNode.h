@@ -20,6 +20,8 @@ public:
 	virtual void set_light(Light* light);
 	virtual void set_light(const Light& light);
 
+	virtual void update_global_position() override;
+
 	// Turn the light on
 	virtual void turn_on();
 	// Turn the light off

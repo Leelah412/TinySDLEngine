@@ -126,11 +126,11 @@ void FirstPersonCamera::update(const time_t& delta){
 
 	// multiply z factor by forwards vector, if we don't want to "lift up"
 	// otherwise multiply by front vector
-	glm::vec3 pos = m_camera->get_position();
+	glm::vec3 pos = get_global_position();
 	//pos -= forwards * z_factor;				// move in direction of view (2D)
 	pos -= forwards_alt * z_factor /*y_factor*/;			// move in direction of view (3D)
 	pos -= glm::normalize(glm::cross(front, up)) * x_factor;
-	m_camera->set_position(pos);
+	set_position(pos);
 
 	m_camera->set_view_matrix(glm::lookAt(pos, pos + front, up));
 }

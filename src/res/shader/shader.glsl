@@ -5,7 +5,7 @@ layout(location = 0) in vec4 position;
 layout(location = 1) in vec2 tex_coord;
 layout(location = 2) in vec3 normal;
 
-out vec4 v_position;
+out vec3 v_position;
 out vec2 v_tex_coord;
 out vec3 v_normal;
 
@@ -13,7 +13,7 @@ uniform mat4 U_VIEW;
 
 void main(){
 	gl_Position = U_VIEW * position;
-	v_position = position;
+	v_position = position.xyz;
     v_tex_coord = tex_coord;
 	v_normal = normal;
 };
@@ -24,7 +24,7 @@ void main(){
 
 layout(location = 0) out vec4 color;
 
-in vec4 v_position;
+in vec3 v_position;
 in vec2 v_tex_coord;
 in vec3 v_normal;
 
@@ -33,7 +33,7 @@ uniform sampler2D u_texture;
 uniform mat4 U_VIEW;
 
 layout(std140, binding = 0) uniform Light{
-    vec3 direction;
+    vec4 direction;
   
     vec3 ambient;
     vec3 diffuse;
@@ -51,20 +51,20 @@ void main(){
 	vec3 amb = ambient * tex_color.rgb;
         
     // diffuse 
-    //vec3 norm = normalize(v_normal);
-    //vec3 lightDir;
-    //
-    //if(direction.w == 0.0){
-    //    lightDir = normalize(-light.direction)
-    //}
-    //else{
-    //    lightDir = normalize(light.position - v_position);
-    //}
-    //
-    //float diff = max(dot(norm, lightDir), 0.0);
-    //// TODO: when implementing materials, use this
-    ////vec3 diffuse = light.diffuse * diff * texture(material.diffuse, TexCoords).rgb; 
-    //vec3 dfs = diffuse * diff;  
+    vec3 norm = normalize(v_normal);
+    vec3 lightDir;
+    
+    if(direction.w == 0.0){
+        lightDir = normalize(-direction.xyz);
+    }
+    else{
+        lightDir = normalize(direction.xyz - v_position);
+    }
+    
+    float diff = max(dot(norm, lightDir), 0.0);
+    // TODO: when implementing materials, use this
+    //vec3 diffuse = light.diffuse * diff * texture(material.diffuse, TexCoords).rgb; 
+    vec3 dfs = diffuse * diff;  
     //
     //// specular
     //vec3 viewDir = normalize(U_VIEW - v_position);
@@ -72,24 +72,25 @@ void main(){
     //float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     //vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;  
     //
-    //// spotlight (soft edges)
+    // spotlight (soft edges)
     //float theta = dot(lightDir, normalize(-light.direction)); 
     //float epsilon = (light.cutOff - light.outerCutOff);
     //float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
     //diffuse  *= intensity;
     //specular *= intensity;
-    //
-    //// attenuation
-    //float distance    = length(position - FragPos);
-    //float attenuation = 1.0 / (constant + linear * distance + quadratic * (distance * distance));    
-    //ambient  *= attenuation; 
-    //diffuse   *= attenuation;
+    
+    // attenuation
+    float dist    = length(lightDir - v_position);
+    //float attenuation = 1.0 / (constant + linear * dist + quadratic * (dist * dist));  
+    float attenuation = 1.0 / (specular.x + specular.y * dist + specular.z * (dist * dist));    
+    amb *= attenuation; 
+    dfs *= attenuation;
     //specular *= attenuation;   
     //    
-    //vec3 result = ambient + diffuse + specular;
+    vec3 result = amb + dfs /*+ specular*/;
     //FragColor = vec4(result, 1.0);
 
 
-   	color = vec4(amb, 1.0);
+   	color = vec4(result, 1.0);
 	//color = tex_color * u_color;
 };
