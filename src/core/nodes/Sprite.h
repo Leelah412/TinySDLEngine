@@ -7,9 +7,12 @@
 
 typedef enum class __SPRITE_ORIGIN__ {TOP_LEFT, TOP, TOP_RIGHT, LEFT, CENTER, RIGHT, BOTTOM_LEFT, BOTTOM, BOTTOM_RIGHT} SPRITE_ORIGIN;
 
+REGISTER_NODE(Sprite)
+
 class Sprite : public Node{
 
 public:
+	Sprite();
 	Sprite(SDL_Texture* sprite, SPRITE_ORIGIN origin = SPRITE_ORIGIN::TOP_LEFT, float origin_distance_x = 0, float origin_distance_y = 0);
 	Sprite(std::string path, SPRITE_ORIGIN origin = SPRITE_ORIGIN::TOP_LEFT, float origin_distance_x = 0, float origin_distance_y = 0);
 	virtual ~Sprite();

@@ -9,6 +9,8 @@ USE_RENDER_MANAGER
 
 namespace tse{
 
+REGISTER_NODE(LightNode)
+
 class LightNode : public Node{
 
 public:

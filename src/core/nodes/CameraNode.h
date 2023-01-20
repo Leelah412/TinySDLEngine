@@ -10,6 +10,7 @@ USE_RENDER_MANAGER
 
 namespace tse{
 
+REGISTER_NODE(CameraNode)
 
 class CameraNode : public Node{
 

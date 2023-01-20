@@ -37,6 +37,7 @@
     <ClCompile Include="src\core\renderer\VertexArray.cpp" />
     <ClCompile Include="src\core\renderer\VertexMaterial.cpp" />
     <ClCompile Include="src\core\ResourceManager.cpp" />
+    <ClCompile Include="src\core\SceneLoader.cpp" />
     <ClCompile Include="src\core\SDLData.cpp" />
     <ClCompile Include="src\core\world\collision\CollisionHandler.cpp" />
     <ClCompile Include="src\core\world\shapes\CollisionBox.cpp" />
@@ -52,7 +53,7 @@
     <ClCompile Include="src\core\nodes\Node.cpp" />
     <ClCompile Include="src\core\nodes\PhysicsObject.cpp" />
     <ClCompile Include="src\core\nodes\Sprite.cpp" />
-    <ClCompile Include="src\Object.cpp" />
+    <ClCompile Include="src\util\Object.cpp" />
     <ClCompile Include="src\util\BMPReader.cpp" />
     <ClCompile Include="src\util\glm\detail\glm.cpp" />
     <ClCompile Include="src\util\imgui\imgui.cpp" />
@@ -69,6 +70,7 @@
     <ClInclude Include="src\core\nodes\LightNode.h" />
     <ClInclude Include="src\core\renderer\Light.h" />
     <ClInclude Include="src\core\renderer\UniformBuffer.h" />
+    <ClInclude Include="src\core\SceneLoader.h" />
     <ClInclude Include="src\core\world\collision\CollisionHandler.h" />
     <ClInclude Include="src\core\world\collision\CollisionObject.h" />
     <ClInclude Include="src\core\world\Grid.h" />
@@ -97,6 +99,8 @@
     <ClInclude Include="src\core\ResourceManager.h" />
     <ClInclude Include="src\core\Window.h" />
     <ClInclude Include="src\core\SDLData.h" />
+    <ClInclude Include="src\util\JSONObject.h" />
+    <ClInclude Include="src\util\json\single_include\nlohmann\json.hpp" />
     <ClInclude Include="src\util\SDLEventManager.h" />
     <ClInclude Include="src\GameLoop.h" />
     <ClInclude Include="src\core\nodes\CameraNode.h" />
@@ -106,7 +110,7 @@
     <ClInclude Include="src\core\nodes\Node.h" />
     <ClInclude Include="src\core\nodes\PhysicsObject.h" />
     <ClInclude Include="src\core\nodes\Sprite.h" />
-    <ClInclude Include="src\Object.h" />
+    <ClInclude Include="src\util\Object.h" />
     <ClInclude Include="src\util\BMPReader.h" />
     <ClInclude Include="src\math\Vector.h" />
     <ClInclude Include="src\util\glm\common.hpp" />

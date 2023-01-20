@@ -4,6 +4,9 @@
 #include <nodes/Node.h>
 #include <world/shapes/collision_shapes.h>
 
+
+REGISTER_NODE(PhysicsObject)
+
 class PhysicsObject : public Node{
 
 public:

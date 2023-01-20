@@ -92,6 +92,10 @@ NodeTree* default_node_tree = nullptr;
 
 // Node
 
+//tse::RegisterNode<Node> Node::s_reg_node("Node");
+//static tse::RegisterNode<Node> s_reg_node("Node");
+
+//REGISTER_NODE(Node)
 
 uint64_t Node::m_node_count = 0;
 std::set<std::string> Node::m_used_unique_names = {};
@@ -230,6 +234,18 @@ void Node::set_rotation(glm::vec3 rotation){
 	// make sure the rotations are in (-360, 360)
 	m_rotation = rotation - glm::vec3( glm::ivec3(rotation / 360.0f) * 360 );
 	update_global_rotation();
+}
+void Node::set_rotation(float pitch, float yaw, float roll){
+	set_rotation(glm::vec3(pitch, yaw, roll));
+}
+void Node::set_pitch(float pitch){
+	set_rotation(pitch, m_rotation.y, m_rotation.z);
+}
+void Node::set_yaw(float yaw){
+	set_rotation(m_rotation.x, yaw, m_rotation.z);
+}
+void Node::set_roll(float roll){
+	set_rotation(m_rotation.x, m_rotation.y, roll);
 }
 glm::vec3 Node::get_global_rotation() const{
 	return m_global_rotation;
@@ -384,4 +400,12 @@ std::vector<Node*> Node::get_all_children_of_class(const std::string& class_name
 	}
 
 	return vec;
+}
+
+tse::JSON Node::save(){
+	return tse::JSON();
+}
+
+void Node::load(const tse::JSON& data){
+
 }

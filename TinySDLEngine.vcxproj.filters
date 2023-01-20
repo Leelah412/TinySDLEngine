@@ -21,7 +21,7 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\Object.cpp">
+    <ClCompile Include="src\util\Object.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="src\util\BMPReader.cpp">
@@ -150,12 +150,15 @@
     <ClCompile Include="src\core\nodes\LightNode.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\SceneLoader.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GameLoop.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="src\Object.h">
+    <ClInclude Include="src\util\Object.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="src\util\BMPReader.h">
@@ -1173,6 +1176,15 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="src\core\nodes\LightNode.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\SceneLoader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\JSONObject.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\json\single_include\nlohmann\json.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

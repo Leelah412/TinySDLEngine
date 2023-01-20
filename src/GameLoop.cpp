@@ -422,7 +422,7 @@ bool GameLoop::init_gl(){
 	def_mat->set_texture("u_texture", new Texture("src/res/textures/example.PNG"));
 	//Mesh* mesh = new Mesh((const void*)vertices, sizeof(vertices), indices);
 	//Model* model = new Model(mesh);
-	Model* model = new Model("src/res/mesh/untitled.obj");
+	Model* model = new Model("src/res/mesh/Prop_Boat_1.obj");
 	model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
 
 	ModelNode* parent = new ModelNode(model);
@@ -430,7 +430,7 @@ bool GameLoop::init_gl(){
 	
 	camnode->set_unique_name("fps_camera");
 	camnode->set_position(glm::vec3(-2.0f, 2.0f, 0.0f));
-	camnode->get_camera()->set_pitch(45.0f);
+	camnode->set_pitch(45.0f);
 	INodeTree->get_root_node()->add_child(parent);
 	INodeTree->get_root_node()->add_child(camnode);
 	

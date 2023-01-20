@@ -7,6 +7,9 @@
 
 // Physics objects with the ability to move around in the game world
 
+
+REGISTER_NODE(DynamicObject)
+
 class DynamicObject : public PhysicsObject{
 
 public:

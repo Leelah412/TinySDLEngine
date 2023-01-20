@@ -1,5 +1,7 @@
 #include "Sprite.h"
 
+Sprite::Sprite(){}
+
 Sprite::Sprite(SDL_Texture* sprite, SPRITE_ORIGIN origin, float origin_distance_x, float origin_distance_y){
 	m_class = "Sprite";
 	set_unique_name("sprite_" + to_string(get_ID()));

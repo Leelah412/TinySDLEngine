@@ -52,21 +52,12 @@ layout(std140, binding = 0) uniform LightBlock{
 };
 
 void main(){
-	//vec3 lightDir = normalize(-light.direction);
-
 	vec4 tex_color = texture(u_texture, v_tex_coord);
 	vec3 amb = u_light[0].ambient.rgb * tex_color.rgb;
         
     // diffuse 
     vec3 norm = normalize(v_normal);
     vec3 lightDir = normalize(u_light[0].position.xyz - v_position);
-    
-    //if(u_light[0].direction.w == 0.0){
-    //    lightDir = normalize(-u_light[0].direction.xyz);
-    //}
-    //else{
-    //    lightDir = normalize(u_light[0].direction.xyz - v_position);
-    //}
     
     float diff = max(dot(norm, lightDir), 0.0);
     // TODO: when implementing materials, use this
@@ -96,11 +87,9 @@ void main(){
     float attenuation = 1.0 / (u_light[0].constant + u_light[0].linear * dist + u_light[0].quadratic * (dist * dist));
     amb *= attenuation; 
     dfs *= attenuation;
-    specular *= attenuation;   
-    //    
-    vec3 result = amb + dfs + specular;
-    //FragColor = vec4(result, 1.0);
+    specular *= attenuation;
 
+    vec3 result = amb + dfs + specular;
 
    	color = vec4(result, 1.0);
 	//color = tex_color * u_color;

@@ -4,6 +4,7 @@
 #include <SDLData.h>
 #include <Object.h>
 #include <renderer/RenderManager.h>
+#include "SceneLoader.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -30,6 +31,7 @@ USE_SDL_DATA
 
 #define USE_DEFAULT_NODE_TREE extern NodeTree* default_node_tree;
 #define INodeTree default_node_tree
+
 
 class Node;
 
@@ -79,8 +81,10 @@ public:
 
 class NodeTree;
 
+REGISTER_NODE(Node)
+
 // Base class for all Node objects
-class Node : public Object{
+class Node : public Object, public tse::JSONObject{
 public:
 
 	Node();
@@ -117,6 +121,10 @@ public:
 	// X: Pitch, Y: Yaw, Z: Roll
 	virtual glm::vec3 get_rotation() const;
 	virtual void set_rotation(glm::vec3 rotation);
+	virtual void set_rotation(float pitch, float yaw, float roll);
+	virtual void set_pitch(float pitch);
+	virtual void set_yaw(float yaw);
+	virtual void set_roll(float roll);
 	virtual glm::vec3 get_global_rotation() const;
 	virtual void update_global_rotation();
 
@@ -131,12 +139,18 @@ public:
 	virtual void switch_parent(Node* parent, bool keep_gl_pos = false, bool keep_gl_rot = false, bool keep_gl_scale = false);
 
 	const std::vector<Node*>& get_children() const;
-	Node* add_child(Node* child);					// add the given object as the child of the current object and return the new child
-	void disown_child(Node* child);					// child object stops being child of current, but still exists
-	void delete_child(Node* child);					// delete the child and its entire existence
+	// Add the given object as the child of the current object and return the new child
+	Node* add_child(Node* child);					
+	// Child object stops being child of current, but still exists
+	void disown_child(Node* child);					
+	// Delete the child and its entire existence
+	void delete_child(Node* child);					
 	void delete_child_by_id(uint64_t id);
 	void remove_all_children();						// deletes all children and their entire existence
 	std::vector<Node*> get_all_children_of_class(const std::string& class_name, bool recursive = false);		// return all children of the given class type
+	
+	virtual tse::JSON save() override;							// Save Node to JSON
+	virtual void load(const tse::JSON& data) override;			// Load Node from JSON data
 
 protected:
 	std::string m_class;										// save class name for limiting the number necessary include directives
@@ -163,6 +177,11 @@ private:
 	glm::vec3 m_global_position = glm::vec3();
 	float m_global_scale = 1;									// TODO: implement 3D scale
 	glm::vec3 m_global_rotation = glm::vec3();					// X: Pitch, Y: Yaw, Z: Roll
+
+	// Use this to register a Node to the SceneLoader
+	// Do this for each class derived from "Node" 
+	//static tse::RegisterNode<Node> s_reg_node;
+
 };
 
 
