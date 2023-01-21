@@ -2,9 +2,10 @@
 
 namespace tse{
 
-// NodeTreeEventManager
 
-//NodeTreeEventManager* nt_event_manager = new NodeTreeEventManager();
+/***************************/
+/* NODE TREE EVENT MANAGER */
+/***************************/
 
 NodeTreeEventManager* NodeTreeEventManager::s_default_ntem = new NodeTreeEventManager();
 
@@ -424,7 +425,6 @@ void Node::load(const JSON& data){
 /* NODE TREE */
 /*************/
 
-//NodeTree* default_node_tree = nullptr;
 NodeTree* NodeTree::s_default_node_tree = nullptr;
 
 NodeTree::NodeTree(Node* root_node){
@@ -451,11 +451,7 @@ void NodeTree::switch_root_node(Node* new_root, bool delete_irrelevant_nodes){
 
 	}
 
-	// Notify listeners of the root switch
-	NODE_TREE_EVENT_EX ex;
-	ex.node = m_root_node;
-	NODE_TREE_EVENT* ev = new NODE_TREE_EVENT("switch_root", m_root_node, ex);
-	emit_signal("switch_root", ev);
+	NTEventManager->switch_root(m_root_node);
 }
 
 NodeTree* NodeTree::get_default_node_tree(){
