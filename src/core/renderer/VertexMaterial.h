@@ -15,7 +15,6 @@ typedef struct VertexMaterial{
 	//DrawSpecification draw_specs;				// TODO: tell the renderer, with which draw command and how this combination should be drawn on the screen
 
 	VertexMaterial(VertexData* vd, Material* m, const std::vector<Uniform>& uc){
-		id = ++id_count;
 		vertex_data = vd;
 		material = m;
 		uniform_changes = uc;
@@ -24,10 +23,21 @@ typedef struct VertexMaterial{
 		*this = vm;
 	}
 
-	unsigned int get_id(){ return id; }
-
 	// Sort by shader, then by material type, then by uniform change count
 	bool operator<(const VertexMaterial& vm) const{
+		// one or both have no materials
+		if(!material){
+			if(!vm.material){
+				// use "vertex_data" pointer to determine (in)equality
+				return vertex_data < vm.vertex_data;
+			}
+			// the null ones will get the default shader -> push them forward!
+			return true;
+		}
+		else if(!vm.material){
+			return false;
+		}
+
 		// compare shaders (more precisely: their pointers)
 		// no need for having a specific shader order (currently), just put them in a bunch
 		if(material->get_shader() != vm.material->get_shader()){
@@ -42,14 +52,32 @@ typedef struct VertexMaterial{
 		// equal materials -> compare uniform change count (least come first)
 		if(uniform_changes.size() != vm.uniform_changes.size()){
 			if(uniform_changes.size() < vm.uniform_changes.size()) return true;
-			return false;
+			// specifically compare uniform changes
+			// O(m*n), but it can be assumed, that there won't be many temporary uniform changes anyway, so it's fine
+			bool found_equivalence;
+			Uniform last_uni, last_vm_uni;
+			for(auto& uni : uniform_changes){
+				found_equivalence = false;
+				for(auto& vm_uni : vm.uniform_changes){
+					if(uni == vm_uni){
+						found_equivalence = true;
+						break;
+					}
+					last_uni = uni;
+					last_vm_uni = vm_uni;
+				}
+				if(!found_equivalence){
+					return last_uni < last_vm_uni;
+				}
+
+			}
 		}
-		// use ID for proof of inequality
-		return id < vm.id;
+
+		// use "vertex_data" pointer to determine (in)equality, in case the previous ones couldn't
+		return vertex_data < vm.vertex_data;
 	}
 
 	void operator=(const VertexMaterial& vm){
-		id = ++id_count;
 		vertex_data = vm.vertex_data;
 		material = vm.material;
 		uniform_changes = vm.uniform_changes;
@@ -64,7 +92,7 @@ typedef struct VertexMaterial{
 
 private:
 	static unsigned int id_count;
-	unsigned int id;
+	//unsigned int id;
 
 } VertexMaterial;
 

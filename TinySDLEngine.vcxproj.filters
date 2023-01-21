@@ -27,9 +27,6 @@
     <ClCompile Include="src\util\BMPReader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\SDLData.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\SDLEventManager.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -164,9 +161,6 @@
     <ClInclude Include="src\util\BMPReader.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\SDLData.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\SDLEventManager.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -185,7 +179,7 @@
     <ClInclude Include="src\math\Vector.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\Window.h">
+    <ClInclude Include="src\core\renderer\Window.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="src\core\renderer\Renderer.h">

@@ -17,10 +17,30 @@ typedef struct Uniform{
 	void* value = nullptr;
 	GLuint value_size = 0;
 
-	bool is_buffer = false;
-	unsigned int buffer_size = 0;
-	bool is_array = false;
-	unsigned int array_size = 0;
+	//bool is_buffer = false;
+	//unsigned int buffer_size = 0;
+	//bool is_array = false;
+	//unsigned int array_size = 0;
+
+	bool operator==(const Uniform& comp) const{
+		if(uniform_type != comp.uniform_type) return false;
+		if(uniform_name != comp.uniform_name) return false;
+		if(value != comp.value) return false;
+		if(value_size != comp.value_size) return false;
+		return true;
+	}
+
+	bool operator<(const Uniform& comp) const{
+		if(uniform_type != comp.uniform_type) return this->uniform_type < comp.uniform_type;
+		if(uniform_name != comp.uniform_name) return this->uniform_name < comp.uniform_name;
+		if(value != comp.value) return this->value < comp.value;
+		if(value_size != comp.value_size) return this->value_size < comp.value_size;
+		return false;
+	}
+
+	bool operator!=(const Uniform& comp) const{
+		return !(*this == comp);
+	}
 };
 
 enum class TEXTURE_TYPE {ALBEDO, NORMAL, METALLIC, ROUGHNESS};

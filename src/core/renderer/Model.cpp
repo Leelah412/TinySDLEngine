@@ -16,7 +16,10 @@ Model::Model(Mesh* mesh, bool unique){
 	set_mesh(mesh, unique);
 }
 
-Model::~Model(){}
+Model::~Model(){
+	m_vertex_materials.clear();
+	std::cout << "Deleting Model" << std::endl;
+}
 
 bool Model::load_mesh(const std::string& path, bool unique){
 	reset_mesh();
@@ -99,8 +102,7 @@ unsigned int Model::get_model_id(){
 void Model::init_vertex_material_list(){
 	for(VertexData* mesh : m_mesh->get_submesh_list()){
 		// TODO: consider passing materials per VD, when loading from file, or use default shader
-		VertexMaterial vm(mesh, nullptr, {});
-		m_vertex_materials.insert(std::pair<VertexData*, VertexMaterial>(mesh, vm));
+		m_vertex_materials.insert(std::pair<VertexData*, VertexMaterial>(mesh, VertexMaterial(mesh, nullptr, {})));
 	}
 }
 

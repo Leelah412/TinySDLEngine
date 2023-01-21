@@ -1,7 +1,6 @@
 #ifndef __NODE_H__
 #define __NODE_H__
 
-#include <SDLData.h>
 #include <Object.h>
 #include <renderer/RenderManager.h>
 #include "types.h"
@@ -16,9 +15,6 @@
 #include <map>
 #include <string>
 #include <algorithm>
-
-
-USE_SDL_DATA
 
 // Event manager for node tree event.
 // Anytime a parent/child is added/switched/deleted, anytime the root object is meant to be switched,

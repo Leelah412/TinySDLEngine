@@ -68,10 +68,6 @@ int GameLoop::init(const char* title, int x, int y){
 	listen_event(SEM_QUIT);
 	listen_event(SEM_KEY_PRESSED, SEM_EVENT_EXT(SDLK_ESCAPE));
 
-	// TODO: remove
-	// Initialize SDL Data 
-	if(!SDL_Data) SDL_Data = new SDLData();
-
 	// Initialize SDL
 	if(SDL_Init(SDL_INIT_VIDEO) < 0){
 		std::cout << SDL_GetError() << std::endl;
@@ -80,9 +76,8 @@ int GameLoop::init(const char* title, int x, int y){
 
 	cout << "SDL initialized" << endl;
 
-	// TODO: replace with "Window" class
-	SDL_Data->set_window(SDL_CreateWindow(title, x, y, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN));
-	if(!SDL_Data->get_window()){
+	m_window = new Window(title, x, y, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+	if(!m_window->get_window()){
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 		SDL_Quit();
 		return 3;
@@ -96,10 +91,9 @@ int GameLoop::init(const char* title, int x, int y){
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-	// TODO: replace with "Window" class
 	// Must create OpenGL context BEFORE initializing glew!!!
-	SDL_Data->set_context(SDL_GL_CreateContext(SDL_Data->get_window()));
-	if(!SDL_Data->get_context()){
+	m_window->create_context();
+	if(!m_window->get_context()){
 		printf("OpenGL Context could not be created! SDL_Error: %s\n", SDL_GetError());
 		SDL_Quit();
 		return 4;
@@ -141,8 +135,8 @@ int GameLoop::init(const char* title, int x, int y){
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
 
-	ImGui_ImplSDL2_InitForOpenGL(SDL_Data->get_window(), SDL_Data->get_context());
-	ImGui_ImplOpenGL3_Init("#version 460");
+	ImGui_ImplSDL2_InitForOpenGL(m_window->get_window(), m_window->get_context());
+	ImGui_ImplOpenGL3_Init("#version 420");
 
 	cout << "ImGui initialized" << endl;
 
@@ -228,7 +222,7 @@ void GameLoop::render(){
 	*/
 
 	// Render OpenGL on SDL Window
-	SDL_GL_SwapWindow(SDL_Data->get_window());	
+	SDL_GL_SwapWindow(m_window->get_window());	
 }
 
 int GameLoop::loop(){
@@ -293,8 +287,9 @@ int GameLoop::quit(){
 	drop_event(SEM_QUIT);
 	drop_event(SEM_KEY_PRESSED);
 
-	//delete SDL_Data;
 	delete ICollisionHandler;
+	delete INodeTree;
+	delete m_window;
 
 	SDL_Quit();
 	
@@ -397,7 +392,7 @@ bool GameLoop::init_gl(){
 	//Mesh* mesh = new Mesh((const void*)vertices, sizeof(vertices), indices);
 	//Model* model = new Model(mesh);
 	Model* model = new Model("src/res/mesh/Prop_Boat_1.obj");
-	model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
+	//model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
 
 	ModelNode* parent = new ModelNode(model);
 	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);

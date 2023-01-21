@@ -1,10 +1,10 @@
 #ifndef __GAME_LOOP_H__
 #define __GAME_LOOP_H__
 
-#include <SDLData.h>
 #include <nodes/Node.h>
 #include <SDLEventManager.h>
 #include <world/collision/CollisionHandler.h>
+#include "renderer/Window.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl.h>
@@ -18,8 +18,6 @@
 USE_EVENT_MANAGER
 USE_RENDERER
 USE_RENDER_MANAGER
-
-extern SDLData* SDL_Data;
 
 class GameLoop : public SEMObject{
 
@@ -69,9 +67,13 @@ private:
 	time_t m_delta = 0;				// Delta between current and previous frame
 	time_t m_pausetime = 0;			// Time at point of pausing the loop
 
+	tse::Window* m_window = nullptr;	// Window, on which the loop runs
+
 	/* OPEN GL (TODO: variables to be refactored into an own renderer class) */
 
 	bool init_gl();
+
+
 
 	Texture* m_texture = nullptr;	// TODO: only temporary solution of course
 

@@ -48,7 +48,7 @@ typedef deque<SDL_Event> SDL_EVENT_LIST;								// List of SDL events
 //																							//
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-typedef enum __SEM_EVENT__ {
+typedef enum SEM_EVENT {
 
 	/* BASIC EVENTS */
 	SEM_QUIT,								// SDL_Quit event
@@ -70,12 +70,12 @@ typedef enum __SEM_EVENT__ {
 	SEM_MOUSE_DOWN,							// Similar to "KEY_DOWN" for mouse buttons
 	SEM_MOUSE_UP,							// Similar to "KEY_UP" for mouse buttons
 
-} SEM_EVENT;
+};
 
 
 // EXTENDED EVENTS
 
-typedef enum __SEM_EVENT_EXT_TYPE__ { SEMEX_NULL = 0, SEMEX_KEYCODE, SEMEX_SCANCODE, SEMEX_MOUSEBUTTON } SEM_EVENT_EXT_TYPE;
+typedef enum SEM_EVENT_EXT_TYPE { SEMEX_NULL = 0, SEMEX_KEYCODE, SEMEX_SCANCODE, SEMEX_MOUSEBUTTON };
 
 // Each variable represents one possible extension at once
 typedef union {
@@ -85,33 +85,33 @@ typedef union {
 } SEM_EVENT_EXT_UNION;
 
 // Event extension struct
-typedef struct __SEM_EVENT_EXT__{
+typedef struct SEM_EVENT_EXT{
 
 	SEM_EVENT_EXT_TYPE type;
 	SEM_EVENT_EXT_UNION event;
 
 	// Default: no event extension
-	__SEM_EVENT_EXT__(){
+	SEM_EVENT_EXT(){
 		type = SEMEX_NULL;
 	}
-	__SEM_EVENT_EXT__(SEM_EVENT_EXT_TYPE _type, SEM_EVENT_EXT_UNION _event){
+	SEM_EVENT_EXT(SEM_EVENT_EXT_TYPE _type, SEM_EVENT_EXT_UNION _event){
 		type = _type;
 		event = _event;
 	}
-	__SEM_EVENT_EXT__(SDL_Keycode _keycode){
+	SEM_EVENT_EXT(SDL_Keycode _keycode){
 		type = SEMEX_KEYCODE;
 		event.keycode = _keycode;
 	}
-	__SEM_EVENT_EXT__(SDL_Scancode _scancode){
+	SEM_EVENT_EXT(SDL_Scancode _scancode){
 		type = SEMEX_SCANCODE;
 		event.scancode = _scancode;
 	}
-	__SEM_EVENT_EXT__(Uint8 _mousebutton){
+	SEM_EVENT_EXT(Uint8 _mousebutton){
 		type = SEMEX_MOUSEBUTTON;
 		event.mousebutton = _mousebutton;
 	}
 
-	bool operator==(const __SEM_EVENT_EXT__& ext){
+	bool operator==(const SEM_EVENT_EXT& ext){
 		if(type != ext.type) return false;
 		if(type == SEMEX_KEYCODE && event.keycode != ext.event.keycode) return false;
 		if(type == SEMEX_SCANCODE && event.scancode != ext.event.scancode) return false;
@@ -119,11 +119,11 @@ typedef struct __SEM_EVENT_EXT__{
 
 		return true;
 	}
-	bool operator!=(const __SEM_EVENT_EXT__& ext){
+	bool operator!=(const SEM_EVENT_EXT& ext){
 		return !(*this == ext);
 	}
 
-	bool operator<(const __SEM_EVENT_EXT__& ext) const{
+	bool operator<(const SEM_EVENT_EXT& ext) const{
 		// Type has highest priority
 		if(type != ext.type) return type < ext.type;
 		switch(type){
@@ -135,7 +135,7 @@ typedef struct __SEM_EVENT_EXT__{
 		return false;
 	}
 
-} SEM_EVENT_EXT;
+};
 
 
 class SEMObject;
