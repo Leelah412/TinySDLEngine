@@ -1,8 +1,9 @@
 #ifndef __SCENE_LOADER_H__
 #define __SCENE_LOADER_H__
 
-//#include <util/json/single_include/nlohmann/json.hpp>
-#include <util/JSONObject.h>
+#include "nodes/Node.h"
+#include "types.h"
+#include <util/json/single_include/nlohmann/json.hpp>
 
 #include <string>
 #include <unordered_map>
@@ -10,7 +11,8 @@
 #include <iostream>
 #include <fstream>
 
-// Register Node class to be able to load class instances from Scene files
+
+// Register "Node" derived class to be able to load class instances from Scene files
 #define REGISTER_NODE(T)					\
 	class T;								\
 	namespace{								\
@@ -19,9 +21,9 @@
 
 namespace tse{
 
-// TODO: try with "Node" instead of "JSONObject", and see, if circular dependency causes any problems
-// if not, replace JSONObject with Node and remove JSONObject
-using SceneNodeCreator = JSONObject* (*)();
+// TODO: try with "Node" instead of "Node", and see, if circular dependency causes any problems
+// if not, replace Node with Node and remove Node
+using SceneNodeCreator = Node* (*)();
 using NodeMap = std::unordered_map<std::string, SceneNodeCreator>;
 
 // Creates a scene from the given JSON file
@@ -45,10 +47,9 @@ private:
 
 // Node creation function
 template <typename T>
-JSONObject* create_instance(){
+Node* create_instance(){
 	return new T();
 }
-
 
 // Register node class
 template <typename T>
@@ -61,8 +62,10 @@ public:
 
 };
 
-
 }
 
+// Unlike its derivatives, "Node" must be registered here, since otherwise we'd have to include "SceneLoader" in "Node",
+// which would cause a circular dependency
+REGISTER_NODE(Node);
 
 #endif // !__SCENE_LOADER_H__

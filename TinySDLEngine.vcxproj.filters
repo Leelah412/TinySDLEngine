@@ -1187,6 +1187,9 @@
     <ClInclude Include="src\util\json\single_include\nlohmann\json.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="src\types.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\util\glm\detail\func_common.inl">

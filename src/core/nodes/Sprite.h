@@ -1,7 +1,9 @@
 #ifndef __SPRITE_H__
 #define __SPRITE_H__
 
+#include "SceneLoader.h"
 #include <nodes/Node.h>
+
 #include <string>
 #include <iostream>
 

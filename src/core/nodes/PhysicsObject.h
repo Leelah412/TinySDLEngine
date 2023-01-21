@@ -1,6 +1,7 @@
 #ifndef __PHYSICS_OBJECT_H__
 #define __PHYSICS_OBJECT_H__
 
+#include "SceneLoader.h"
 #include <nodes/Node.h>
 #include <world/shapes/collision_shapes.h>
 

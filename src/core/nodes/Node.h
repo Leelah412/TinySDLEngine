@@ -4,7 +4,8 @@
 #include <SDLData.h>
 #include <Object.h>
 #include <renderer/RenderManager.h>
-#include "SceneLoader.h"
+#include "types.h"
+#include <util/json/single_include/nlohmann/json.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -81,10 +82,8 @@ public:
 
 class NodeTree;
 
-REGISTER_NODE(Node)
-
 // Base class for all Node objects
-class Node : public Object, public tse::JSONObject{
+class Node : public Object{
 public:
 
 	Node();
@@ -149,8 +148,8 @@ public:
 	void remove_all_children();						// deletes all children and their entire existence
 	std::vector<Node*> get_all_children_of_class(const std::string& class_name, bool recursive = false);		// return all children of the given class type
 	
-	virtual tse::JSON save() override;							// Save Node to JSON
-	virtual void load(const tse::JSON& data) override;			// Load Node from JSON data
+	virtual JSON save();										// Save Node to JSON
+	virtual void load(const JSON& data);						// Load Node from JSON data
 
 protected:
 	std::string m_class;										// save class name for limiting the number necessary include directives
@@ -177,11 +176,6 @@ private:
 	glm::vec3 m_global_position = glm::vec3();
 	float m_global_scale = 1;									// TODO: implement 3D scale
 	glm::vec3 m_global_rotation = glm::vec3();					// X: Pitch, Y: Yaw, Z: Roll
-
-	// Use this to register a Node to the SceneLoader
-	// Do this for each class derived from "Node" 
-	//static tse::RegisterNode<Node> s_reg_node;
-
 };
 
 

@@ -92,11 +92,6 @@ NodeTree* default_node_tree = nullptr;
 
 // Node
 
-//tse::RegisterNode<Node> Node::s_reg_node("Node");
-//static tse::RegisterNode<Node> s_reg_node("Node");
-
-//REGISTER_NODE(Node)
-
 uint64_t Node::m_node_count = 0;
 std::set<std::string> Node::m_used_unique_names = {};
 
@@ -402,10 +397,37 @@ std::vector<Node*> Node::get_all_children_of_class(const std::string& class_name
 	return vec;
 }
 
-tse::JSON Node::save(){
-	return tse::JSON();
+JSON Node::save(){
+	JSON json = JSON();
+
+	// save position
+	json["position"] = {
+		{"x", m_position.x},
+		{"y", m_position.y},
+		{"z", m_position.z},
+	};
+	// TODO: save scale
+	// save rotation
+	json["rotation"] = {
+		{"pitch", m_rotation.x},
+		{"yaw", m_rotation.y},
+		{"roll", m_rotation.z},
+	};
+	// note: no need to save global position, scale, rotation, those will be calced relatively from the local versions
+
+	// node information
+	json["name"] = {m_unique_name};
+	// no need to save parent information
+	//json["parent"] = {m_parent->m_unique_name};
+	std::vector<std::string> child_names;
+	for(Node* ch : m_children){
+		child_names.push_back(ch->m_unique_name);
+	}
+	json["children"] = child_names;
+
+	return json;
 }
 
-void Node::load(const tse::JSON& data){
+void Node::load(const JSON& data){
 
 }

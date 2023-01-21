@@ -1,6 +1,7 @@
 #ifndef __MOVEABLE_OBJECT_H__
 #define __MOVEABLE_OBJECT_H__
 
+#include "SceneLoader.h"
 #include <nodes/PhysicsObject.h>
 
 // TODO: make this inherit from physics upcoming physics interface

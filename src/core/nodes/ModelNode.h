@@ -9,6 +9,7 @@
 #include <renderer/Texture.h>
 #include <ResourceManager.h>
 
+#include "SceneLoader.h"
 #include <string>
 #include <vector>
 

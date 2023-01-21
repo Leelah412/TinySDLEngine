@@ -2,6 +2,7 @@
 #define __LIGHT_NODE_H__
 
 #include "Node.h"
+#include "SceneLoader.h"
 #include "renderer/RenderManager.h"
 #include "renderer/Light.h"
 

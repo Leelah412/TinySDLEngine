@@ -1,6 +1,7 @@
 #ifndef __FIRST_PERSON_CAMERA_H__
 #define __FIRST_PERSON_CAMERA_H__
 
+#include "SceneLoader.h"
 #include "CameraNode.h"
 
 USE_EVENT_MANAGER

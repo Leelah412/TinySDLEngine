@@ -1,6 +1,7 @@
 #ifndef __CAMERA_NODE_H__
 #define __CAMERA_NODE_H__
 
+#include "SceneLoader.h"
 #include "Node.h"
 #include "renderer/Camera.h"
 
