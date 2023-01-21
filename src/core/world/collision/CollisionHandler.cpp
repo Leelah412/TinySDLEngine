@@ -1,7 +1,11 @@
 #include "CollisionHandler.h"
 
+namespace tse{
+
 // since we add listener to node tree event manager in the constructor, collision handler must be inited manually
-CollisionHandler* collision_handler = nullptr;
+//CollisionHandler* collision_handler = nullptr;
+CollisionHandler* CollisionHandler::s_default_collision_handler = nullptr;
+
 
 CollisionHandler::CollisionHandler(){
 	// listen to parent/child mutation events from physics objects
@@ -243,3 +247,14 @@ void CollisionHandler::update_on_signal(SIGNAL signal, EVENT* event){
 
 	}
 }
+
+CollisionHandler* CollisionHandler::get_default_collision_handler(){
+	return s_default_collision_handler;
+}
+
+void CollisionHandler::set_default_collision_handler(CollisionHandler* handler){
+	s_default_collision_handler = handler;
+}
+
+}
+

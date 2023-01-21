@@ -1,5 +1,7 @@
 #include "CollisionShape.h"
 
+namespace tse{
+
 CollisionShape::CollisionShape(){
 
 }
@@ -17,4 +19,6 @@ void CollisionShape::set_polygon(const std::vector<glm::vec2>& polygon){
 
 const SDL_FRect& CollisionShape::get_aabb() const{
 	return m_aabb;
+}
+
 }

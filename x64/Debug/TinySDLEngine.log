@@ -7,6 +7,7 @@
   DynamicObject.cpp
   FirstPersonCamera.cpp
   ModelNode.cpp
+  Node.cpp
   PhysicsObject.cpp
   Sprite.cpp
   Code wird generiert...

@@ -6,6 +6,8 @@
 #include <world/shapes/collision_shapes.h>
 
 
+namespace tse{
+
 REGISTER_NODE(PhysicsObject)
 
 class PhysicsObject : public Node{
@@ -35,7 +37,7 @@ public:
 	bool is_dynamic();
 
 	static bool colliding(const PhysicsObject* obj1, const PhysicsObject* obj2);
-	
+
 protected:
 	CollisionShape* m_collision_shape = nullptr;						// collision shape of the object
 	float m_mass = 1;													// mass of the object
@@ -43,5 +45,9 @@ protected:
 	bool m_is_dynamic;													// avoid casting as often as possible with this dynamic-object-check
 
 };
+
+}
+
+
 
 #endif // !__PHYSICS_OBJECT_H__

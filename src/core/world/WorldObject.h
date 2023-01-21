@@ -3,6 +3,9 @@
 
 #include <math/Vector.h>
 
+namespace tse{
+
+// TODO: why does this class exist again?
 class WorldObject{
 
 public:
@@ -29,5 +32,9 @@ private:
 	float m_scale;
 	// TODO: add transform matrix
 };
+
+}
+
+
 
 #endif // !__WORLD_OBJECT__

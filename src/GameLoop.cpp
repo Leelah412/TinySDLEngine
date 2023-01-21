@@ -59,6 +59,7 @@ void GameLoop::handle_event(SDL_Event sdl_event, SEM_EVENT event, SEM_EVENT_EXT 
 }
 
 int GameLoop::init(const char* title, int x, int y){
+	using namespace tse;
 
 	// Initialize event manager first!
 	delete EventManager;
@@ -105,9 +106,9 @@ int GameLoop::init(const char* title, int x, int y){
 	}
 
 	// Initialize Node Tree
-	if(!INodeTree) INodeTree = new NodeTree();
+	if(!INodeTree) SetNodeTree(new NodeTree());
 	// Initialize Collision Handler
-	if(!ICollisionHandler) ICollisionHandler = new CollisionHandler();
+	if(!ICollisionHandler) SetCollisionHandler(new CollisionHandler());
 
 	//Initialize GLEW
 	glewExperimental = GL_TRUE;
@@ -157,6 +158,8 @@ int GameLoop::init(const char* title, int x, int y){
 
 // updates the gamestates for all objects
 void GameLoop::update(const time_t& delta_time){
+	using namespace tse;
+
 	// call collision handler first
 	ICollisionHandler->update(m_delta);
 
@@ -323,35 +326,6 @@ bool GameLoop::init_gl(){
 	/* Initialize default VAOs and buffer entities */ 
 	// TODO: create default framebuffers
 
-	// Create World VAO
-	//VertexArray* world = new VertexArray();
-	// Create static, dynamic and particle buffer entities and add them to world VAO
-	//BufferEntity *st = new BufferEntity(), *dy = new BufferEntity(), *prt = new BufferEntity();
-	//world->add_buffer_entity(st, TSE_BUFFER_ENTITY_STATIC);
-	//world->add_buffer_entity(dy, TSE_BUFFER_ENTITY_DYNAMIC);
-	//world->add_buffer_entity(prt, TSE_BUFFER_ENTITY_PARTICLE);
-	// Create VBOs, IBOs and default shaders for buffer entities
-	// TODO: adjust later on, but for now, use same shader and layout for every entity
-	//Shader* sh = new Shader("src/res/shader/shader.glsl");
-	//VertexAttributeLayout ly = VertexAttributeLayout();
-	//ly.push(3, GL_FLOAT, false);		// position
-	//ly.push(2, GL_FLOAT, false);		// tex coord
-	//
-	//st->set_shader(sh);
-	//st->create_vertex_buffer(2000 * ly.get_stride(), ly);
-	//st->create_index_buffer(1998);
-	//
-	//dy->set_shader(sh);
-	//dy->create_vertex_buffer(1000 * ly.get_stride(), ly);
-	//dy->create_index_buffer(999);
-	//
-	//prt->set_shader(sh);
-	//prt->create_vertex_buffer(10 * ly.get_stride(), ly);
-	//prt->create_index_buffer(999);
-	//
-	//// Add VAO incl. buffer entities to render manager
-	//IRenderManager->add_vertex_array(world, TSE_VERTEX_ARRAY_WORLD, true);
-	//
 	// Default renderer setup
 	IRenderer->setup();
 	// Create default shader

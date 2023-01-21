@@ -27,25 +27,27 @@ USE_SDL_DATA
 // Uses "Object"s observer system to handle signals.
 // All instances wanting to listen to node tree events must derive from "Object".
 
-#define USE_NODE_TREE_EVENT_MANAGER extern NodeTreeEventManager* nt_event_manager;
-#define NTEventManager nt_event_manager
+//#define USE_NODE_TREE_EVENT_MANAGER extern tse::NodeTreeEventManager* nt_event_manager;
+//#define NTEventManager nt_event_manager
+#define NTEventManager tse::NodeTreeEventManager::get_default_ntem()
 
-#define USE_DEFAULT_NODE_TREE extern NodeTree* default_node_tree;
-#define INodeTree default_node_tree
+//#define USE_DEFAULT_NODE_TREE extern tse::NodeTree* default_node_tree;
+//#define INodeTree default_node_tree
+#define INodeTree tse::NodeTree::get_default_node_tree()
+#define SetNodeTree(NT) tse::NodeTree::set_default_node_tree(NT)
 
+namespace tse{
 
 class Node;
 
-typedef struct __NODE_PARENT_CHILD__{
+typedef struct NODE_PARENT_CHILD{
 	Node* parent;
 	Node* child;
-} NODE_PARENT_CHILD;
-
-typedef union __NODE_TREE_EVENT_EX__{
+};
+typedef union NODE_TREE_EVENT_EX{
 	NODE_PARENT_CHILD parent_child;
 	Node* node;
-} NODE_TREE_EVENT_EX;
-
+};
 class NODE_TREE_EVENT : public EVENT{
 public:
 	NODE_TREE_EVENT(SIGNAL _signal, Object* _subject, NODE_TREE_EVENT_EX _ex): EVENT(_signal, _subject), ex{_ex}{}
@@ -78,6 +80,11 @@ public:
 	void drop_child_removed_event(Object* listener);
 	void drop_node_to_delete_event(Object* listener);
 	void drop_switch_root_event(Object* listener);
+
+	static NodeTreeEventManager* get_default_ntem();
+
+private:
+	static NodeTreeEventManager* s_default_ntem;
 };
 
 class NodeTree;
@@ -139,15 +146,15 @@ public:
 
 	const std::vector<Node*>& get_children() const;
 	// Add the given object as the child of the current object and return the new child
-	Node* add_child(Node* child);					
+	Node* add_child(Node* child);
 	// Child object stops being child of current, but still exists
-	void disown_child(Node* child);					
+	void disown_child(Node* child);
 	// Delete the child and its entire existence
-	void delete_child(Node* child);					
+	void delete_child(Node* child);
 	void delete_child_by_id(uint64_t id);
 	void remove_all_children();						// deletes all children and their entire existence
 	std::vector<Node*> get_all_children_of_class(const std::string& class_name, bool recursive = false);		// return all children of the given class type
-	
+
 	virtual JSON save();										// Save Node to JSON
 	virtual void load(const JSON& data);						// Load Node from JSON data
 
@@ -183,42 +190,23 @@ private:
 class NodeTree : public Object{
 
 public:
-	NodeTree(Node* root_node = nullptr){
-		// assign a default root node
-		if(!root_node)	m_root_node = new Node();
-		else			m_root_node = root_node;
-	}
-	virtual ~NodeTree(){
-		delete m_root_node;
-	}
+	NodeTree(Node* root_node = nullptr);
+	virtual ~NodeTree();
 
-	// Pre-Scene setup
-	void render_setup(){
+	// Pre-Scene setup TODO: deprecated
+	void render_setup();
 
-	}
+	Node* get_root_node();
+	void switch_root_node(Node* new_root, bool delete_irrelevant_nodes = false);
 
-	Node* get_root_node(){
-		return m_root_node;
-	}
-	void switch_root_node(Node* new_root, bool delete_irrelevant_nodes = false){
-		Node* old_root = m_root_node;
-		m_root_node = new_root;
-
-		// TODO: delete nodes from old tree not in the new tree
-		if(old_root && delete_irrelevant_nodes){
-
-		}
-
-		// Notify listeners of the root switch
-		NODE_TREE_EVENT_EX ex;
-		ex.node = m_root_node;
-		NODE_TREE_EVENT* ev = new NODE_TREE_EVENT("switch_root", m_root_node, ex);
-		emit_signal("switch_root", ev);
-	}
+	static NodeTree* get_default_node_tree();
+	static void set_default_node_tree(NodeTree* node_tree = nullptr);
 
 private:
 	Node* m_root_node;
-
+	static NodeTree* s_default_node_tree;
 };
+
+}
 
 #endif // !__NODE_H__

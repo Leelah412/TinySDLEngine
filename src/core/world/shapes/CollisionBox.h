@@ -3,6 +3,8 @@
 
 #include "CollisionShape.h"
 
+namespace tse{
+
 class CollisionBox : public CollisionShape{
 
 public:
@@ -23,5 +25,8 @@ public:
 protected:
 	SDL_FRect m_hitbox;
 };
+
+}
+
 
 #endif // !__COLLISION_BOX_H__

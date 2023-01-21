@@ -1,5 +1,7 @@
 #include "CollisionBox.h"
 
+namespace tse{
+
 CollisionBox::CollisionBox(){
 	m_hitbox = {0,0,0,0};
 }
@@ -34,3 +36,6 @@ void CollisionBox::set_hitbox(float x, float y, float w, float h){
 void CollisionBox::set_polygon(const std::vector<glm::vec2>& polygon){
 	// only accept paths, that form an exactly rectangular shape
 }
+
+}
+

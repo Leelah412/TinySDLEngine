@@ -7,9 +7,11 @@
 
 // TODO: replace SDL_FRect and remove any SDL dependency
 
+namespace tse{
+
 // Base class for (2D) collision shapes to use for collision detection in PhysicsObject instances
 class CollisionShape{
-	
+
 public:
 	CollisionShape();
 	virtual ~CollisionShape();
@@ -29,5 +31,9 @@ protected:
 	SDL_FRect m_aabb = SDL_FRect();
 
 };
+
+}
+
+
 
 #endif // !__COLLISION_SHAPE_H__

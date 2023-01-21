@@ -1,17 +1,15 @@
 #include "Node.h"
 
+namespace tse{
 
 // NodeTreeEventManager
 
+//NodeTreeEventManager* nt_event_manager = new NodeTreeEventManager();
 
-NodeTreeEventManager* nt_event_manager = new NodeTreeEventManager();
+NodeTreeEventManager* NodeTreeEventManager::s_default_ntem = new NodeTreeEventManager();
 
-NodeTreeEventManager::NodeTreeEventManager(){
-
-}
-NodeTreeEventManager::~NodeTreeEventManager(){
-
-}
+NodeTreeEventManager::NodeTreeEventManager(){}
+NodeTreeEventManager::~NodeTreeEventManager(){}
 
 // NOTIFICATIONS
 void NodeTreeEventManager::child_added(Node* parent, Node* child){
@@ -83,14 +81,14 @@ void NodeTreeEventManager::drop_switch_root_event(Object* listener){
 	remove_listener("switch_root", listener);
 }
 
-
-// NodeTree
-
-
-NodeTree* default_node_tree = nullptr;
+NodeTreeEventManager* NodeTreeEventManager::get_default_ntem(){
+	return s_default_ntem;
+}
 
 
-// Node
+/********/
+/* NODE */
+/********/
 
 uint64_t Node::m_node_count = 0;
 std::set<std::string> Node::m_used_unique_names = {};
@@ -111,7 +109,7 @@ Node::Node(){
 Node::~Node(){
 	// remove name from unique name list!
 	m_used_unique_names.erase(m_unique_name);
-	
+
 	// call deconstructor of all children
 	for(auto ch : m_children){
 		delete ch;
@@ -127,7 +125,7 @@ void Node::draw(){
 }
 
 void Node::update(const time_t& delta){
-	
+
 }
 
 
@@ -227,7 +225,7 @@ glm::vec3 Node::get_rotation() const{
 }
 void Node::set_rotation(glm::vec3 rotation){
 	// make sure the rotations are in (-360, 360)
-	m_rotation = rotation - glm::vec3( glm::ivec3(rotation / 360.0f) * 360 );
+	m_rotation = rotation - glm::vec3(glm::ivec3(rotation / 360.0f) * 360);
 	update_global_rotation();
 }
 void Node::set_rotation(float pitch, float yaw, float roll){
@@ -318,7 +316,7 @@ void Node::switch_parent(Node* parent, bool keep_gl_pos, bool keep_gl_rot, bool 
 	// set local dimensions to new parent minus current global dimensions, if desired
 	if(keep_gl_pos)	set_position(pos.x - parent->get_global_position().x, pos.y - parent->get_global_position().y, pos.z - parent->get_global_position().z);
 	if(keep_gl_rot) set_rotation(rot - parent->get_global_rotation());
-	if(keep_gl_scale) set_scale(scale/parent->get_global_scale());
+	if(keep_gl_scale) set_scale(scale / parent->get_global_scale());
 }
 
 const vector<Node*>& Node::get_children() const{
@@ -431,3 +429,53 @@ JSON Node::save(){
 void Node::load(const JSON& data){
 
 }
+
+
+/*************/
+/* NODE TREE */
+/*************/
+
+//NodeTree* default_node_tree = nullptr;
+NodeTree* NodeTree::s_default_node_tree = nullptr;
+
+NodeTree::NodeTree(Node* root_node){
+	// assign a default root node
+	if(!root_node)	m_root_node = new Node();
+	else			m_root_node = root_node;
+}
+NodeTree::~NodeTree(){
+	delete m_root_node;
+}
+
+// Pre-Scene setup
+void NodeTree::render_setup(){}
+
+Node* NodeTree::get_root_node(){
+	return m_root_node;
+}
+void NodeTree::switch_root_node(Node* new_root, bool delete_irrelevant_nodes){
+	Node* old_root = m_root_node;
+	m_root_node = new_root;
+
+	// TODO: delete nodes from old tree not in the new tree
+	if(old_root && delete_irrelevant_nodes){
+
+	}
+
+	// Notify listeners of the root switch
+	NODE_TREE_EVENT_EX ex;
+	ex.node = m_root_node;
+	NODE_TREE_EVENT* ev = new NODE_TREE_EVENT("switch_root", m_root_node, ex);
+	emit_signal("switch_root", ev);
+}
+
+NodeTree* NodeTree::get_default_node_tree(){
+	return s_default_node_tree;
+}
+
+void NodeTree::set_default_node_tree(NodeTree* node_tree){
+	s_default_node_tree = node_tree;
+}
+
+}
+

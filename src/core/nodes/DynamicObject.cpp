@@ -1,5 +1,7 @@
 #include "DynamicObject.h"
 
+namespace tse{
+
 DynamicObject::DynamicObject(){
 	m_class = "DynamicObject";
 	m_is_dynamic = true;
@@ -18,8 +20,8 @@ void DynamicObject::update(const time_t& delta){
 void DynamicObject::move(const time_t& delta){
 	glm::vec3 pos = get_position();
 	// divide by 1000 to get velocity in pixel/second
-	pos.x += m_velocity.x * (delta/1000.0f);
-	pos.y += m_velocity.y * (delta/1000.0f);
+	pos.x += m_velocity.x * (delta / 1000.0f);
+	pos.y += m_velocity.y * (delta / 1000.0f);
 	set_position(pos);
 }
 
@@ -80,7 +82,7 @@ bool DynamicObject::move_and_collide(DynamicObject* obj1, PhysicsObject* obj2, t
 	}
 
 	// Can't have collision, if there is no collision shape
-	const CollisionShape *obj1_cs = obj1->get_collision_shape(), *obj2_cs = obj2->get_collision_shape();
+	const CollisionShape* obj1_cs = obj1->get_collision_shape(), * obj2_cs = obj2->get_collision_shape();
 	if(!obj1_cs || !obj2_cs) return false;
 	SDL_FRect obj1_aabb = obj1_cs->get_aabb(), obj2_aabb = obj2_cs->get_aabb();
 	glm::vec3 obj1_pos = obj1->get_global_position(), obj2_pos = obj2->get_global_position();
@@ -90,7 +92,7 @@ bool DynamicObject::move_and_collide(DynamicObject* obj1, PhysicsObject* obj2, t
 	float x_exit = (obj2_pos.x + obj2_aabb.x + obj2_aabb.w) - (obj1_pos.x + obj1_aabb.x);
 	float y_entry = (obj2_pos.y + obj2_aabb.y) - (obj1_pos.y + obj1_aabb.y + obj1_aabb.h);
 	float y_exit = (obj2_pos.y + obj2_aabb.y + obj2_aabb.h) - (obj1_pos.y + obj1_aabb.y);
-	
+
 	// Objects overlap on an axis, if signs of entry and exit are opposites
 	// Objects collide, if both axis overlap
 	if((((x_entry <= 0) && (x_exit >= 0)) || ((x_entry >= 0) && (x_exit <= 0))) &&
@@ -201,3 +203,7 @@ bool DynamicObject::move_and_collide(DynamicObject* obj1, PhysicsObject* obj2, t
 
 	return true;
 }
+
+}
+
+

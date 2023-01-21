@@ -1,5 +1,7 @@
 #include "Sprite.h"
 
+namespace tse{
+
 Sprite::Sprite(){}
 
 Sprite::Sprite(SDL_Texture* sprite, SPRITE_ORIGIN origin, float origin_distance_x, float origin_distance_y){
@@ -99,35 +101,38 @@ void Sprite::calc_origin(){
 	int x = get_size().x, y = get_size().y;
 	// set new position based on size
 	switch(m_origin){
-		case SPRITE_ORIGIN::TOP_LEFT:
-			set_position_2d(m_origin_distance);
-			break;
-		case SPRITE_ORIGIN::TOP:
-			set_position_2d(-x / 2 + m_origin_distance.x, m_origin_distance.y);
-			break;
-		case SPRITE_ORIGIN::TOP_RIGHT:
-			set_position_2d(-x + m_origin_distance.x, m_origin_distance.y);
-			break;
-		case SPRITE_ORIGIN::LEFT:
-			set_position_2d(m_origin_distance.x, -y / 2 + m_origin_distance.y);
-			break;
-		case SPRITE_ORIGIN::CENTER:
-			set_position_2d(-x / 2 + m_origin_distance.x, -y / 2 + m_origin_distance.y);
-			break;
-		case SPRITE_ORIGIN::RIGHT:
-			set_position_2d(-x + m_origin_distance.x, -y / 2 + m_origin_distance.y);
-			break;
-		case SPRITE_ORIGIN::BOTTOM_LEFT:
-			set_position_2d(m_origin_distance.x, -y + m_origin_distance.y);
-			break;
-		case SPRITE_ORIGIN::BOTTOM:
-			set_position_2d(-x / 2 + m_origin_distance.x, -y + m_origin_distance.y);
-			break;
-		case SPRITE_ORIGIN::BOTTOM_RIGHT:
-			set_position_2d(-x + m_origin_distance.x, -y + m_origin_distance.y);
-			break;
-		default:
-			set_position_2d(m_origin_distance);
-			break;
+	case SPRITE_ORIGIN::TOP_LEFT:
+		set_position_2d(m_origin_distance);
+		break;
+	case SPRITE_ORIGIN::TOP:
+		set_position_2d(-x / 2 + m_origin_distance.x, m_origin_distance.y);
+		break;
+	case SPRITE_ORIGIN::TOP_RIGHT:
+		set_position_2d(-x + m_origin_distance.x, m_origin_distance.y);
+		break;
+	case SPRITE_ORIGIN::LEFT:
+		set_position_2d(m_origin_distance.x, -y / 2 + m_origin_distance.y);
+		break;
+	case SPRITE_ORIGIN::CENTER:
+		set_position_2d(-x / 2 + m_origin_distance.x, -y / 2 + m_origin_distance.y);
+		break;
+	case SPRITE_ORIGIN::RIGHT:
+		set_position_2d(-x + m_origin_distance.x, -y / 2 + m_origin_distance.y);
+		break;
+	case SPRITE_ORIGIN::BOTTOM_LEFT:
+		set_position_2d(m_origin_distance.x, -y + m_origin_distance.y);
+		break;
+	case SPRITE_ORIGIN::BOTTOM:
+		set_position_2d(-x / 2 + m_origin_distance.x, -y + m_origin_distance.y);
+		break;
+	case SPRITE_ORIGIN::BOTTOM_RIGHT:
+		set_position_2d(-x + m_origin_distance.x, -y + m_origin_distance.y);
+		break;
+	default:
+		set_position_2d(m_origin_distance);
+		break;
 	}
 }
+
+}
+

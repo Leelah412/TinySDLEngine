@@ -3,6 +3,8 @@
 
 #include <world/WorldObject.h>
 
+namespace tse{
+
 class CollisionObject : public WorldObject{
 
 public:
@@ -12,5 +14,8 @@ public:
 private:
 
 };
+
+}
+
 
 #endif // !__COLLISION_OBJECT__

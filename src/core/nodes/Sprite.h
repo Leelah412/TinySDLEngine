@@ -9,6 +9,8 @@
 
 typedef enum class __SPRITE_ORIGIN__ {TOP_LEFT, TOP, TOP_RIGHT, LEFT, CENTER, RIGHT, BOTTOM_LEFT, BOTTOM, BOTTOM_RIGHT} SPRITE_ORIGIN;
 
+namespace tse{
+
 REGISTER_NODE(Sprite)
 
 class Sprite : public Node{
@@ -45,6 +47,8 @@ private:
 	SPRITE_ORIGIN m_origin;				// Sprite origin of the sprite
 	glm::vec2 m_origin_distance;		// Set origin manually relative to "m_origin"
 };
+
+}
 
 
 #endif

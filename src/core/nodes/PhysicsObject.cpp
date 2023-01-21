@@ -1,6 +1,8 @@
 #include "PhysicsObject.h"
 
 
+namespace tse{
+
 PhysicsObject::PhysicsObject(){
 	m_class = "PhysicsObject";
 	m_is_dynamic = false;
@@ -80,4 +82,6 @@ bool PhysicsObject::colliding(const PhysicsObject* obj1, const PhysicsObject* ob
 	// TODO: implement narrowed down collision detection with actual polygons
 	// AABBs colliding, return true
 	return true;
+}
+
 }

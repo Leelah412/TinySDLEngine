@@ -1,5 +1,7 @@
 #include "WorldObject.h"
 
+namespace tse{
+
 WorldObject::WorldObject(){
 
 }
@@ -46,3 +48,6 @@ void WorldObject::set_rotation(const float& rotation){
 	// make sure the rotations are in (-360, 360)
 	m_rotation = rotation - (int(rotation / 360) * 360);
 }
+
+}
+

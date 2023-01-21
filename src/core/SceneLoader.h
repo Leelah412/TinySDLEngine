@@ -11,7 +11,6 @@
 #include <iostream>
 #include <fstream>
 
-
 // Register "Node" derived class to be able to load class instances from Scene files
 #define REGISTER_NODE(T)					\
 	class T;								\
@@ -62,10 +61,11 @@ public:
 
 };
 
-}
-
 // Unlike its derivatives, "Node" must be registered here, since otherwise we'd have to include "SceneLoader" in "Node",
 // which would cause a circular dependency
 REGISTER_NODE(Node);
+
+}
+
 
 #endif // !__SCENE_LOADER_H__

@@ -9,6 +9,8 @@
 // Physics objects with the ability to move around in the game world
 
 
+namespace tse{
+
 REGISTER_NODE(DynamicObject)
 
 class DynamicObject : public PhysicsObject{
@@ -41,5 +43,9 @@ private:
 	glm::vec3 m_center_of_mass = glm::vec3();						// center of mass relative to center of object (i.e. position)
 
 };
+
+}
+
+
 
 #endif

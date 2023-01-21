@@ -73,7 +73,6 @@
     <ClInclude Include="src\core\SceneLoader.h" />
     <ClInclude Include="src\core\world\collision\CollisionHandler.h" />
     <ClInclude Include="src\core\world\collision\CollisionObject.h" />
-    <ClInclude Include="src\core\world\Grid.h" />
     <ClInclude Include="src\core\world\shapes\CollisionBox.h" />
     <ClInclude Include="src\core\world\shapes\CollisionShape.h" />
     <ClInclude Include="src\core\world\shapes\collision_shapes.h" />
@@ -100,7 +99,6 @@
     <ClInclude Include="src\core\Window.h" />
     <ClInclude Include="src\core\SDLData.h" />
     <ClInclude Include="src\types.h" />
-    <ClInclude Include="src\util\JSONObject.h" />
     <ClInclude Include="src\util\json\single_include\nlohmann\json.hpp" />
     <ClInclude Include="src\util\SDLEventManager.h" />
     <ClInclude Include="src\GameLoop.h" />
