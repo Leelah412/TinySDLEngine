@@ -1,12 +1,11 @@
 #include "SceneLoader.h"
 
-#include <queue>
+#include <deque>
 #include <unordered_set>
 #include <unordered_map>
 
 namespace tse{
 
-//NodeMap SceneLoader::s_node_map = {};
 
 NodeMap& SceneLoader::s_node_map(){
 	static NodeMap* ans = new NodeMap();
@@ -32,14 +31,14 @@ void SceneLoader::load_scene(const std::string& path){
 		std::cout << "WARNING: Scene has no body!" << std::endl;
 		return;
 	}
-	
 	JSON body = data["body"];
+
 	if(!body.contains("nodes")){
 		std::cout << "WARNING: Scene has no nodes!" << std::endl;
 		return;
 	}
 	if(!body["nodes"].is_object()){
-		std::cout << "WARNING: Incorrect implementation!" << std::endl;
+		std::cout << "WARNING: Incorrect implementation or data: 'body.nodes' must be an object!" << std::endl;
 		return;
 	}
 
@@ -51,48 +50,141 @@ void SceneLoader::load_scene(const std::string& path){
 		return;
 	}
 
+	if(!body.contains("root")){
+		std::cout << "WARNING: Scene has no root!" << std::endl;
+		return;
+	}
+	// Root node of the scene
+	JSON root_node = body["root"];
+	if(!root_node.is_string()){
+		std::cout << "WARNING: Incorrect implementation or data: 'body.root' must be a string!" << std::endl;
+		return;
+	}
+
+	std::deque<std::string> q;
+	std::string front;
 	// Key: Node name
 	// Value: Node parameters
-	JSON node_val;
-	std::queue<std::string> q;
-	std::string front;
-	q.push(nodes.begin().key());
+	JSON node_val, children, class_name;
 	// Nodes, which have been created already
 	std::unordered_map<std::string, Node*> done;
-	// Nodes, which have parents assigned to them; used to check, if a child has more than one parent (which is illegal and will cause an error!)
-	std::unordered_set<std::string> has_parent_assigned;
+	// List of Node names, whose children have already been pushed to the deque and don't need to be checked again
+	std::unordered_set<std::string> parents_checked_once;
 
+	// Start with root node
+	q.push_front(root_node);
+
+	// For each currently processed node, push its children to the front of a deque, if it has any.
+	// Only, if all children of a node have been processed, do we create an instance for the current node.
 	while(!q.empty()){
 		front = q.front();
-		q.pop();
-		// has children -> process them first
-		if(nodes[front].find("children") != nodes[front].end() && (nodes[front]["children"].size() > 0)){
-			// must be an array
-			if(!nodes[front]["children"].is_array()){
-				std::cout << "WARNING: Incorrect implementation: Child list must be an array!" << std::endl;
+		if(!nodes.contains(front)){
+			std::cout << "WARNING: Incomplete data: Node " << front << " not in list!" << std::endl;
+			// TODO: delete all already-created nodes
+			return;
+		}
+		node_val = nodes[front];
+
+		// Check children first
+		children = {};
+		if(node_val.find("children") != node_val.end()){
+			children = node_val["children"];
+			if(!children.is_array()){
+				std::cout << "WARNING: Incorrect implementation or data: 'children' must be an array!" << std::endl;
+				// TODO: delete all already-created nodes
 				return;
 			}
-			for(auto& ch : nodes[front]["children"])
-				q.push(ch);
-			continue;
 		}
+		if(parents_checked_once.find(front) == parents_checked_once.end()){
+			parents_checked_once.insert(front);
+			// Has children -> process them first!
+			if(!children.empty()){
+				for(auto& ch : children){
+					if(!ch.is_string()){
+						std::cout << "WARNING: Incorrect implementation or data: 'children' must be an array of strings!" << std::endl;
+						// TODO: delete all already-created nodes
+						return;
+					}
+					q.push_front(ch);
+				}
+
+				continue;
+			}
+		}
+		
+		// Create Node
+
+		// Object must contain its own name and it must be equivalent to key name
+		if(node_val.contains("name")){
+			std::cout << "WARNING: Incorrect implementation or data: Node must contain 'name' string!" << std::endl;
+			// TODO: delete all already-created nodes
+			return;
+		}
+		if(!node_val["name"].is_string()){
+			std::cout << "WARNING: Incorrect implementation or data: 'name' must be a string!" << std::endl;
+			// TODO: delete all already-created nodes
+			return;
+		}
+		if(node_val["name"] != front){
+			std::cout << "WARNING: Incorrect implementation or data: 'name' string must be equivalent to key!" << std::endl;
+			// TODO: delete all already-created nodes
+			return;
+		}
+
+		// Object must contain information about the name of the class
+		if(!node_val.contains("class")){
+			std::cout << "WARNING: Incorrect implementation or data: Node must contain 'class' string!" << std::endl;
+			// TODO: delete all already-created nodes
+			return;
+		}
+
+		class_name = node_val["class"];
+		if(!class_name.is_string()){
+			std::cout << "WARNING: Incorrect implementation or data: 'class' must be a string!" << std::endl;
+			// TODO: delete all already-created nodes
+			return;
+		}
+		if(s_node_map().find(class_name) == s_node_map().end()){
+			std::cout << "WARNING: Class '" << class_name << "' not registered for loading!" << std::endl;
+			// TODO: delete all already-created nodes
+			return;
+		}
+
+		// Create and load the Node
+		Node* new_node = s_node_map()[class_name]();
+		new_node->load(node_val);
+		// Add children of Node
+		for(auto& ch : children){
+			// If child node still doesn't exist for some reason, skip and output a warning, but do not return
+			if(done.find(ch) == done.end()){
+				std::cout << "WARNING: Trying to adopt child, that doesn't exist! Try next child." << std::endl;
+				continue;
+			}
+			new_node->add_child(done[ch]);
+		}
+
+		done.insert(std::pair<std::string, Node*>(front, new_node));
+		q.pop_front();
 	}
 
-	for(auto& nd : nodes.items()){
-		node_val = nd.value();
-		// Object must contain fnformation about the name of the class
-		if(!node_val.contains("class")){
-			std::cout << "WARNING: Incorrect implementation!" << std::endl;
-			return;
-		}
-		if( s_node_map().find(node_val["class"]) == s_node_map().end() ){
-			std::cout << "WARNING: Incorrect implementation!" << std::endl;
-			return;
-		}
-		// Create and load the node
-		Node* new_node = s_node_map()[node_val["class"]]();
-		new_node->load(node_val);
-	}
+	// Switch root node to finalize scene
+	INodeTree->switch_root_node(done[root_node], true);
+
+	//for(auto& nd : nodes.items()){
+	//	node_val = nd.value();
+	//	// Object must contain fnformation about the name of the class
+	//	if(!node_val.contains("class")){
+	//		std::cout << "WARNING: Incorrect implementation or data: Node must contain 'class' string!" << std::endl;
+	//		return;
+	//	}
+	//	if( s_node_map().find(node_val["class"]) == s_node_map().end() ){
+	//		std::cout << "WARNING: Class '" << node_val["class"] << "' not registered for loading!" << std::endl;
+	//		return;
+	//	}
+	//	// Create and load the node
+	//	Node* new_node = s_node_map()[node_val["class"]]();
+	//	new_node->load(node_val);
+	//}
 }
 
 void SceneLoader::save_scene(JSON nodes){

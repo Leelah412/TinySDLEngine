@@ -59,11 +59,15 @@ public:
 	~NodeTreeEventManager();
 
 	// NOTIFICATIONS
+
+	// Notify, that parent adopted a child
+	// Note: Does not check, whether nodes are indeed related or whether they are part of the tree!
 	void child_added(Node* parent, Node* child);
 	void child_removed(Node* parent, Node* child);
 	void node_to_delete(Node* node);						// notify, that node is about to be deleted
 
 	// COMMANDS
+	// TODO: why do we have switch roots in node tree manager AND node tree, and the former does absolutely nothing?!?
 	void switch_root(Node* new_root);						// command to switch the root to the given node
 
 	// LISTENERS
@@ -91,6 +95,8 @@ public:
 
 	Node();
 	virtual ~Node();
+
+	// TODO: create on_create, on_tree_enter, on_destroy... functions
 
 	virtual void input(const SDL_Event& event);			// input passed through the node tree, until a child "eats" it; return remaining event queue
 	virtual void draw();								// directly draws on the screen

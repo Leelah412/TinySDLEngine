@@ -18,17 +18,6 @@ void NodeTreeEventManager::child_added(Node* parent, Node* child){
 	ex.parent_child.parent = parent;
 	ex.parent_child.child = child;
 
-	// check, if parent and child are actually related
-	if(child->get_parent() != parent) return;
-	if(find(parent->get_children().begin(), parent->get_children().end(), child) == parent->get_children().end()) return;
-
-	// check, if nodes are part of the current tree (i.e. parent sequence leads to root object)
-	Node* it = parent;
-	while(it->get_parent()){
-		it = it->get_parent();
-	}
-	//if(it != )
-
 	emit_signal("child_added", new NODE_TREE_EVENT("child_added", nullptr, ex));
 
 }

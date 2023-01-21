@@ -1,5 +1,2 @@
-﻿  Window.cpp
-  GameLoop.cpp
-  main.cpp
-  Code wird generiert...
+﻿  Model.cpp
   TinySDLEngine.vcxproj -> C:\Users\Halil\source\repos\TinySDLEngine\x64\Debug\TinySDLEngine.exe

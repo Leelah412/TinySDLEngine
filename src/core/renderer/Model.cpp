@@ -16,10 +16,7 @@ Model::Model(Mesh* mesh, bool unique){
 	set_mesh(mesh, unique);
 }
 
-Model::~Model(){
-	m_vertex_materials.clear();
-	std::cout << "Deleting Model" << std::endl;
-}
+Model::~Model(){}
 
 bool Model::load_mesh(const std::string& path, bool unique){
 	reset_mesh();

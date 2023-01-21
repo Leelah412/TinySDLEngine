@@ -83,6 +83,11 @@ int GameLoop::init(const char* title, int x, int y){
 		return 3;
 	}
 
+	// Initialize Node Tree
+	if(!INodeTree) SetNodeTree(new NodeTree());
+	// Initialize Collision Handler
+	if(!ICollisionHandler) SetCollisionHandler(new CollisionHandler());
+
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 
 	cout << "SDL Window initialized" << endl;
@@ -98,11 +103,6 @@ int GameLoop::init(const char* title, int x, int y){
 		SDL_Quit();
 		return 4;
 	}
-
-	// Initialize Node Tree
-	if(!INodeTree) SetNodeTree(new NodeTree());
-	// Initialize Collision Handler
-	if(!ICollisionHandler) SetCollisionHandler(new CollisionHandler());
 
 	//Initialize GLEW
 	glewExperimental = GL_TRUE;
