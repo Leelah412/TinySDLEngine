@@ -21,9 +21,7 @@
 #define USE_EVENT_MANAGER extern SDLEventManager* sdl_event_manager;	// Write this after the include/define directives to be able to use the SDL event manager
 #define EventManager sdl_event_manager									// Define "EventManager" for a simpler access to the default instance
 
-using namespace std;
-
-typedef deque<SDL_Event> SDL_EVENT_LIST;								// List of SDL events
+typedef std::deque<SDL_Event> SDL_EVENT_LIST;								// List of SDL events
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //																							//
@@ -111,16 +109,11 @@ typedef struct SEM_EVENT_EXT{
 		event.mousebutton = _mousebutton;
 	}
 
-	bool operator==(const SEM_EVENT_EXT& ext){
-		if(type != ext.type) return false;
-		if(type == SEMEX_KEYCODE && event.keycode != ext.event.keycode) return false;
-		if(type == SEMEX_SCANCODE && event.scancode != ext.event.scancode) return false;
-		if(type == SEMEX_MOUSEBUTTON && event.mousebutton != ext.event.mousebutton) return false;
-
-		return true;
+	bool operator==(const SEM_EVENT_EXT& ext) const{
+		return !(*this != ext);
 	}
-	bool operator!=(const SEM_EVENT_EXT& ext){
-		return !(*this == ext);
+	bool operator!=(const SEM_EVENT_EXT& ext) const{
+		return (*this < ext) || (ext < *this);
 	}
 
 	bool operator<(const SEM_EVENT_EXT& ext) const{
@@ -163,23 +156,12 @@ public:
 
 	// Return all events listened to by the given object
 	// TODO: make a list tracking all listened events of an object
-	virtual vector<pair<SEM_EVENT, SEM_EVENT_EXT>> get_listened_events(SEMObject* listener);
-
-	/* ONLY CALL THE POLL EVENTS FROM ANOTHER INSTANCE, IF POLLING IS SUPPOSED TO BE DONE EXTERNALLY */
+	virtual std::vector<std::pair<SEM_EVENT, SEM_EVENT_EXT>> get_listened_events(SEMObject* listener);
 
 	// Handles the next event in the SDL event queue
 	virtual void poll_next_event();
 	// Handles all events currently in the SDL event queue
 	virtual void poll_events();
-
-
-	/* CALL start() AND stop() ONLY, IF */
-
-	// Start the event tracking
-	// STARTS SEPERATE THREAD | ONLY CALL, IF YOUR APPLICATION CAN HANDLE FUNCTION CALLS FROM DIFFERENT THREADS
-	virtual void start();
-	// Stop the event tracking, also stops thread
-	virtual void stop();
 
 protected:
 	// Handle the given event and possibly notify listeners
@@ -190,14 +172,8 @@ protected:
 	virtual void notify_helper(const SDL_Event& event);
 
 private:
-
-	// If wished, SDLEventManager can fetch SDL events in a loop in its own thread, therefore able to fire immediately
-	bool m_run = false;
-	map<SEM_EVENT, map<SEM_EVENT_EXT, set<SEMObject*>>> m_listeners = {};
-
-	// The loop executed in a seperate thread, if "m_run" is true
-	virtual void loop();
-
+	// TODO: turn this into an unordered map
+	std::map<SEM_EVENT, std::map<SEM_EVENT_EXT, std::set<SEMObject*>>> m_listeners = {};
 };
 
 class SEMObject{
@@ -213,12 +189,12 @@ public:
 	// Start listening to the given event(s)
 	virtual int listen_event(SEM_EVENT event);
 	virtual int listen_event(SEM_EVENT event, SEM_EVENT_EXT ext);
-	virtual int listen_event(vector<pair<SEM_EVENT, SEM_EVENT_EXT>> event_list);
+	virtual int listen_event(std::vector<std::pair<SEM_EVENT, SEM_EVENT_EXT>> event_list);
 
 	// Stop listening to the given event(s)
 	virtual int drop_event(SEM_EVENT event);
 	virtual int drop_event(SEM_EVENT event, SEM_EVENT_EXT ext);
-	virtual int drop_event(vector<pair<SEM_EVENT, SEM_EVENT_EXT>> event_list);
+	virtual int drop_event(std::vector<std::pair<SEM_EVENT, SEM_EVENT_EXT>> event_list);
 
 	// Stops listening to all events
 	virtual int drop_all_events();

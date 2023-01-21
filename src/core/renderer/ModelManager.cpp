@@ -182,21 +182,15 @@ void ModelManager::remove_model(Model* model){
 	if(!model) return;
 	m_models.erase(model);
 
-	// Remove from buffer
+	// TODO: Remove from buffer
 
 	// Remove from list
 	if(m_cur_submeshes.find(model) == m_cur_submeshes.end()) return;
 	VertexMaterial* vm;
 	auto vm_it = m_cur_submeshes[model].begin();
 	for(vm_it; vm_it != m_cur_submeshes[model].end(); vm_it++){
-		vm = *vm_it;
-		m_world.erase(vm);
-		//delete vm;
+		m_world.erase(*vm_it);
 	}
-	//for(auto vm : m_cur_submeshes[model]){
-	//	delete (*m_world.find(vm));
-	//	m_world.erase(vm);
-	//}
 	m_cur_submeshes.erase(model);
 }
 

@@ -1,14 +1,2 @@
-﻿  GameLoop.cpp
-  SceneLoader.cpp
-  CameraNode.cpp
-  DynamicObject.cpp
-  FirstPersonCamera.cpp
-  LightNode.cpp
-  ModelNode.cpp
-  Node.cpp
-  PhysicsObject.cpp
-  Sprite.cpp
-  CollisionHandler.cpp
-  main.cpp
-  Code wird generiert...
+﻿  ModelManager.cpp
   TinySDLEngine.vcxproj -> C:\Users\Halil\source\repos\TinySDLEngine\x64\Debug\TinySDLEngine.exe

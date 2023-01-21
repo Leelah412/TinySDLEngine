@@ -17,8 +17,8 @@ bool SDLEventManager::add_event_listener(SEM_EVENT event, SEM_EVENT_EXT ext, SEM
 	// event isn't in the event list
 	if(!m_listeners.count(event)){
 
-		m_listeners.insert( pair<SEM_EVENT, map<SEM_EVENT_EXT, set<SEMObject*>>>(event, { {ext, {listener}} }) );
-		cout << "added new event, ext and listener" << endl;
+		m_listeners.insert(std::pair<SEM_EVENT, std::map<SEM_EVENT_EXT, std::set<SEMObject*>>>(event, { {ext, {listener}} }) );
+		std::cout << "added new event, ext and listener" << std::endl;
 		return true;
 	}
 
@@ -26,18 +26,18 @@ bool SDLEventManager::add_event_listener(SEM_EVENT event, SEM_EVENT_EXT ext, SEM
 	// since this does the same as the condition below, this isn't relevant for the execution, but could be important for debugging purposes
 	if(m_listeners[event].find(ext) == m_listeners[event].end()){
 		m_listeners[event][ext].insert(listener);
-		cout << "added extension and listener to event" << endl;
+		std::cout << "added extension and listener to event" << std::endl;
 		return true;
 	}
 #endif // DEBUG_MODE
 
 	if(m_listeners[event][ext].find(listener) != m_listeners[event][ext].end()){
-		cout << "WARNING: attempt to insert duplicate entry" << endl;
+		std::cout << "WARNING: attempt to insert duplicate entry" << std::endl;
 		return false;
 	}
 
 	m_listeners[event][ext].insert(listener);
-	cout << "added listener to event and extension" << endl;
+	std::cout << "added listener to event and extension" << std::endl;
 	return true;
 }
 
@@ -46,40 +46,48 @@ bool SDLEventManager::remove_event_listener(SEM_EVENT event, SEMObject* listener
 	// Event doesn't exist
 	if(!m_listeners.count(event)) return false;
 
+	std::map<SEM_EVENT_EXT, std::set<SEMObject*>>& list = m_listeners[event];
+	// Event has no listeners, but still exist for some reason -> remove and output warning
+	if(list.empty()){
+		m_listeners.erase(event);
+		std::cout << "WARNING: Event has no listeners, but still exist for some reason!" << std::endl;
+		return false;
+	}
+
 	// Only remove listeners with extended type "SEM_NULL"
 	if(keep_non_null_ext){
 
 		SEM_EVENT_EXT _ext = SEM_EVENT_EXT();
+		auto it_ext = list.find(_ext);
 		// No null extension exists for this event
-		if(!m_listeners[event].count(_ext)) return false;
-		// Event and extension exist -> erase the listener from the list
-		// Return false, if listener never listened to event
-		if(!m_listeners[event][_ext].erase(listener)) return false;
-
+		if(it_ext == list.end()) return false;
+		// Listener never listened to event
+		if(it_ext->second.find(listener) == it_ext->second.end()) return false;
+		it_ext->second.erase(listener);
 		// No need to keep events no one listens to in the list
-		if(!m_listeners[event][_ext].empty()) return true;
-		m_listeners[event].erase(_ext);
-		if(!m_listeners[event].empty()) return true;
-		m_listeners.erase(event);
+		if(it_ext->second.empty()) list.erase(_ext);
+		if(list.empty()) m_listeners.erase(event);
 
 		return true;
 	}
 
 	// Remove ALL attachments to type "event" for listener
-
 	bool erased = false;
-	set<SEMObject*>::iterator it;
-
-	for(auto ext : m_listeners[event]){
+	std::map<SEM_EVENT_EXT, std::set<SEMObject*>>::iterator it = list.begin();
+	for(it; it != list.end();){
 		// Remove listener, if it exists, otherwise continue
-		if( !(erased |= ext.second.erase(listener)) ) continue;
-		// Remove unlistened events
-		if(!ext.second.empty()) continue;
-		m_listeners[event].erase(ext.first);
+		if(it->second.find(listener) == it->second.end())
+			it++;
+		else{
+			it->second.erase(listener);
+			erased = true;
+			// Remove extended event, if no one listens to it 
+			if(it->second.empty()) list.erase(it++);
+		}
 	}
 
 	// Listener list empty check
-	if(m_listeners[event].empty()) m_listeners.erase(event);
+	if(list.empty()) m_listeners.erase(event);
 
 	return erased;
 }
@@ -104,7 +112,7 @@ bool SDLEventManager::remove_event_listener(SEM_EVENT event, SEM_EVENT_EXT ext, 
 }
 
 
-vector<pair<SEM_EVENT, SEM_EVENT_EXT>> SDLEventManager::get_listened_events(SEMObject* listener){
+std::vector<std::pair<SEM_EVENT, SEM_EVENT_EXT>> SDLEventManager::get_listened_events(SEMObject* listener){
 	return {};
 }
 
@@ -119,23 +127,10 @@ void SDLEventManager::poll_events(){
 	while(SDL_PollEvent(&ev)) handle_event(ev);
 }
 
-
-void SDLEventManager::start(){
-
-}
-void SDLEventManager::stop(){
-
-}
-
-void SDLEventManager::loop(){
-
-}
-
-
 void SDLEventManager::notify(SEM_EVENT event, SEM_EVENT_EXT ext, const SDL_Event& sdl_event){
-	//cout << "notifying listeners" << endl;
+	//std::cout << "notifying listeners" << std::endl;
 	auto lst = m_listeners[event];
-	map<SEM_EVENT_EXT, set<SEMObject*>>::iterator it;
+	std::map<SEM_EVENT_EXT, std::set<SEMObject*>>::iterator it;
 	SEM_EVENT_EXT cor_ext;
 
 	// find the correct extended event entry
@@ -145,7 +140,7 @@ void SDLEventManager::notify(SEM_EVENT event, SEM_EVENT_EXT ext, const SDL_Event
 		// functions for events without extensions are called no matter the extension ...
 		if(cor_ext.type == SEMEX_NULL){
 			for(auto obj : (*it).second){
-				//cout << "base event handler called" << endl;
+				//std::cout << "base event handler called" << std::endl;
 				obj->handle_event(sdl_event, event, ext);
 			}
 			// fired event has no extension in the first place -> all necessary functions have been executed already, so stop
@@ -159,7 +154,7 @@ void SDLEventManager::notify(SEM_EVENT event, SEM_EVENT_EXT ext, const SDL_Event
 		// found the correct extension
 		// execute all functions for this event
 		for(auto obj : (*it).second){
-			//cout << "extended event handler called" << endl;
+			//std::cout << "extended event handler called" << std::endl;
 			obj->handle_event(sdl_event, event, ext);
 		}
 
@@ -242,7 +237,7 @@ int SEMObject::listen_event(SEM_EVENT event, SEM_EVENT_EXT ext){
 
 }
 
-int SEMObject::listen_event(vector<pair<SEM_EVENT, SEM_EVENT_EXT>> event_list){
+int SEMObject::listen_event(std::vector<std::pair<SEM_EVENT, SEM_EVENT_EXT>> event_list){
 	int fail_count = 0;
 	for(auto ev : event_list){
 		fail_count += (int) EventManager->add_event_listener(ev.first, ev.second, this);
@@ -259,7 +254,7 @@ int SEMObject::drop_event(SEM_EVENT event, SEM_EVENT_EXT ext){
 	return (int)EventManager->remove_event_listener(event, ext, this);
 }
 
-int SEMObject::drop_event(vector<pair<SEM_EVENT, SEM_EVENT_EXT>> event_list){
+int SEMObject::drop_event(std::vector<std::pair<SEM_EVENT, SEM_EVENT_EXT>> event_list){
 	int fail_count = 0;
 	for(auto ev : event_list){
 		fail_count += (int)EventManager->remove_event_listener(ev.first, ev.second, this);
