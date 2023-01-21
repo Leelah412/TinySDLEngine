@@ -482,7 +482,7 @@ void ModelManager::remove_free_vbo_space(const DisjointInterval& di){
 	if(m_vbo_space.find(size) == m_vbo_space.end()) return;
 	for(std::multimap<GLuint, DisjointInterval>::iterator it = m_vbo_space.lower_bound(size); it != m_vbo_space.upper_bound(size); it++){
 		if(it->second.start == _di.start && (it->second.end == _di.end)){
-			it = m_vbo_space.erase(it);
+			m_vbo_space.erase(it);
 			break;
 		}
 	}
