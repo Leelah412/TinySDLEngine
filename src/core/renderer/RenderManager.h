@@ -124,9 +124,9 @@ public:
 	/* LIGHT */
 	/*********/
 
-	const std::set<Light*>& get_active_lights(){ return m_lights; }
-	void activate_light(Light* light){ m_lights.insert(light); }
-	void deactivate_light(Light* light){ m_lights.erase(light); }
+	const std::set<Light*>& get_active_lights();
+	void activate_light(Light* light);
+	void deactivate_light(Light* light);
 
 private:
 	std::vector<RenderOperation*> m_render_sequence;				// Rendering sequence

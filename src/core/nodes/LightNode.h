@@ -37,6 +37,7 @@ public:
 	virtual std::string get_class_name() override;
 private:
 	Light* m_light = nullptr;
+	bool m_active = false;
 	
 };
 

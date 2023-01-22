@@ -205,6 +205,11 @@ void RenderManager::unbind(Shader* sh){
 	set_shader_state(nullptr);
 }
 
+
+/**********/
+/* CAMERA */
+/**********/
+
 const std::set<Camera*>& RenderManager::get_active_cameras(){
 	return m_active_cameras;
 }
@@ -217,6 +222,20 @@ void RenderManager::deactivate_camera(Camera* camera){
 	m_active_cameras.erase(camera);
 }
 
+
+/*********/
+/* LIGHT */
+/*********/
+
+const std::set<Light*>& RenderManager::get_active_lights(){
+	return m_lights;
+}
+void RenderManager::activate_light(Light* light){
+	m_lights.insert(light);
+}
+void RenderManager::deactivate_light(Light* light){
+	m_lights.erase(light);
+}
 
 
 }

@@ -194,8 +194,6 @@ typedef struct MeshRender : public RenderOperation{
 		IRenderManager->bind((Shader*)nullptr);
 		Shader* prev_sh = nullptr;
 
-		std::cout << "rendering" << std::endl;
-
 		// TODO: for camera{ for shader{ for material { <render models with same material + no tmp. uniform changes as batch>
 		// render world once for each active camera
 		for(auto cam : cameras){

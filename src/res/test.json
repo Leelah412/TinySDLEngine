@@ -57,6 +57,7 @@
                 }
             },
             "light": {
+                "active": true,
                 "children": [],
                 "class": "LightNode",
                 "light": {

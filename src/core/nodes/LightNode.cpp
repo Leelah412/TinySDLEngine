@@ -22,7 +22,6 @@ void LightNode::set_light(Light* light){
 }
 
 void LightNode::set_light(const Light& light){
-	delete m_light;
 	set_light(new Light(light));
 }
 
@@ -46,15 +45,19 @@ void LightNode::update_global_rotation(){
 
 void LightNode::turn_on(){
 	IRenderManager->activate_light(m_light);
+	m_active = true;
 }
 
 void LightNode::turn_off(){
 	IRenderManager->deactivate_light(m_light);
+	m_active = false;
 }
 
 JSON LightNode::save(){
 	JSON data = Node::save();
 	if(is_exempt_from_saving()) return data;
+
+	data["active"] = m_active;
 
 	if(!m_light) return data;
 
@@ -127,12 +130,13 @@ void LightNode::load(const JSON& data){
 
 	set_light(new Light());
 
+	(data.contains("active") && (data["active"]).is_boolean() && data["active"]) ? turn_on() : turn_off();
+
 	JSON light;
 	if(!data.contains("light") || !(light = data["light"]).is_object()){
 		std::cout << "WARNING: Loading 'LightNode': 'light' doesn't exist or is not an object!" << std::endl;
 		return;
 	}
-
 
 	JSON it1;
 
