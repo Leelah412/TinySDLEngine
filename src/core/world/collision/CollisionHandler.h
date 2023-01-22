@@ -12,8 +12,6 @@
 #include <set>
 #include <limits>
 
-//#define USE_COLLISION_HANDLER extern tse::CollisionHandler* collision_handler;			// Write this after the include/define directives to be able to use the collision handler
-//#define ICollisionHandler collision_handler												// Define "ICollisionHandler" for a simpler access to the default instance
 #define ICollisionHandler tse::CollisionHandler::get_default_collision_handler()
 #define SetCollisionHandler(CH) tse::CollisionHandler::set_default_collision_handler(CH)
 

@@ -5,16 +5,19 @@
 #include <renderer/RenderManager.h>
 #include "types.h"
 #include <util/json/single_include/nlohmann/json.hpp>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <SDL.h>
+
 #include <vector>
 #include <set>
 #include <queue>
 #include <map>
 #include <string>
 #include <algorithm>
+#include <iostream>
+
+#define NodeName(x) #x
 
 // Event manager for node tree event.
 // Anytime a parent/child is added/switched/deleted, anytime the root object is meant to be switched,
@@ -23,12 +26,8 @@
 // Uses "Object"s observer system to handle signals.
 // All instances wanting to listen to node tree events must derive from "Object".
 
-//#define USE_NODE_TREE_EVENT_MANAGER extern tse::NodeTreeEventManager* nt_event_manager;
-//#define NTEventManager nt_event_manager
 #define NTEventManager tse::NodeTreeEventManager::get_default_ntem()
 
-//#define USE_DEFAULT_NODE_TREE extern tse::NodeTree* default_node_tree;
-//#define INodeTree default_node_tree
 #define INodeTree tse::NodeTree::get_default_node_tree()
 #define SetNodeTree(NT) tse::NodeTree::set_default_node_tree(NT)
 
@@ -67,7 +66,6 @@ public:
 	void node_to_delete(Node* node);						// notify, that node is about to be deleted
 
 	// COMMANDS
-	// TODO: why do we have switch roots in node tree manager AND node tree, and the former does absolutely nothing?!?
 	void switch_root(Node* new_root);						// command to switch the root to the given node
 
 	// LISTENERS
@@ -134,16 +132,19 @@ public:
 	virtual void set_yaw(float yaw);
 	virtual void set_roll(float roll);
 	virtual glm::vec3 get_global_rotation() const;
+	virtual float get_global_pitch();
+	virtual float get_global_yaw();
+	virtual float get_global_roll();
 	virtual void update_global_rotation();
 
 	uint64_t get_ID() const;
 	std::string get_unique_name() const;
 	bool set_unique_name(std::string name);						// assign a new unique name for the node | returns false, if name already exists
-	std::string get_class_name() const;
 
 	Node* get_parent() const;
 	virtual void set_parent(Node* parent);
-	// switch parent and possibly keep the global dimensions of the node
+	// Switch parent and possibly keep the global dimensions of the node
+	// Use this, if updating transformation of child in any way is desired
 	virtual void switch_parent(Node* parent, bool keep_gl_pos = false, bool keep_gl_rot = false, bool keep_gl_scale = false);
 
 	const std::vector<Node*>& get_children() const;
@@ -155,13 +156,10 @@ public:
 	void delete_child(Node* child);
 	void delete_child_by_id(uint64_t id);
 	void remove_all_children();						// deletes all children and their entire existence
-	std::vector<Node*> get_all_children_of_class(const std::string& class_name, bool recursive = false);		// return all children of the given class type
+	//std::vector<Node*> get_all_children_of_class(const std::string& class_name, bool recursive = false);		// return all children of the given class type
 
 	virtual JSON save();										// Save Node to JSON
 	virtual void load(const JSON& data);						// Load Node from JSON data
-
-protected:
-	std::string m_class;										// save class name for limiting the number necessary include directives
 
 private:
 	static uint64_t m_node_count;

@@ -3,7 +3,6 @@
 namespace tse{
 
 DynamicObject::DynamicObject(){
-	m_class = "DynamicObject";
 	m_is_dynamic = true;
 	set_unique_name("dynamic_object_" + to_string(get_ID()));
 }

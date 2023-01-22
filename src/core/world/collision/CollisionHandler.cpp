@@ -3,7 +3,6 @@
 namespace tse{
 
 // since we add listener to node tree event manager in the constructor, collision handler must be inited manually
-//CollisionHandler* collision_handler = nullptr;
 CollisionHandler* CollisionHandler::s_default_collision_handler = nullptr;
 
 

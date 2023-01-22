@@ -20,6 +20,14 @@ Camera::~Camera(){
 
 }
 
+PROJECTION Camera::get_projection_type() const{
+	return m_type;
+}
+
+void Camera::set_projection_type(PROJECTION projection){
+	m_type = projection;
+}
+
 const glm::mat4& Camera::get_camera_view() const{
 	return m_projection * m_view;
 }
@@ -41,7 +49,8 @@ void Camera::update_projection_matrix(){
 	else{
 		m_projection = glm::perspective(glm::radians(m_fov / 2), m_aspect_ratio, m_near_plane, m_far_plane);
 	}
-	m_view = glm::translate(glm::mat4(1.0f), m_position);
+	//m_view = glm::translate(glm::mat4(1.0f), m_position);
+	update_view_matrix();
 
 }
 
@@ -51,6 +60,13 @@ const glm::mat4& Camera::get_view_matrix() const{
 
 void Camera::set_view_matrix(glm::mat4 matrix){
 	m_view = matrix;
+}
+
+void Camera::update_view_matrix(){
+	m_view = glm::rotate(glm::mat4(1.0f), glm::radians(m_pitch), glm::vec3(1, 0, 0));
+	m_view = glm::rotate(m_view, glm::radians(m_yaw), glm::vec3(0, 1, 0));
+	m_view = glm::rotate(m_view, glm::radians(m_roll), glm::vec3(0, 0, 1));
+	m_view = glm::translate(m_view, m_position);
 }
 
 int Camera::get_viewport_x(){

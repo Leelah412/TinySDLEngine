@@ -31,6 +31,9 @@ public:
 	// Turn the light off
 	virtual void turn_off();
 
+	virtual JSON save() override;
+	virtual void load(const JSON& data) override;
+
 private:
 	Light* m_light = nullptr;
 	

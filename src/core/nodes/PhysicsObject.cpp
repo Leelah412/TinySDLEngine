@@ -4,7 +4,6 @@
 namespace tse{
 
 PhysicsObject::PhysicsObject(){
-	m_class = "PhysicsObject";
 	m_is_dynamic = false;
 	set_unique_name("physics_object_" + to_string(get_ID()));
 	//cout << "node with unique name " << get_unique_name() << " initialized" << endl;

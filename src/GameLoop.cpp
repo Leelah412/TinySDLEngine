@@ -416,6 +416,9 @@ bool GameLoop::init_gl(){
 	lightnode->turn_on();
 	camnode->add_child(lightnode);
 	
+	// For testing purposes, call the SceneLoader save function
+	SceneLoader::save_scene("src/res/test.json");
+
 	// render on screen using camera of camnode
 	camnode->activate_camera();
 

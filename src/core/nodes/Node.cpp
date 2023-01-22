@@ -93,7 +93,6 @@ Node::Node(){
 	cout << "node with unique name " << m_unique_name << " initialized" << endl;
 	m_parent = NULL;
 	m_children = {};
-	m_class = "Node";
 }
 
 Node::~Node(){
@@ -233,6 +232,15 @@ void Node::set_roll(float roll){
 glm::vec3 Node::get_global_rotation() const{
 	return m_global_rotation;
 }
+float Node::get_global_pitch(){
+	return m_global_rotation.x;
+}
+float Node::get_global_yaw(){
+	return m_global_rotation.y;
+}
+float Node::get_global_roll(){
+	return m_global_rotation.z;
+}
 void Node::update_global_rotation(){
 	glm::vec3 p = m_parent ? m_parent->m_rotation : glm::vec3();
 	glm::vec3 gl = p + m_rotation;
@@ -258,10 +266,6 @@ bool Node::set_unique_name(std::string name){
 	// push the name to list
 	m_used_unique_names.insert(m_unique_name);
 	return true;
-}
-
-std::string Node::get_class_name() const{
-	return m_class;
 }
 
 /* PARENT/CHILD MUTATORS */
@@ -303,10 +307,16 @@ void Node::switch_parent(Node* parent, bool keep_gl_pos, bool keep_gl_rot, bool 
 
 	set_parent(parent);
 
-	// set local dimensions to new parent minus current global dimensions, if desired
+	// keep your global transformation, where you are currently, if desired
+	// otherwise keeps local transformation
 	if(keep_gl_pos)	set_position(pos.x - parent->get_global_position().x, pos.y - parent->get_global_position().y, pos.z - parent->get_global_position().z);
+	else update_global_position();
+
 	if(keep_gl_rot) set_rotation(rot - parent->get_global_rotation());
+	else update_global_rotation();
+
 	if(keep_gl_scale) set_scale(scale / parent->get_global_scale());
+	else update_global_scale();
 }
 
 const vector<Node*>& Node::get_children() const{
@@ -356,6 +366,7 @@ void Node::remove_all_children(){
 	m_children.clear();
 }
 
+#if 0
 std::vector<Node*> Node::get_all_children_of_class(const std::string& class_name, bool recursive){
 	std::vector<Node*> vec = {};
 
@@ -384,6 +395,7 @@ std::vector<Node*> Node::get_all_children_of_class(const std::string& class_name
 
 	return vec;
 }
+#endif
 
 JSON Node::save(){
 	JSON json = JSON();
@@ -417,6 +429,79 @@ JSON Node::save(){
 }
 
 void Node::load(const JSON& data){
+
+	if(data.contains("name") && data["name"].is_string()){
+		set_unique_name(data["name"]);
+	}
+	else{
+		std::cout << "WARNING: Loading 'Node': 'name' doesn't exist or is not a string!" << std::endl;
+	}
+
+	JSON it1;
+
+	// POSITION
+	if(data.contains("position") && (it1 = data["position"]).is_object()){
+		if(it1.contains("x") && it1["x"].is_number()){
+			set_position_x(it1["x"]);
+		}
+		else{
+			set_position_x(0.0f);
+			std::cout << "WARNING: Loading 'Node': 'position.x' doesn't exist or is not a number!" << std::endl;
+		}	
+		
+		if(it1.contains("y") && it1["y"].is_number()){
+			set_position_y(it1["y"]);
+		}
+		else{
+			set_position_y(0.0f);
+			std::cout << "WARNING: Loading 'Node': 'position.y' doesn't exist or is not a number!" << std::endl;
+		}	
+		
+		if(it1.contains("z") && it1["z"].is_number()){
+			set_position_z(it1["z"]);
+		}
+		else{
+			set_position_z(0.0f);
+			std::cout << "WARNING: Loading 'Node': 'position.z' doesn't exist or is not a number!" << std::endl;
+		}
+	}
+	else{
+		set_position(glm::vec3(0.0f));
+		std::cout << "WARNING: Loading 'Node': 'position' doesn't exist or is not an object!" << std::endl;
+	}
+
+	// ROTATION
+	if(data.contains("rotation") && (it1 = data["rotation"]).is_object()){
+		if(it1.contains("pitch") && it1["pitch"].is_number()){
+			set_pitch(it1["pitch"]);
+		}
+		else{
+			set_pitch(0.0f);
+			std::cout << "WARNING: Loading 'Node': 'rotation.pitch' doesn't exist or is not a number!" << std::endl;
+		}
+
+		if(it1.contains("yaw") && it1["yaw"].is_number()){
+			set_yaw(it1["yaw"]);
+		}
+		else{
+			set_yaw(0.0f);
+			std::cout << "WARNING: Loading 'Node': 'rotation.yaw' doesn't exist or is not a number!" << std::endl;
+		}
+
+		if(it1.contains("roll") && it1["roll"].is_number()){
+			set_roll(it1["roll"]);
+		}
+		else{
+			set_roll(0.0f);
+			std::cout << "WARNING: Loading 'Node': 'rotation.roll' doesn't exist or is not a number!" << std::endl;
+		}
+	}
+	else{
+		set_rotation(glm::vec3(0.0f));
+		std::cout << "WARNING: Loading 'Node': 'rotation' doesn't exist or is not an object!" << std::endl;
+	}
+
+	// TODO: load scale
 
 }
 

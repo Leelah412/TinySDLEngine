@@ -1,5 +1,6 @@
 #include "SceneLoader.h"
 
+#include <queue>
 #include <deque>
 #include <unordered_set>
 #include <unordered_map>
@@ -160,7 +161,8 @@ void SceneLoader::load_scene(const std::string& path){
 				std::cout << "WARNING: Trying to adopt child, that doesn't exist! Try next child." << std::endl;
 				continue;
 			}
-			new_node->add_child(done[ch]);
+			// Call "switch_parent" instead of "add_parent", since we want the child to have its transformation updated based on new parent immediately
+			new_node->switch_parent(done[ch]);
 		}
 
 		done.insert(std::pair<std::string, Node*>(front, new_node));
@@ -187,9 +189,47 @@ void SceneLoader::load_scene(const std::string& path){
 	//}
 }
 
-void SceneLoader::save_scene(JSON nodes){
+void SceneLoader::save_scene(const std::string& path){
+
+	std::ofstream o(path.c_str());
+	if(!o.is_open()){
+		std::cerr << "ERROR: Couldn't open path to save Scene! Abort." << std::endl;
+		return;
+	}
+
+	Node* root = INodeTree->get_root_node();
+
+	std::queue<Node*> q;
+	q.push(root);
+
+	JSON nodes = JSON::object();
+	std::map<std::string, JSON> node_map;
+	Node* front;
+	while(!q.empty()){
+		front = q.front();
+		q.pop();
+
+		for(auto ch : front->get_children()){
+			q.push(ch);
+		}
+		node_map.insert(std::pair<std::string, JSON>(front->get_unique_name(), front->save()));
+	}
+
+	JSON data = {
+		{"type", "scene"},
+		{"body",
+			{
+				{"root", root->get_unique_name()},
+				{"nodes", node_map}
+			}
+		}
+	};
+
+	o << std::setw(4) << data << std::endl;
+	o.close();
 
 }
+
 
 }
 

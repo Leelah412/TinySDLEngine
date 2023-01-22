@@ -20,6 +20,9 @@ namespace tse{
 		Camera(PROJECTION type, int width, int height);
 		virtual ~Camera();
 
+		PROJECTION get_projection_type() const;
+		virtual void set_projection_type(PROJECTION projection);
+
 		// Projection * View
 		const glm::mat4& get_camera_view() const;
 
@@ -29,6 +32,8 @@ namespace tse{
 		virtual void update_projection_matrix();
 		const glm::mat4& get_view_matrix() const;
 		virtual void set_view_matrix(glm::mat4 matrix);
+		// Update view matrix based on current position and rotation
+		virtual void update_view_matrix();
 
 		int get_viewport_x();
 		virtual void set_viewport_x(int x);

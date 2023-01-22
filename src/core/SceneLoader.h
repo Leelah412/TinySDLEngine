@@ -29,8 +29,10 @@ using NodeMap = std::unordered_map<std::string, SceneNodeCreator>;
 class SceneLoader{
 
 public:
+	// Load the scene from the given path
 	static void load_scene(const std::string& path);
-	static void save_scene(JSON nodes);
+	// Save the scene based on the current node tree to the given path
+	static void save_scene(const std::string& path);
 
 protected:
 	static void register_node(const std::string& class_name, SceneNodeCreator reg_func){

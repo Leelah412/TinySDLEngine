@@ -31,12 +31,15 @@ public:
 	Camera* get_camera() const;
 	virtual void set_camera(Camera* camera);
 
+	virtual JSON save() override;
+	virtual void load(const JSON& data) override;
+
 protected:
 	Camera* m_camera = nullptr;
 
-	short m_draw_index = -1;				// Position in the render sequence; negative, if inactive
-	bool m_draw_on_window = true;			// Draw into the window framebuffer, if this is true, otherwise draw into an invisible one
-	std::string m_framebuffer_name = "";	// Name of the framebuffer to draw onto; draws into default, if empty string or "m_draw_on_window" is true
+	//short m_draw_index = -1;				// Position in the render sequence; negative, if inactive
+	//bool m_draw_on_window = true;			// Draw into the window framebuffer, if this is true, otherwise draw into an invisible one
+	//std::string m_framebuffer_name = "";	// Name of the framebuffer to draw onto; draws into default, if empty string or "m_draw_on_window" is true
 	// m_viewport_rect						// Determines part of default framebuffer (i.e. visible window) to draw on
 };
 
