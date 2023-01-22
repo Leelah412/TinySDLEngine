@@ -3,6 +3,9 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtx/hash.hpp>
+#include <json/single_include/nlohmann/json.hpp>
+#include <types.h>
+
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -29,7 +32,8 @@ public:
 	};
 
 	static Obj* load(const std::string& path);
-	static void create_msh_from_obj(const std::string& obj_path, const std::string& msh_name){
+	// Create a JSON mesh file from OBJ data
+	static void create_mesh_from_obj(const std::string& obj_path, const std::string& msh_name){
 
 	}
 

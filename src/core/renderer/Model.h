@@ -24,14 +24,18 @@ public:
 
 	// Load mesh from path
 	bool load_mesh(const std::string& path, bool unique = true);
+	// Save mesh to the given path
+	// Saving will (force)reload the mesh from the given path again, so we have to tell again,
+	// whether we want the mesh to be unique to the current Model or not
+	bool save_mesh(const std::string& path, bool unique = true);
 	// Set current mesh to given mesh
 	bool set_mesh(Mesh* mesh, bool unique = true);
 	// Don't use current mesh
 	void reset_mesh();
-	const Mesh* get_mesh();
+	Mesh* get_mesh() const;
 
-	const std::unordered_map<VertexData*, VertexMaterial>& get_vertex_material_map();
-	const std::vector<Ref<VertexMaterial>> get_vertex_materials();
+	const std::unordered_map<VertexData*, VertexMaterial>& get_vertex_material_map() const;
+	std::vector<Ref<VertexMaterial>> get_vertex_materials();
 
 	virtual void add_vertex_material(VertexData* v, Material* m, std::vector<Uniform> uniform_changes = {});
 	// Assign material to an existing VertexMaterial
@@ -39,11 +43,16 @@ public:
 	// Remove material of the given vertex data
 	virtual void remove_material(VertexData* v);
 
-	unsigned int get_model_id();
+	unsigned int get_model_id() const;
 
 protected:
 	Mesh* m_mesh;															// Reference to the mesh of the model
 	std::unordered_map<VertexData*, VertexMaterial> m_vertex_materials;		// Applies Materials to Mesh data
+
+	// Determines, whether we need to create a new file for the model, when saving the scene or can point to an existing one
+	// Non-unique assumes, that the Mesh is loaded from its given Resource path
+	// For unique Meshes, we have to differentiate between 
+	//bool m_unique = false;
 
 	// Initialize material list for the submeshes of the current mesh, without any assigned material
 	// TODO: assign default material

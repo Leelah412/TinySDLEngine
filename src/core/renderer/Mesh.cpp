@@ -24,6 +24,7 @@ void Mesh::load_mesh(const std::string& path){
 	// add new one
 	float* vdata = new float[obj->vertices.size() * (3 + 2 + 3)];
 	for(int i = 0; i < obj->vertices.size(); i++){
+		// TODO: check for a smarter method
 		// what am i even doing
 		ObjLoader::ObjVertex& vert = obj->vertices.at(i);
 		// position
@@ -43,31 +44,51 @@ void Mesh::load_mesh(const std::string& path){
 	// TODO: convert obj to own mesh type
 
 	delete[] vdata;
+
+	m_modified = false;
 }
 
-void Mesh::add_submesh(VertexData* mesh){
-	m_submeshes.insert(mesh);
+void Mesh::save_mesh(const std::string& path){
+
+}
+
+void Mesh::add_submesh(VertexData* mesh, GLint idx){
+	m_submeshes.push_back(mesh);
+	m_modified = true;
 }
 
 void Mesh::add_submesh(const void* vertex_data, GLuint vertex_size, const std::vector<GLuint>& indices){
-	m_submeshes.insert(new VertexData(vertex_data, vertex_size, indices));
+	m_submeshes.push_back(new VertexData(vertex_data, vertex_size, indices));
+	m_modified = true;
 }
 
-const VertexData* Mesh::get_submesh(VertexData* mesh) const{
-	auto it = m_submeshes.find(mesh);
+VertexData* Mesh::get_submesh(GLuint idx) const{
+	if(idx >= m_submeshes.size()) return nullptr;
+	return m_submeshes.at(idx);
+}
+
+VertexData* Mesh::get_submesh(VertexData* mesh) const{
+	auto it = std::find(m_submeshes.begin(), m_submeshes.end(), mesh);
 	return (it != m_submeshes.end()) ? *it : nullptr;
 }
 
 bool Mesh::has_submesh(VertexData* mesh) const{
-	return m_submeshes.find(mesh) != m_submeshes.end();
+	return std::find(m_submeshes.begin(), m_submeshes.end(), mesh) != m_submeshes.end();
+}
+
+void Mesh::remove_submesh(GLuint idx){
+	if(idx >= m_submeshes.size()) return;
+	m_submeshes.erase(m_submeshes.begin() + idx);
 }
 
 void Mesh::remove_submesh(VertexData* mesh){
 	// TODO: delete, or not delete, that is here the question
-	m_submeshes.erase(mesh);
+	auto it = std::find(m_submeshes.begin(), m_submeshes.end(), mesh);
+	if(it == m_submeshes.end()) return;
+	m_submeshes.erase(it);
 }
 
-const std::set<VertexData*>& Mesh::get_submesh_list() const{
+const std::vector<VertexData*>& Mesh::get_submesh_list() const{
 	return m_submeshes;
 }
 

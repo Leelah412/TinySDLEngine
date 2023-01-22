@@ -29,17 +29,21 @@ public:
 
 	// Load mesh from file
 	virtual void load_mesh(const std::string& path);
-	// Add submesh
-	virtual void add_submesh(VertexData* mesh);
+	// Save mesh to file
+	virtual void save_mesh(const std::string& path);
+	// Add submesh (TODO: at the given index, if desired)
+	virtual void add_submesh(VertexData* mesh, GLint idx = -1);
 	// Add a submesh from raw data
 	virtual void add_submesh(const void* vertex_data, GLuint vertex_size, const std::vector<GLuint>& indices);
 	// Return submesh at given index
-	const VertexData* get_submesh(VertexData* mesh) const;
+	VertexData* get_submesh(GLuint idx) const;
+	VertexData* get_submesh(VertexData* mesh) const;
 	// Check, if submesh is part of mesh
 	bool has_submesh(VertexData* mesh) const;
 	// Remove submesh at given index
+	virtual void remove_submesh(GLuint idx);
 	virtual void remove_submesh(VertexData* mesh);
-	const std::set<VertexData*>& get_submesh_list() const;
+	const std::vector<VertexData*>& get_submesh_list() const;
 	// Remove all currently attached submeshes
 	virtual bool delete_mesh();
 
@@ -49,7 +53,8 @@ public:
 	unsigned int mesh_index_count() const;
 
 private:
-	std::set<VertexData*> m_submeshes;					// Submeshes of the mesh
+	std::vector<VertexData*> m_submeshes;			// Submeshes of the mesh
+	bool m_modified = true;							// A Mesh is considered to be modified, if the data is/becomes inequivalent to the data in the filepath
 };
 
 }

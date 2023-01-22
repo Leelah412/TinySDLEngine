@@ -77,6 +77,15 @@
             },
             "node_2": {
                 "children": [],
+                "model": {
+                    "mesh": "src/res/mesh/Prop_Boat_1.obj",
+                    "vertex_material": [
+                        {
+                            "material": "",
+                            "shader": "src/res/shader/shader.glsl"
+                        }
+                    ]
+                },
                 "name": [
                     "node_2"
                 ],
@@ -89,7 +98,8 @@
                     "pitch": 0.0,
                     "roll": 0.0,
                     "yaw": 0.0
-                }
+                },
+                "visible": true
             },
             "node_4": {
                 "children": [],

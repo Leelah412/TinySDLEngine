@@ -398,17 +398,18 @@ std::vector<Node*> Node::get_all_children_of_class(const std::string& class_name
 #endif
 
 JSON Node::save(){
-	JSON json = JSON();
+	JSON data = JSON();
+	if(m_exempt_from_saving) return data;
 
 	// save position
-	json["position"] = {
+	data["position"] = {
 		{"x", m_position.x},
 		{"y", m_position.y},
 		{"z", m_position.z},
 	};
 	// TODO: save scale
 	// save rotation
-	json["rotation"] = {
+	data["rotation"] = {
 		{"pitch", m_rotation.x},
 		{"yaw", m_rotation.y},
 		{"roll", m_rotation.z},
@@ -416,16 +417,16 @@ JSON Node::save(){
 	// note: no need to save global position, scale, rotation, those will be calced relatively from the local versions
 
 	// node information
-	json["name"] = {m_unique_name};
+	data["name"] = {m_unique_name};
 	// no need to save parent information
 	//json["parent"] = {m_parent->m_unique_name};
 	std::vector<std::string> child_names;
 	for(Node* ch : m_children){
 		child_names.push_back(ch->m_unique_name);
 	}
-	json["children"] = child_names;
+	data["children"] = child_names;
 
-	return json;
+	return data;
 }
 
 void Node::load(const JSON& data){
@@ -503,6 +504,14 @@ void Node::load(const JSON& data){
 
 	// TODO: load scale
 
+}
+
+bool Node::is_exempt_from_saving(){
+	return m_exempt_from_saving;
+}
+
+void Node::set_exempt_from_saving(bool exempt){
+	m_exempt_from_saving = exempt;
 }
 
 

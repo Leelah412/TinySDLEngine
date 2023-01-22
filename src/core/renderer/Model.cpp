@@ -28,13 +28,19 @@ bool Model::load_mesh(const std::string& path, bool unique){
 		m_mesh = (Mesh*)ResManager->load_resource(path, RES_TYPE::MESH);
 	}
 	if(!m_mesh) return false;
+	//m_unique = unique;
 
 	init_vertex_material_list();
 	return true;
 }
 
+bool Model::save_mesh(const std::string& path, bool unique){
+	return false;
+}
+
 bool Model::set_mesh(Mesh* mesh, bool unique){
 	if(!mesh) return false;
+	//m_unique = unique;
 	// mesh is managed by resource manager
 	if(ResManager->resource_loaded(mesh->get_filepath(), mesh) && load_mesh(mesh->get_filepath(), unique))
 		return true;
@@ -47,19 +53,20 @@ bool Model::set_mesh(Mesh* mesh, bool unique){
 
 void Model::reset_mesh(){
 	ResManager->unload_resource(m_mesh);
+	//m_unique = false;
 	m_mesh = nullptr;
 	m_vertex_materials = {};
 }
 
-const Mesh* Model::get_mesh(){
+Mesh* Model::get_mesh() const{
 	return m_mesh;
 }
 
-const std::unordered_map<VertexData*, VertexMaterial>& Model::get_vertex_material_map(){
+const std::unordered_map<VertexData*, VertexMaterial>& Model::get_vertex_material_map() const{
 	return m_vertex_materials;
 }
 
-const std::vector<Ref<VertexMaterial>> Model::get_vertex_materials(){
+std::vector<Ref<VertexMaterial>> Model::get_vertex_materials(){
 	std::vector<Ref<VertexMaterial>> vals;
 	for(auto& vm : m_vertex_materials){
 		vals.push_back(std::ref(vm.second));
@@ -92,7 +99,7 @@ void Model::remove_material(VertexData* v){
 	vm->second.uniform_changes = {};
 }
 
-unsigned int Model::get_model_id(){
+unsigned int Model::get_model_id() const{
 	return m_model_id;
 }
 

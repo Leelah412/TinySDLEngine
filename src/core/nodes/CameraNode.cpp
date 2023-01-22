@@ -44,6 +44,9 @@ void CameraNode::set_camera(Camera* camera){
 
 JSON CameraNode::save(){
 	JSON data = Node::save();
+	if(is_exempt_from_saving()) return data;
+
+	if(!m_camera) return data;
 
 	glm::mat4 vm = m_camera->get_view_matrix();
 	JSON view = {

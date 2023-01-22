@@ -161,12 +161,18 @@ public:
 	virtual JSON save();										// Save Node to JSON
 	virtual void load(const JSON& data);						// Load Node from JSON data
 
+	bool is_exempt_from_saving();
+	void set_exempt_from_saving(bool exempt);
+
 private:
 	static uint64_t m_node_count;
 	static std::set<std::string> m_used_unique_names;			// set of unique names already in use to avoid duplicats
 
 	uint64_t m_ID;
 	std::string m_unique_name;									// unique name for direct access
+	// FIXME: when loading scene, this will orphan the children of this node, and the nodes parent will skip these nodes,
+	// which is not what we want, so before ever setting this true, we have to find a way to handle that!
+	bool m_exempt_from_saving = false;							// If true, don't save Node 
 
 	Node* m_parent;
 	std::vector<Node*> m_children;

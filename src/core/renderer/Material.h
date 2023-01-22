@@ -12,44 +12,100 @@
 namespace tse{
 
 typedef struct Uniform{
+	// TODO: maybe do this later
+#if 0
+	typedef union UniformValue{
+		Texture* texture2D;
+		Texture** texture3D;
+		bool boolean;
+		float fl;
+		int integer;
+		unsigned int uinteger;
+		glm::vec2 vec2;
+		glm::vec3 vec3;
+		glm::vec4 vec4;
+		glm::ivec2 ivec2;
+		glm::ivec3 ivec3;
+		glm::ivec4 ivec4;
+		glm::mat2 mat2;
+		glm::mat3 mat3;
+		glm::mat4 mat4;
+	};
+#endif
+
 	GLenum uniform_type;
 	std::string uniform_name;
-	void* value = nullptr;
-	GLuint value_size = 0;
+	//UniformValue value;
+	void* value;
+	GLuint value_size;
 
-	//bool is_buffer = false;
-	//unsigned int buffer_size = 0;
+	// only used for array types
 	//bool is_array = false;
 	//unsigned int array_size = 0;
 
-	bool operator==(const Uniform& comp) const{
-		if(uniform_type != comp.uniform_type) return false;
-		if(uniform_name != comp.uniform_name) return false;
-		if(value != comp.value) return false;
-		if(value_size != comp.value_size) return false;
-		return true;
-	}
+	//bool is_buffer = false;
+	//unsigned int buffer_size = 0;
+
 
 	bool operator<(const Uniform& comp) const{
 		if(uniform_type != comp.uniform_type) return this->uniform_type < comp.uniform_type;
 		if(uniform_name != comp.uniform_name) return this->uniform_name < comp.uniform_name;
-		if(value != comp.value) return this->value < comp.value;
-		if(value_size != comp.value_size) return this->value_size < comp.value_size;
-		return false;
+		return value < comp.value;
+
+		// TODO: add more stuff
+#if 0
+		switch(uniform_type){
+			case GL_FLOAT_VEC2:
+			case GL_FLOAT_VEC3:
+			case GL_FLOAT_VEC4:
+			case GL_INT_VEC2:
+			case GL_INT_VEC3:
+			case GL_INT_VEC4:
+			case GL_BOOL: return value.boolean < comp.value.boolean;
+			case GL_BOOL_VEC2: return value.ivec2 == comp.value.ivec2;
+			case GL_BOOL_VEC3:
+			case GL_BOOL_VEC4:
+			case GL_FLOAT_MAT2:
+			case GL_FLOAT_MAT3:
+			case GL_FLOAT_MAT4:
+			case GL_SAMPLER_2D:
+			case GL_SAMPLER_2D_SHADOW: return value.texture2D < comp.value.texture2D;
+			case GL_SAMPLER_3D: return value.texture3D < comp.value.texture3D;
+
+			default: return false;
+		}
+#endif
+
+	}
+
+	bool operator==(const Uniform& comp) const{
+		return *this != comp;
 	}
 
 	bool operator!=(const Uniform& comp) const{
-		return !(*this == comp);
+		return (*this < comp) || (comp < *this);
 	}
+
+	template<GLenum E, typename T>
+	struct UniformGetter{
+		void* value(const Uniform& uni){
+			switch(uni.uniform_type){
+
+			}
+		}
+	};
 };
+
+
 
 enum class TEXTURE_TYPE {ALBEDO, NORMAL, METALLIC, ROUGHNESS};
 
+// TODO: add ability to create material from path
 // TODO: like for shaders, use a list of material uniform variables to create the materials, instead of using inheritance
 // read material types and data from files, where shadertype/filepath/string shall also be specified
 // 
 // Each material can have a shader bound to it, while a shader can belong to multiple materials
-class Material{
+class Material : public Resource{
 	
 public:
 	Material();

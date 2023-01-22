@@ -7,16 +7,20 @@
 //  - UV Coordinate 1 (float x2)
 //  - UV Coordinate 2 (float x2)
 
-#submesh-start
-
-#vertices
-
-#normals
-
-#tris
-
-
-#material
-src/materials/material.json
-
-#submesh-end
+// Models hold submesh - material combinations for a given mesh
+{
+    "type": "mesh",
+    "body": {
+		"submeshes": [
+			{
+				"vertices": [],
+				"normals": [],
+				"tris": [],
+				"material": {
+					
+				}
+				"material_path": "src/materials/material.json"
+			}
+		],
+    }
+}

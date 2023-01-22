@@ -392,7 +392,7 @@ bool GameLoop::init_gl(){
 	//Mesh* mesh = new Mesh((const void*)vertices, sizeof(vertices), indices);
 	//Model* model = new Model(mesh);
 	Model* model = new Model("src/res/mesh/Prop_Boat_1.obj");
-	//model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
+	model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
 
 	ModelNode* parent = new ModelNode(model);
 	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);

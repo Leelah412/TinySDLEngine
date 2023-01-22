@@ -54,6 +54,9 @@ void LightNode::turn_off(){
 
 JSON LightNode::save(){
 	JSON data = Node::save();
+	if(is_exempt_from_saving()) return data;
+
+	if(!m_light) return data;
 
 	data["light"] = {
 		{

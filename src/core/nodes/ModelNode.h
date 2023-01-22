@@ -45,6 +45,8 @@ public:
 	bool is_visible() const;
 	virtual void set_visibility(bool visible);
 
+	virtual JSON save() override;
+	virtual void load(const JSON& data) override;
 
 protected:
 	Model* m_model = nullptr;
