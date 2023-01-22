@@ -18,6 +18,16 @@ CameraNode::~CameraNode(){
 	delete m_camera;
 }
 
+void CameraNode::activate_camera(){
+	IRenderManager->activate_camera(m_camera);
+	m_active = true;
+}
+
+void CameraNode::deactivate_camera(){
+	IRenderManager->deactivate_camera(m_camera);
+	m_active = false;
+}
+
 void CameraNode::update_global_position(){
 	Node::update_global_position();
 	if(!m_camera) return;
@@ -45,6 +55,8 @@ void CameraNode::set_camera(Camera* camera){
 JSON CameraNode::save(){
 	JSON data = Node::save();
 	if(is_exempt_from_saving()) return data;
+
+	data["active"] = m_active;
 
 	if(!m_camera) return data;
 
@@ -78,6 +90,9 @@ void CameraNode::load(const JSON& data){
 	Node::load(data);
 
 	set_camera(new Camera());
+
+	(data.contains("active") && data["active"].is_boolean() && data["active"]) ? activate_camera() : deactivate_camera();
+
 
 	JSON camera;
 	if(!data.contains("camera") || !(camera = data["camera"]).is_object()){
@@ -213,12 +228,8 @@ void CameraNode::load(const JSON& data){
 	m_camera->set_view_matrix(view);
 }
 
-void CameraNode::activate_camera(){
-	IRenderManager->activate_camera(m_camera);
-}
-
-void CameraNode::deactivate_camera(){
-	IRenderManager->deactivate_camera(m_camera);
+std::string CameraNode::get_class_name(){
+	return NodeName(CameraNode);
 }
 
 

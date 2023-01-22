@@ -100,6 +100,8 @@ public:
 	// Deletes resource, even if not held by ResourceManager
 	// Every Resource should be unloaded per ResourceManager, whether it is unique or not
 	void unload_resource(Resource* res){
+		if(!res) return;
+
 		auto it = m_resources.find(res->get_filepath());
 		// unloading unique resource not in list
 		if(it == m_resources.end()){

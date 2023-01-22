@@ -83,4 +83,8 @@ bool PhysicsObject::colliding(const PhysicsObject* obj1, const PhysicsObject* ob
 	return true;
 }
 
+std::string PhysicsObject::get_class_name(){
+	return NodeName(PhysicsObject);
+}
+
 }

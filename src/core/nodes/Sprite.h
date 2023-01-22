@@ -38,6 +38,7 @@ public:
 	void set_origin_distance(glm::vec2 distance);
 	void set_origin_distance(float x = 0, float y = 0);
 
+	virtual std::string get_class_name() override;
 private:
 	void calc_origin();					// helper function to recalculate origin
 

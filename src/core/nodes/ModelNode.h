@@ -48,6 +48,8 @@ public:
 	virtual JSON save() override;
 	virtual void load(const JSON& data) override;
 
+	virtual std::string get_class_name() override;
+
 protected:
 	Model* m_model = nullptr;
 

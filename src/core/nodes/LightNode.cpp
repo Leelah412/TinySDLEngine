@@ -359,4 +359,8 @@ void LightNode::load(const JSON& data){
 	}
 }
 
+std::string LightNode::get_class_name(){
+	return NodeName(LightNode);
+}
+
 }

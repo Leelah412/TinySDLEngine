@@ -2,6 +2,7 @@
     "body": {
         "nodes": {
             "fps_camera": {
+                "active": true,
                 "camera": {
                     "aspect_ratio": 1.3333333730697632,
                     "far_plane": 1000.0,
@@ -40,11 +41,10 @@
                     "viewport_y": 0
                 },
                 "children": [
-                    "node_4"
+                    "light"
                 ],
-                "name": [
-                    "fps_camera"
-                ],
+                "class": "FirstPersonCamera",
+                "name": "fps_camera",
                 "position": {
                     "x": -2.0,
                     "y": 2.0,
@@ -56,53 +56,9 @@
                     "yaw": 0.0
                 }
             },
-            "node_1": {
-                "children": [
-                    "node_2",
-                    "fps_camera"
-                ],
-                "name": [
-                    "node_1"
-                ],
-                "position": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0
-                },
-                "rotation": {
-                    "pitch": 0.0,
-                    "roll": 0.0,
-                    "yaw": 0.0
-                }
-            },
-            "node_2": {
+            "light": {
                 "children": [],
-                "model": {
-                    "mesh": "src/res/mesh/Prop_Boat_1.obj",
-                    "vertex_material": [
-                        {
-                            "material": "",
-                            "shader": "src/res/shader/shader.glsl"
-                        }
-                    ]
-                },
-                "name": [
-                    "node_2"
-                ],
-                "position": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0
-                },
-                "rotation": {
-                    "pitch": 0.0,
-                    "roll": 0.0,
-                    "yaw": 0.0
-                },
-                "visible": true
-            },
-            "node_4": {
-                "children": [],
+                "class": "LightNode",
                 "light": {
                     "ambient": {
                         "w": 0.4000000059604645,
@@ -138,9 +94,47 @@
                         "z": 0.4000000059604645
                     }
                 },
-                "name": [
-                    "node_4"
+                "name": "light",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "pitch": 0.0,
+                    "roll": 0.0,
+                    "yaw": 0.0
+                }
+            },
+            "model": {
+                "children": [],
+                "class": "ModelNode",
+                "model": {
+                    "mesh": "src/res/mesh/Prop_Boat_1.obj",
+                    "vertex_material": [
+                        {}
+                    ]
+                },
+                "name": "model",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "pitch": 0.0,
+                    "roll": 0.0,
+                    "yaw": 0.0
+                },
+                "visible": true
+            },
+            "root": {
+                "children": [
+                    "model",
+                    "fps_camera"
                 ],
+                "class": "Node",
+                "name": "root",
                 "position": {
                     "x": 0.0,
                     "y": 0.0,
@@ -153,7 +147,7 @@
                 }
             }
         },
-        "root": "node_1"
+        "root": "root"
     },
     "type": "scene"
 }

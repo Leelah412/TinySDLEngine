@@ -38,6 +38,7 @@ public:
 
 	static bool move_and_collide(DynamicObject* obj1, PhysicsObject* obj2, time_t delta, time_t& collision_time);
 
+	virtual std::string get_class_name() override;
 private:
 	glm::vec3 m_velocity = glm::vec3();								// current velocity of the object (pixel/sec)
 	glm::vec3 m_center_of_mass = glm::vec3();						// center of mass relative to center of object (i.e. position)

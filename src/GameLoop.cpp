@@ -382,6 +382,9 @@ bool GameLoop::init_gl(){
 	};
 #endif
 
+#define testload
+
+#ifndef testload
 	// TEST load nodes
 	// Create test cube with default material
 	Material* def_mat = new Material(IRenderManager->get_default_shader());
@@ -392,9 +395,10 @@ bool GameLoop::init_gl(){
 	//Mesh* mesh = new Mesh((const void*)vertices, sizeof(vertices), indices);
 	//Model* model = new Model(mesh);
 	Model* model = new Model("src/res/mesh/Prop_Boat_1.obj");
-	model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
+	//model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
 
 	ModelNode* parent = new ModelNode(model);
+	parent->set_unique_name("model");
 	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);
 	
 	camnode->set_unique_name("fps_camera");
@@ -402,6 +406,7 @@ bool GameLoop::init_gl(){
 	camnode->set_pitch(45.0f);
 	INodeTree->get_root_node()->add_child(parent);
 	INodeTree->get_root_node()->add_child(camnode);
+	INodeTree->get_root_node()->set_unique_name("root");
 	
 	Light light = Light();
 	light.position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -413,14 +418,20 @@ bool GameLoop::init_gl(){
 	light.linear = 0.09f;
 	light.quadratic = 0.032f;
 	LightNode* lightnode = new LightNode(light);
+	lightnode->set_unique_name("light");
 	lightnode->turn_on();
 	camnode->add_child(lightnode);
-	
-	// For testing purposes, call the SceneLoader save function
-	SceneLoader::save_scene("src/res/test.json");
 
 	// render on screen using camera of camnode
 	camnode->activate_camera();
+
+	// For testing purposes, call the SceneLoader save function
+	SceneLoader::save_scene("src/res/test.json");
+#endif
+
+#ifdef testload
+	SceneLoader::load_scene("src/res/test.json");
+#endif
 
 	return true;
 }

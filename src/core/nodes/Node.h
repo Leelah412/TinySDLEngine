@@ -164,6 +164,8 @@ public:
 	bool is_exempt_from_saving();
 	void set_exempt_from_saving(bool exempt);
 
+	virtual std::string get_class_name();
+
 private:
 	static uint64_t m_node_count;
 	static std::set<std::string> m_used_unique_names;			// set of unique names already in use to avoid duplicats
@@ -202,6 +204,9 @@ public:
 	// Pre-Scene setup TODO: deprecated
 	void render_setup();
 
+	// Deletes the entire node tree
+	// Called, when setting up a completely new scene!
+	void remove_tree();
 	Node* get_root_node();
 	void switch_root_node(Node* new_root, bool delete_irrelevant_nodes = false);
 

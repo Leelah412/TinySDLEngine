@@ -95,6 +95,10 @@ void Sprite::set_origin_distance(float x, float y){
 	set_origin_distance(p);
 }
 
+std::string Sprite::get_class_name(){
+	return NodeName(Sprite);
+}
+
 void Sprite::calc_origin(){
 	int x = get_size().x, y = get_size().y;
 	// set new position based on size

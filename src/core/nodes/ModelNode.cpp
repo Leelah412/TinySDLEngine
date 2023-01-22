@@ -144,11 +144,12 @@ void ModelNode::load(const JSON& data){
 		return;
 	}
 
-	Mesh* mesh = new Mesh(model["mesh"]);
-	set_model(new Model(mesh));
+	Mesh* mesh = (Mesh*)ResManager->load_and_copy_resource(model["mesh"], RES_TYPE::MESH);
+	Model* cl_model = new Model(mesh);
 
 	JSON vms;
 	if(!model.contains("vertex_material") || !(vms = model["vertex_material"]).is_array()){
+		set_model(cl_model);
 		std::cout << "WARNING: Loading 'ModelNode': 'model.vertex_material' doesn't exist or is not an array!" << std::endl;
 		return;
 	}
@@ -161,7 +162,7 @@ void ModelNode::load(const JSON& data){
 		if(vm.contains("material") && vm["material"].is_string() && !vm["material"].empty() && (vm["material"] != "")){
 			cur_mat = new Material();
 			vd = mesh->get_submesh(i);
-			m_model->assign_material(vd, cur_mat);
+			cl_model->assign_material(vd, cur_mat);
 
 			i++;
 			continue;
@@ -177,10 +178,17 @@ void ModelNode::load(const JSON& data){
 
 		// Assign material to the current submesh
 		vd = mesh->get_submesh(i);
-		m_model->assign_material(vd, cur_mat);
+		cl_model->assign_material(vd, cur_mat);
 
 		i++;
 	}
+
+	// Must set model AFTER loading all VMs (currently)
+	set_model(cl_model);
+}
+
+std::string ModelNode::get_class_name(){
+	return NodeName(ModelNode);
 }
 
 

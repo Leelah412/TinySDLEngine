@@ -75,8 +75,6 @@ void FirstPersonCamera::handle_event(SDL_Event sdl_event, SEM_EVENT event, SEM_E
 	}
 }
 
-
-
 void FirstPersonCamera::update(const time_t& delta){
 
 	const float speed = 2.0f;
@@ -138,6 +136,10 @@ void FirstPersonCamera::update(const time_t& delta){
 	glm::mat4 look_at = glm::lookAt(pos, pos + front, up);
 
 	m_camera->set_view_matrix(look_at);
+}
+
+std::string FirstPersonCamera::get_class_name(){
+	return NodeName(FirstPersonCamera);
 }
 
 

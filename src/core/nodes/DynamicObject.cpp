@@ -203,6 +203,10 @@ bool DynamicObject::move_and_collide(DynamicObject* obj1, PhysicsObject* obj2, t
 	return true;
 }
 
+std::string DynamicObject::get_class_name(){
+	return NodeName(DynamicObject);
+}
+
 }
 
 

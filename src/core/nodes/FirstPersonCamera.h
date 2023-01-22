@@ -6,9 +6,6 @@
 
 USE_EVENT_MANAGER
 
-// TODO: delete
-USE_RENDER_MANAGER
-
 namespace tse{
 
 REGISTER_NODE(FirstPersonCamera)
@@ -25,6 +22,7 @@ public:
 	virtual void handle_event(SDL_Event sdl_event, SEM_EVENT event, SEM_EVENT_EXT ext) override;
 	virtual void update(const time_t& delta) override;
 
+	virtual std::string get_class_name() override;
 private:
 	bool m_left = false;
 	bool m_right = false;

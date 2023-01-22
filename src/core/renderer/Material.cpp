@@ -20,6 +20,8 @@ void Material::bind() const{
 
 	auto it = m_uniforms.begin();
 	for(it; it != m_uniforms.end(); it++){
+		if(!it->second.value) continue;
+
 		switch(it->second.uniform_type){
 
 			// TEXTURE TYPES

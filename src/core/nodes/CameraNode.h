@@ -34,8 +34,10 @@ public:
 	virtual JSON save() override;
 	virtual void load(const JSON& data) override;
 
+	virtual std::string get_class_name() override;
 protected:
 	Camera* m_camera = nullptr;
+	bool m_active = false;
 
 	//short m_draw_index = -1;				// Position in the render sequence; negative, if inactive
 	//bool m_draw_on_window = true;			// Draw into the window framebuffer, if this is true, otherwise draw into an invisible one

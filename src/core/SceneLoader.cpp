@@ -62,6 +62,9 @@ void SceneLoader::load_scene(const std::string& path){
 		return;
 	}
 
+	// Delete previous node tree
+	INodeTree->remove_tree();
+
 	std::deque<std::string> q;
 	std::string front;
 	// Key: Node name
@@ -116,7 +119,7 @@ void SceneLoader::load_scene(const std::string& path){
 		// Create Node
 
 		// Object must contain its own name and it must be equivalent to key name
-		if(node_val.contains("name")){
+		if(!node_val.contains("name")){
 			std::cout << "WARNING: Incorrect implementation or data: Node must contain 'name' string!" << std::endl;
 			// TODO: delete all already-created nodes
 			return;
@@ -161,8 +164,8 @@ void SceneLoader::load_scene(const std::string& path){
 				std::cout << "WARNING: Trying to adopt child, that doesn't exist! Try next child." << std::endl;
 				continue;
 			}
-			// Call "switch_parent" instead of "add_parent", since we want the child to have its transformation updated based on new parent immediately
-			new_node->switch_parent(done[ch]);
+			// Call "switch_parent" from child instead of "add_child" from parent, since we want the child to have its transformation updated based on new parent immediately
+			done[ch]->switch_parent(new_node);
 		}
 
 		done.insert(std::pair<std::string, Node*>(front, new_node));

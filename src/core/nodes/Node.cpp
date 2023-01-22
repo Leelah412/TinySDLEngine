@@ -417,9 +417,9 @@ JSON Node::save(){
 	// note: no need to save global position, scale, rotation, those will be calced relatively from the local versions
 
 	// node information
-	data["name"] = {m_unique_name};
+	data["name"] = m_unique_name;
+	data["class"] = get_class_name();
 	// no need to save parent information
-	//json["parent"] = {m_parent->m_unique_name};
 	std::vector<std::string> child_names;
 	for(Node* ch : m_children){
 		child_names.push_back(ch->m_unique_name);
@@ -433,6 +433,7 @@ void Node::load(const JSON& data){
 
 	if(data.contains("name") && data["name"].is_string()){
 		set_unique_name(data["name"]);
+		//std::cout << "unique name: " << m_unique_name << "; desired unique name: " << data["name"] << std::endl;
 	}
 	else{
 		std::cout << "WARNING: Loading 'Node': 'name' doesn't exist or is not a string!" << std::endl;
@@ -514,6 +515,10 @@ void Node::set_exempt_from_saving(bool exempt){
 	m_exempt_from_saving = exempt;
 }
 
+std::string Node::get_class_name(){
+	return "Node";
+}
+
 
 /*************/
 /* NODE TREE */
@@ -527,11 +532,16 @@ NodeTree::NodeTree(Node* root_node){
 	else			m_root_node = root_node;
 }
 NodeTree::~NodeTree(){
-	delete m_root_node;
+	remove_tree();
 }
 
 // Pre-Scene setup
 void NodeTree::render_setup(){}
+
+void NodeTree::remove_tree(){
+	delete m_root_node;
+	m_root_node = nullptr;
+}
 
 Node* NodeTree::get_root_node(){
 	return m_root_node;

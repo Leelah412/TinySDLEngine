@@ -38,6 +38,7 @@ public:
 
 	static bool colliding(const PhysicsObject* obj1, const PhysicsObject* obj2);
 
+	virtual std::string get_class_name() override;
 protected:
 	CollisionShape* m_collision_shape = nullptr;						// collision shape of the object
 	float m_mass = 1;													// mass of the object

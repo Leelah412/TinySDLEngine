@@ -34,6 +34,7 @@ public:
 	virtual JSON save() override;
 	virtual void load(const JSON& data) override;
 
+	virtual std::string get_class_name() override;
 private:
 	Light* m_light = nullptr;
 	

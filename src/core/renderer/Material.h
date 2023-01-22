@@ -36,8 +36,8 @@ typedef struct Uniform{
 	GLenum uniform_type;
 	std::string uniform_name;
 	//UniformValue value;
-	void* value;
-	GLuint value_size;
+	void* value = nullptr;
+	GLuint value_size = 0;
 
 	// only used for array types
 	//bool is_array = false;
