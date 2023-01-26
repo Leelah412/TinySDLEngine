@@ -194,8 +194,9 @@ void ObjLoader::mtl_to_material(const std::string& path){
 	std::string line;
 
 	JSON tmp;
-	//std::vector<Mtl*> mats;
 	char* name_buf = new char[64];
+	bool first_done = false;				// when landing at "newmtl" for the first time, don't push previous materials, since they don't exist!
+
 	while(std::getline(file, line)){
 		// Find the first string 
 		size_t cursor = line.find(" ");
@@ -204,16 +205,21 @@ void ObjLoader::mtl_to_material(const std::string& path){
 
 		// New material
 		if(first == "newmtl"){
-			// create material from uniforms
-			// "name_buf" is still name of previous material
-			mat_files[name_buf] = {
-				{"type", "material"},
-				{"body", uniforms}
-			};
-
-			uniforms = {};
 			sscanf_s(line.c_str(), "newmtl %64s\n", name_buf, 64);
 			mat_files.insert(std::pair<std::string, JSON>(name_buf, {}));
+
+			if(first_done){
+				// create material from uniforms and reset
+				mat_files[name_buf] = {
+					{"type", "material"},
+					{"body", uniforms}
+				};
+
+				uniforms = {};
+			}
+			else{
+				first_done = true;
+			}
 		}
 		// Ambient color
 		else if(first == "Ka"){
