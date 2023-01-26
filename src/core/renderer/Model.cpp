@@ -9,10 +9,12 @@ Model::Model() : m_mesh{nullptr}{
 }
 
 Model::Model(const std::string& path, bool unique){
+	m_model_id = ++m_model_id_count;
 	load_mesh(path, unique);
 }
 
 Model::Model(Mesh* mesh, bool unique){
+	m_model_id = ++m_model_id_count;
 	set_mesh(mesh, unique);
 }
 
@@ -77,7 +79,10 @@ std::vector<Ref<VertexMaterial>> Model::get_vertex_materials(){
 void Model::add_vertex_material(VertexData* v, Material* m, std::vector<Uniform> uniform_changes){
 	// check, if vertex data belongs to mesh
 	if(!m_mesh->has_submesh(v)) return;
-	m_vertex_materials.insert(std::pair<VertexData*, VertexMaterial>(v, VertexMaterial(v, m, uniform_changes)));
+	VertexMaterial mat(v, m, uniform_changes);
+	// don't forget to assign ID, as otherwise, Model might not get rendered!
+	mat.id = m_model_id;
+	m_vertex_materials.insert(std::pair<VertexData*, VertexMaterial>(v, mat));
 }
 
 void Model::assign_material(VertexData* v, Material* m, std::vector<Uniform> uniform_changes){
@@ -105,8 +110,7 @@ unsigned int Model::get_model_id() const{
 
 void Model::init_vertex_material_list(){
 	for(VertexData* mesh : m_mesh->get_submesh_list()){
-		// TODO: consider passing materials per VD, when loading from file, or use default shader
-		m_vertex_materials.insert(std::pair<VertexData*, VertexMaterial>(mesh, VertexMaterial(mesh, nullptr, {})));
+		add_vertex_material(mesh, nullptr, {});
 	}
 }
 

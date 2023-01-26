@@ -29,9 +29,18 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 
 	bool has_uvs = false, has_normals = false;
 
+	Mtl* mtl_lib = nullptr;
+
 	while(std::getline(file, line)){
+		// Load material library
+		if(line.substr(0, 6) == "mtllib"){
+			char* buf = new char[64];
+			sscanf_s(line.c_str(), "mtllib %s\n", buf);
+			mtl_lib = load_material(buf);
+			delete[] buf;
+		}
 		// for this to work, there must be no space before the "v"!
-		if(line[0] == 'v'){
+		else if(line[0] == 'v'){
 			// position
 			if(line[1] == ' '){
 				glm::vec3 vertex;
@@ -166,3 +175,201 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 
 	return obj;
 }
+
+ObjLoader::Material* ObjLoader::mtl_to_material(const std::string& path, JSON shader){
+
+	// TODO: put this in an own funtion and remove this from here
+	std::ofstream f_out(std::string(path + ".json").c_str());
+	if(!f_out.is_open()) return nullptr;
+
+	Material* new_mat = new Material();
+
+	std::ifstream file(path.c_str());
+	if(!file.is_open()){
+		printf("Impossible to open the file !\n");
+		return {};
+	}
+	std::string line;
+
+	std::vector<Mtl*> mats;
+	char* name_buf = new char[64];
+	while(std::getline(file, line)){
+		// Find the first string 
+		size_t cursor = line.find(" ");
+		std::string first = line.substr(0, cursor);
+		if(first.empty()) continue;
+
+		// New material
+		if(first == "newmtl"){
+			sscanf_s(line.c_str(), "newmtl %s\n", name_buf);
+			mats.push_back(new Mtl(name_buf));
+		}
+		// Ambient color
+		else if(first == "Ka"){
+			glm::vec3 vec;
+			sscanf_s(line.c_str(), "Ka %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+			mats.back()->Ka = vec;
+		}
+		// Diffuse color
+		else if(first == "Kd"){
+			glm::vec3 vec;
+			sscanf_s(line.c_str(), "Kd %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+			mats.back()->Kd = vec;
+		}
+		// Specular color
+		else if(first == "Ks"){
+			glm::vec3 vec;
+			sscanf_s(line.c_str(), "Ks %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+			mats.back()->Ks = vec;
+		}
+		// ???
+		else if(first == "Tf"){
+			glm::vec3 vec;
+			sscanf_s(line.c_str(), "Tf %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+			mats.back()->Tf = vec;
+		}
+		// Illumination (?)
+		else if(first == "illum"){
+			sscanf_s(line.c_str(), "illum %d\n", &mats.back()->illum);
+		}
+		// Sharpness
+		else if(first == "sharpness"){
+			sscanf_s(line.c_str(), "sharpness %d\n", &mats.back()->sharpness);
+		}
+		// ???
+		else if(first == "Ns"){
+			sscanf_s(line.c_str(), "Ns %f\n", &mats.back()->Ns);
+		}
+		// ???
+		else if(first == "Ni"){
+			sscanf_s(line.c_str(), "Ni %f\n", &mats.back()->Ni);
+		}
+
+	}
+
+	delete[] name_buf;
+	file.close();
+
+
+
+
+	// push vertices in file
+	f_out << "#vertices\n";
+	for(auto& vs : obj->vertices){
+		f_out << vs.position.x << " " << vs.position.y << " " << vs.position.z << " " << vs.uv.x << " " << vs.uv.y << " " << vs.normal.x << " " << vs.normal.y << " " << vs.normal.z << "\n";
+	}
+	// push indices in file
+	f_out << "\n#indices\n";
+
+	for(size_t i = 0; i < obj->indices.size(); i += 3){
+		f_out << obj->indices.at(i) << " " << obj->indices.at(i + 1) << " " << obj->indices.at(i + 2) << "\n";
+	}
+
+	f_out.close();
+
+	return nullptr;
+}
+
+#if 0
+std::vector<ObjLoader::Mtl*> ObjLoader::load_materials(const std::string& path){
+
+	std::ifstream file(path.c_str());
+	if(!file.is_open()){
+		printf("Impossible to open the file !\n");
+		return {};
+	}
+	std::string line;
+
+	std::vector<Mtl*> mats;
+	char* name_buf = new char[64];
+	while(std::getline(file, line)){
+		// Find the first string 
+		size_t cursor = line.find(" ");
+		std::string first = line.substr(0, cursor);
+		if(first.empty()) continue;
+
+		// New material
+		if(first == "newmtl"){
+			sscanf_s(line.c_str(), "newmtl %s\n", name_buf);
+			mats.push_back(new Mtl(name_buf));
+		}
+		// Ambient color
+		else if(first == "Ka"){
+			glm::vec3 vec;
+			sscanf_s(line.c_str(), "Ka %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+			mats.back()->Ka = vec;
+		}
+		// Diffuse color
+		else if(first == "Kd"){
+			glm::vec3 vec;
+			sscanf_s(line.c_str(), "Kd %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+			mats.back()->Kd = vec;
+		}
+		// Specular color
+		else if(first == "Ks"){
+			glm::vec3 vec;
+			sscanf_s(line.c_str(), "Ks %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+			mats.back()->Ks = vec;
+		}
+		// ???
+		else if(first == "Tf"){
+			glm::vec3 vec;
+			sscanf_s(line.c_str(), "Tf %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+			mats.back()->Tf = vec;
+		}
+		// Illumination (?)
+		else if(first == "illum"){
+			sscanf_s(line.c_str(), "illum %d\n", &mats.back()->illum);
+		}
+		// Sharpness
+		else if(first == "sharpness"){
+			sscanf_s(line.c_str(), "sharpness %d\n", &mats.back()->sharpness);
+		}
+		// ???
+		else if(first == "Ns"){
+			sscanf_s(line.c_str(), "Ns %f\n", &mats.back()->Ns);
+		}
+		// ???
+		else if(first == "Ni"){
+			sscanf_s(line.c_str(), "Ni %f\n", &mats.back()->Ni);
+		}
+
+		/*
+		 Material
+		 color and
+		 illumination
+		 statements:
+ 				d -halo 0.6600
+ 
+		 Texture
+		 map
+		 statements:
+ 				map_Ka -s 1 1 1 -o 0 0 0 -mm 0 1 chrome.mpc
+ 				map_Kd -s 1 1 1 -o 0 0 0 -mm 0 1 chrome.mpc
+ 				map_Ks -s 1 1 1 -o 0 0 0 -mm 0 1 chrome.mpc
+ 				map_Ns -s 1 1 1 -o 0 0 0 -mm 0 1 wisp.mps
+ 				map_d -s 1 1 1 -o 0 0 0 -mm 0 1 wisp.mps
+ 				disp -s 1 1 .5 wisp.mps
+ 				decal -s 1 1 1 -o 0 0 0 -mm 0 1 sand.mps
+ 				bump -s 1 1 1 -o 0 0 0 -bm 1 sand.mpb
+ 
+		 Reflection
+		 map
+		 statement:
+ 				refl -type sphere -mm 0 1 clouds.mpc
+		
+		
+		*/
+
+
+		// Always add material properties to latest material (i.e. "mats.back()")
+		else if(line.substr());
+	}
+
+	delete[] name_buf;
+	file.close();
+
+	return mats;
+}
+
+#endif

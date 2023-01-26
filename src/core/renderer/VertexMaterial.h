@@ -9,6 +9,10 @@ namespace tse{
 // Represents the general combination of VBO/IBO data and the material applied to it
 // Submesh - Material combination
 typedef struct VertexMaterial{
+	// Since it could be possible, that more than one Model have the same Mesh and Material,
+	// we need a way to differentiate between the VMs of each Model, as otherwise, each Mesh - Material combination would only get rendered once.
+	// If not needed, just let "id" stay at 0.
+	unsigned int id = 0;
 	VertexData* vertex_data;
 	Material* material;
 	std::vector<Uniform> uniform_changes;		// Temporary change to the uniforms of the materials shader
@@ -18,9 +22,6 @@ typedef struct VertexMaterial{
 		vertex_data = vd;
 		material = m;
 		uniform_changes = uc;
-	}
-	VertexMaterial(const VertexMaterial& vm){
-		*this = vm;
 	}
 
 	// Sort by shader, then by material type, then by uniform change count
@@ -73,14 +74,11 @@ typedef struct VertexMaterial{
 			}
 		}
 
-		// use "vertex_data" pointer to determine (in)equality, in case the previous ones couldn't
-		return vertex_data < vm.vertex_data;
-	}
+		// check, if same vertex data
+		if(vertex_data != vm.vertex_data) return vertex_data < vm.vertex_data;
 
-	void operator=(const VertexMaterial& vm){
-		vertex_data = vm.vertex_data;
-		material = vm.material;
-		uniform_changes = vm.uniform_changes;
+		// use "id" to determine (in)equality, in case the previous ones couldn't
+		return id < vm.id;
 	}
 
 	struct less{
@@ -89,10 +87,6 @@ typedef struct VertexMaterial{
 			return *vm1 < *vm2;
 		}
 	};
-
-private:
-	static unsigned int id_count;
-	//unsigned int id;
 
 } VertexMaterial;
 
