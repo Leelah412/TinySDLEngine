@@ -33,15 +33,18 @@ public:
 	};
 
 	static Obj* load(const std::string& path);
-	// Create a default Material json file from the given mtl file and extract the uniforms from the given shader(s)
+	// Load a mesh (.msh) file in the given path
+	static Obj* load_mesh(const std::string& path);
+	// Create default Material JSON files from the given mtl library
+	// Returns the created JSON data mapped to their filenames
 	// All Materials will (currently) have the same uniforms, no matter the shader
 	// Currently only supports color values
-	static void mtl_to_material(const std::string& mtl_path);
-	//static std::vector<Material*> load_materials(const std::string& path);
-	// Create a JSON mesh file from OBJ data
-	static void create_mesh_from_obj(const std::string& obj_path, const std::string& msh_name){
-
-	}
+	static std::map<std::string, JSON> mtl_to_material(const std::string& path);
+	// Create a mesh file from OBJ data
+	// Returns the vertex and index data
+	static Obj* obj_to_mesh(const std::string& path);
+	// Create a Model JSON from an .obj file, containing Mesh - Material pairs
+	static void create_model_from_obj(const std::string& path);
 
 private:
 
