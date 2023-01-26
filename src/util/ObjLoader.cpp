@@ -36,7 +36,22 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 		if(line.substr(0, 6) == "mtllib"){
 			char* buf = new char[64];
 			sscanf_s(line.c_str(), "mtllib %64s\n", buf, 64);
-			mtl_to_material(buf);
+			// extract relative path
+			auto str_it = path.rbegin();
+			int i = path.size() - 1;
+			// start from the back, that will be faster
+			while(i >= 0){
+				// who needs regex lol
+				if(path.at(i) == '/') break;
+				i--;
+			}
+			// relative path exists
+			if(i != -1){
+				mtl_to_material(path.substr(0, i + 1) + buf);
+			}
+			else{
+				mtl_to_material(buf);
+			}
 			delete[] buf;
 		}
 		// for this to work, there must be no space before the "v"!
@@ -180,7 +195,7 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 void ObjLoader::mtl_to_material(const std::string& path){
 	
 
-	std::ifstream file(("src/res/mesh/" + path).c_str());
+	std::ifstream file(path.c_str());
 	if(!file.is_open()){
 		printf("Impossible to open the file !\n");
 		return;
@@ -234,38 +249,40 @@ void ObjLoader::mtl_to_material(const std::string& path){
 			uniforms.insert(StringJSON("ambient_color", tmp));
 		}
 		// Diffuse color
-		//else if(first == "Kd"){
-		//	glm::vec3 vec;
-		//	sscanf_s(line.c_str(), "Kd %f %f %f\n", &vec[0], &vec[1], &vec[2]);
-		//	mats.back()->Kd = vec;
-		//}
+		else if(first == "Kd"){
+			glm::vec3 vec;
+			sscanf_s(line.c_str(), "Kd %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+			tmp = {
+					{"r", vec[0]},
+					{"g", vec[1]},
+					{"b", vec[2]},
+					{"a", 1.0f},
+			};
+			uniforms.insert(StringJSON("diffuse_color", tmp));
+		}
 		//// Specular color
-		//else if(first == "Ks"){
-		//	glm::vec3 vec;
-		//	sscanf_s(line.c_str(), "Ks %f %f %f\n", &vec[0], &vec[1], &vec[2]);
-		//	mats.back()->Ks = vec;
-		//}
-		//// ???
+		else if(first == "Ks"){
+			glm::vec3 vec;
+			sscanf_s(line.c_str(), "Ks %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+			tmp = {
+					{"r", vec[0]},
+					{"g", vec[1]},
+					{"b", vec[2]},
+					{"a", 1.0f},
+			};
+			uniforms.insert(StringJSON("specular_color", tmp));
+		}
+		// Transmission Filter
 		//else if(first == "Tf"){
 		//	glm::vec3 vec;
 		//	sscanf_s(line.c_str(), "Tf %f %f %f\n", &vec[0], &vec[1], &vec[2]);
-		//	mats.back()->Tf = vec;
-		//}
-		//// Illumination (?)
-		//else if(first == "illum"){
-		//	sscanf_s(line.c_str(), "illum %d\n", &mats.back()->illum);
-		//}
-		//// Sharpness
-		//else if(first == "sharpness"){
-		//	sscanf_s(line.c_str(), "sharpness %d\n", &mats.back()->sharpness);
-		//}
-		//// ???
-		//else if(first == "Ns"){
-		//	sscanf_s(line.c_str(), "Ns %f\n", &mats.back()->Ns);
-		//}
-		//// ???
-		//else if(first == "Ni"){
-		//	sscanf_s(line.c_str(), "Ni %f\n", &mats.back()->Ni);
+		//	tmp = {
+		//			{"r", vec[0]},
+		//			{"g", vec[1]},
+		//			{"b", vec[2]},
+		//			{"a", 1.0f},
+		//	};
+		//	uniforms.insert(StringJSON("transmission_filter", tmp));
 		//}
 
 	}
@@ -284,7 +301,7 @@ void ObjLoader::mtl_to_material(const std::string& path){
 
 	std::ofstream f_out;
 	for(auto& mat : mat_files){
-		f_out.open(("src/res/mesh/" + path + "." + mat.first + ".json").c_str());
+		f_out.open((path + "." + mat.first + ".json").c_str());
 		if(!f_out.is_open()){
 			std::cout << "WARNING: Material json file could not be created!" << std::endl;
 			continue;
