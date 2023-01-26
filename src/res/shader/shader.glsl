@@ -29,6 +29,14 @@ in vec2 v_tex_coord;
 in vec3 v_normal;
 
 //uniform vec4 u_color = vec4(1.0, 1.0, 1.0, 1.0);
+// default material
+struct Material{
+    vec3 albedo_color;
+    vec3 diffuse_color;
+    vec3 specular_color;
+};
+uniform Material u_material;
+
 uniform sampler2D u_texture;
 uniform mat4 U_VIEW;
 uniform vec4 u_view_pos;

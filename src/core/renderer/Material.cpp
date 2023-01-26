@@ -134,4 +134,31 @@ void Material::set_texture(const std::string& uniform_name, const Texture* textu
 	}
 }
 
+JSON Material::save(){
+	JSON shader;
+
+	if(m_shader){
+		shader = {"shader", {
+			{"ubershader_path", m_shader->get_filepath()}
+		}};
+	}
+	else{
+		shader = {"shader", NULL};
+	}
+
+	std::vector<JSON> uniforms;
+	//for(int i = 0; i < m_uniforms.size(); i++){
+	//	switch(m_uniforms.ge){
+	//
+	//	}
+	//}
+
+	JSON data = {{"type", "material"}};
+	return data;
+}
+
+void Material::load(const std::string& path){
+
+}
+
 }

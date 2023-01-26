@@ -117,9 +117,6 @@
     <ClCompile Include="src\core\renderer\ModelManager.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\renderer\VertexMaterial.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\renderer\Material.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>

@@ -29,18 +29,18 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 
 	bool has_uvs = false, has_normals = false;
 
-	Mtl* mtl_lib = nullptr;
+	//Mtl* mtl_lib = nullptr;
 
 	while(std::getline(file, line)){
 		// Load material library
 		if(line.substr(0, 6) == "mtllib"){
 			char* buf = new char[64];
-			sscanf_s(line.c_str(), "mtllib %s\n", buf);
-			mtl_lib = load_material(buf);
+			sscanf_s(line.c_str(), "mtllib %64s\n", buf, 64);
+			mtl_to_material(buf);
 			delete[] buf;
 		}
 		// for this to work, there must be no space before the "v"!
-		else if(line[0] == 'v'){
+		if(line[0] == 'v'){
 			// position
 			if(line[1] == ' '){
 				glm::vec3 vertex;
@@ -176,22 +176,25 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 	return obj;
 }
 
-ObjLoader::Material* ObjLoader::mtl_to_material(const std::string& path, JSON shader){
 
-	// TODO: put this in an own funtion and remove this from here
-	std::ofstream f_out(std::string(path + ".json").c_str());
-	if(!f_out.is_open()) return nullptr;
+void ObjLoader::mtl_to_material(const std::string& path){
+	
 
-	Material* new_mat = new Material();
-
-	std::ifstream file(path.c_str());
+	std::ifstream file(("src/res/mesh/" + path).c_str());
 	if(!file.is_open()){
 		printf("Impossible to open the file !\n");
-		return {};
+		return;
 	}
+
+	// Since we are loading libraries of materials, we will have to create multiple material files
+	std::map<std::string, JSON> mat_files;
+
+	using StringJSON = std::pair<std::string, JSON>;
+	std::map<std::string, JSON> uniforms;
 	std::string line;
 
-	std::vector<Mtl*> mats;
+	JSON tmp;
+	//std::vector<Mtl*> mats;
 	char* name_buf = new char[64];
 	while(std::getline(file, line)){
 		// Find the first string 
@@ -201,73 +204,89 @@ ObjLoader::Material* ObjLoader::mtl_to_material(const std::string& path, JSON sh
 
 		// New material
 		if(first == "newmtl"){
-			sscanf_s(line.c_str(), "newmtl %s\n", name_buf);
-			mats.push_back(new Mtl(name_buf));
+			// create material from uniforms
+			// "name_buf" is still name of previous material
+			mat_files[name_buf] = {
+				{"type", "material"},
+				{"body", uniforms}
+			};
+
+			uniforms = {};
+			sscanf_s(line.c_str(), "newmtl %64s\n", name_buf, 64);
+			mat_files.insert(std::pair<std::string, JSON>(name_buf, {}));
 		}
 		// Ambient color
 		else if(first == "Ka"){
 			glm::vec3 vec;
 			sscanf_s(line.c_str(), "Ka %f %f %f\n", &vec[0], &vec[1], &vec[2]);
-			mats.back()->Ka = vec;
+			tmp = {
+					{"r", vec[0]},
+					{"g", vec[1]},
+					{"b", vec[2]},
+					{"a", 1.0f},
+			};
+			uniforms.insert(StringJSON("ambient_color", tmp));
 		}
 		// Diffuse color
-		else if(first == "Kd"){
-			glm::vec3 vec;
-			sscanf_s(line.c_str(), "Kd %f %f %f\n", &vec[0], &vec[1], &vec[2]);
-			mats.back()->Kd = vec;
-		}
-		// Specular color
-		else if(first == "Ks"){
-			glm::vec3 vec;
-			sscanf_s(line.c_str(), "Ks %f %f %f\n", &vec[0], &vec[1], &vec[2]);
-			mats.back()->Ks = vec;
-		}
-		// ???
-		else if(first == "Tf"){
-			glm::vec3 vec;
-			sscanf_s(line.c_str(), "Tf %f %f %f\n", &vec[0], &vec[1], &vec[2]);
-			mats.back()->Tf = vec;
-		}
-		// Illumination (?)
-		else if(first == "illum"){
-			sscanf_s(line.c_str(), "illum %d\n", &mats.back()->illum);
-		}
-		// Sharpness
-		else if(first == "sharpness"){
-			sscanf_s(line.c_str(), "sharpness %d\n", &mats.back()->sharpness);
-		}
-		// ???
-		else if(first == "Ns"){
-			sscanf_s(line.c_str(), "Ns %f\n", &mats.back()->Ns);
-		}
-		// ???
-		else if(first == "Ni"){
-			sscanf_s(line.c_str(), "Ni %f\n", &mats.back()->Ni);
-		}
+		//else if(first == "Kd"){
+		//	glm::vec3 vec;
+		//	sscanf_s(line.c_str(), "Kd %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+		//	mats.back()->Kd = vec;
+		//}
+		//// Specular color
+		//else if(first == "Ks"){
+		//	glm::vec3 vec;
+		//	sscanf_s(line.c_str(), "Ks %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+		//	mats.back()->Ks = vec;
+		//}
+		//// ???
+		//else if(first == "Tf"){
+		//	glm::vec3 vec;
+		//	sscanf_s(line.c_str(), "Tf %f %f %f\n", &vec[0], &vec[1], &vec[2]);
+		//	mats.back()->Tf = vec;
+		//}
+		//// Illumination (?)
+		//else if(first == "illum"){
+		//	sscanf_s(line.c_str(), "illum %d\n", &mats.back()->illum);
+		//}
+		//// Sharpness
+		//else if(first == "sharpness"){
+		//	sscanf_s(line.c_str(), "sharpness %d\n", &mats.back()->sharpness);
+		//}
+		//// ???
+		//else if(first == "Ns"){
+		//	sscanf_s(line.c_str(), "Ns %f\n", &mats.back()->Ns);
+		//}
+		//// ???
+		//else if(first == "Ni"){
+		//	sscanf_s(line.c_str(), "Ni %f\n", &mats.back()->Ni);
+		//}
 
+	}
+
+	// create last material
+	if(!uniforms.empty()){
+		// "name_buf" is still name of previous material
+		mat_files[name_buf] = {
+			{"type", "material"},
+			{"body", uniforms}
+		};
 	}
 
 	delete[] name_buf;
 	file.close();
 
-
-
-
-	// push vertices in file
-	f_out << "#vertices\n";
-	for(auto& vs : obj->vertices){
-		f_out << vs.position.x << " " << vs.position.y << " " << vs.position.z << " " << vs.uv.x << " " << vs.uv.y << " " << vs.normal.x << " " << vs.normal.y << " " << vs.normal.z << "\n";
-	}
-	// push indices in file
-	f_out << "\n#indices\n";
-
-	for(size_t i = 0; i < obj->indices.size(); i += 3){
-		f_out << obj->indices.at(i) << " " << obj->indices.at(i + 1) << " " << obj->indices.at(i + 2) << "\n";
+	std::ofstream f_out;
+	for(auto& mat : mat_files){
+		f_out.open(("src/res/mesh/" + path + "." + mat.first + ".json").c_str());
+		if(!f_out.is_open()){
+			std::cout << "WARNING: Material json file could not be created!" << std::endl;
+			continue;
+		}
+		f_out << std::setw(4) << mat.second << std::endl;
+		f_out.close();
 	}
 
-	f_out.close();
-
-	return nullptr;
 }
 
 #if 0

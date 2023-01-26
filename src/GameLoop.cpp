@@ -382,7 +382,7 @@ bool GameLoop::init_gl(){
 	};
 #endif
 
-#define testload
+//#define testload
 
 #ifndef testload
 	// TEST load nodes

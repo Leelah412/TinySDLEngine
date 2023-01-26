@@ -5,6 +5,8 @@
 //#include "TextureArray.h"
 #include "Shader.h"
 
+#include <types.h>
+#include <json/single_include/nlohmann/json.hpp>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <map>
@@ -105,6 +107,9 @@ enum class TEXTURE_TYPE {ALBEDO, NORMAL, METALLIC, ROUGHNESS};
 // read material types and data from files, where shadertype/filepath/string shall also be specified
 // 
 // Each material can have a shader bound to it, while a shader can belong to multiple materials
+// All Materials have the same default material uniforms, and when using the base "Material" class,
+// the same struct has to be used in every shader file depicting a Material.
+// Additionally, further uniforms of a shader will be during runtime for easier and safer access to shader uniforms.
 class Material : public Resource{
 	
 public:
@@ -135,31 +140,23 @@ public:
 	// Set sampler* uniform to the given texture
 	void set_texture(const std::string& uniform_name, const Texture* texture);
 
+	// MATERIALS
+	void use_albedo_texture(Texture* texture){
+		m_albedo = texture;
+	}
+	void set_albedo_color(const glm::vec4& rgba, bool reset_texture = true){
+		m_albedo_col = rgba;
+		if(reset_texture) m_albedo = nullptr;
+	}
+
+
+	JSON save();
+	void load(const std::string& path);
+
 protected:
 	Shader* m_shader = nullptr;									// Shader bound to material
 	std::unordered_map<std::string, Uniform> m_uniforms = {};	// List of uniforms the shader of a material uses; key is uniform name
 
-private:
-	static unsigned int s_material_count;
-	unsigned int m_material_id;
-
-};
-
-// TODO: remove 
-// Default material using the default shader for vast majority of use cases
-class DefaultMaterial : public Material{
-	
-public:
-	DefaultMaterial(Shader* shader) : Material(shader){}
-	virtual ~DefaultMaterial(){}
-
-	void use_albedo_texture(Texture* texture){
-		m_albedo = texture;
-	}
-	void set_albedo_color(const glm::vec4& rgba, bool reset_texture = false){
-		m_albedo_col = rgba;
-		if(reset_texture) m_albedo = nullptr;
-	}
 
 protected:
 
@@ -170,9 +167,7 @@ protected:
 	Texture* m_albedo = nullptr;					// Albedo (base texture of the material)
 	glm::vec4 m_albedo_col = glm::vec4(1.0);
 
-
-	// Everything after uses second UV coordinates, if at all
-	// Textures with nullptr
+	// Textures with nullptr means non-texture values will be used
 
 	Texture* m_metallic_specular = nullptr;				// Metallic/Specular map
 	CHANNEL m_metallic_specular_channel = CHANNEL::R;	// Texture channel to use to determine roughness
@@ -193,6 +188,11 @@ protected:
 
 	Texture* m_ao = nullptr;							// Ambient occlusion
 	float m_ao_deg = 0.0;								// Constant AO value
+
+
+private:
+	static unsigned int s_material_count;
+	unsigned int m_material_id;
 
 };
 
