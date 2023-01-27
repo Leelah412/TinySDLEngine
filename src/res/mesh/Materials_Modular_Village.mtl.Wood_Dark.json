@@ -1,22 +1,26 @@
 {
     "body": {
-        "ambient_color": {
-            "a": 1.0,
-            "b": 0.0,
-            "g": 0.0,
-            "r": 0.0
-        },
-        "diffuse_color": {
-            "a": 1.0,
-            "b": 0.3961000144481659,
-            "g": 0.5254999995231628,
-            "r": 0.6274999976158142
-        },
-        "specular_color": {
-            "a": 1.0,
-            "b": 1.0,
-            "g": 1.0,
-            "r": 1.0
+        "name": "Wood_Dark",
+        "path": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json",
+        "uniforms": {
+            "ambient_color": {
+                "a": 1.0,
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "diffuse_color": {
+                "a": 1.0,
+                "b": 0.3961000144481659,
+                "g": 0.5254999995231628,
+                "r": 0.6274999976158142
+            },
+            "specular_color": {
+                "a": 1.0,
+                "b": 1.0,
+                "g": 1.0,
+                "r": 1.0
+            }
         }
     },
     "type": "material"

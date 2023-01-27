@@ -1,22 +1,26 @@
 {
     "body": {
-        "ambient_color": {
-            "a": 1.0,
-            "b": 0.0,
-            "g": 0.0,
-            "r": 0.0
-        },
-        "diffuse_color": {
-            "a": 1.0,
-            "b": 0.25099998712539673,
-            "g": 0.31369999051094055,
-            "r": 0.38429999351501465
-        },
-        "specular_color": {
-            "a": 1.0,
-            "b": 1.0,
-            "g": 1.0,
-            "r": 1.0
+        "name": "Red_Roof",
+        "path": "src/res/mesh/Materials_Modular_Village.mtl.Red_Roof.json",
+        "uniforms": {
+            "ambient_color": {
+                "a": 1.0,
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "diffuse_color": {
+                "a": 1.0,
+                "b": 0.25099998712539673,
+                "g": 0.31369999051094055,
+                "r": 0.38429999351501465
+            },
+            "specular_color": {
+                "a": 1.0,
+                "b": 1.0,
+                "g": 1.0,
+                "r": 1.0
+            }
         }
     },
     "type": "material"

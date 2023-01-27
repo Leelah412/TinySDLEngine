@@ -1,22 +1,26 @@
 {
     "body": {
-        "ambient_color": {
-            "a": 1.0,
-            "b": 0.0,
-            "g": 0.0,
-            "r": 0.0
-        },
-        "diffuse_color": {
-            "a": 1.0,
-            "b": 0.5216000080108643,
-            "g": 0.6431000232696533,
-            "r": 0.7254999876022339
-        },
-        "specular_color": {
-            "a": 1.0,
-            "b": 1.0,
-            "g": 1.0,
-            "r": 1.0
+        "name": "Dirt",
+        "path": "src/res/mesh/Materials_Modular_Village.mtl.Dirt.json",
+        "uniforms": {
+            "ambient_color": {
+                "a": 1.0,
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "diffuse_color": {
+                "a": 1.0,
+                "b": 0.5216000080108643,
+                "g": 0.6431000232696533,
+                "r": 0.7254999876022339
+            },
+            "specular_color": {
+                "a": 1.0,
+                "b": 1.0,
+                "g": 1.0,
+                "r": 1.0
+            }
         }
     },
     "type": "material"

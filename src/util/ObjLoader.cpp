@@ -375,7 +375,11 @@ std::map<std::string, JSON> ObjLoader::mtl_to_material(const std::string& path){
 				// create material from uniforms and reset
 				mat_files[name_buf] = {
 					{"type", "material"},
-					{"body", uniforms}
+					{"body", {
+						{"name", name_buf},
+						{"path", path + "." + name_buf + ".json"},
+						{"uniforms", uniforms}
+					}}
 				};
 
 				uniforms = {};
@@ -440,7 +444,11 @@ std::map<std::string, JSON> ObjLoader::mtl_to_material(const std::string& path){
 		// "name_buf" is still name of previous material
 		mat_files[name_buf] = {
 			{"type", "material"},
-			{"body", uniforms}
+			{"body", {
+				{"name", name_buf},
+				{"path", path + "." + name_buf + ".json"},
+				{"uniforms", uniforms}
+			}}
 		};
 	}
 
@@ -547,21 +555,33 @@ void ObjLoader::create_model_from_obj(const std::string& path){
 	std::map<std::string, JSON> mat_files = mtl_from_obj(path);
 
 	// Create the materials from the JSONs
-	std::map<std::string, Mat*> mats;
-	for(auto& m : mat_files){
-		mats.insert( std::pair<std::string, Mat*>(m.first, load_material_from_json(m.second)) );
+	//std::map<std::string, Mat*> mats;
+	//for(auto& m : mat_files){
+	//	mats.insert( std::pair<std::string, Mat*>(m.first, load_material_from_json(m.second)) );
+	//}
+
+	// TODO: make it so, that we don't need to save the path inside the material json
+	std::vector<std::string> mat_paths;
+	for(int i = 0; i < msh.size(); i++){
+		mat_paths.push_back(mat_files[msh.at(i)->material]["body"]["path"]);
 	}
 
 	JSON data = {
 		{"type", "model"},
 		{"body", {
 			{"mesh", path + ".msh"},
-			{"vertex_materials", {
-				
-				}
-			}
+			{"vertex_materials", mat_paths}
 		}}
 	};
 
+	std::ofstream f_out;
+	f_out.open((path + ".model").c_str());
+
+	if(!f_out.is_open()){
+		std::cout << "WARNING: Model json file could not be created!" << std::endl;
+		return;
+	}
+	f_out << std::setw(4) << data << std::endl;
+	f_out.close();
 
 }

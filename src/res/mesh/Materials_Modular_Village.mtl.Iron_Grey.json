@@ -1,22 +1,26 @@
 {
     "body": {
-        "ambient_color": {
-            "a": 1.0,
-            "b": 0.0,
-            "g": 0.0,
-            "r": 0.0
-        },
-        "diffuse_color": {
-            "a": 1.0,
-            "b": 0.2745000123977661,
-            "g": 0.28630000352859497,
-            "r": 0.3019999861717224
-        },
-        "specular_color": {
-            "a": 1.0,
-            "b": 1.0,
-            "g": 1.0,
-            "r": 1.0
+        "name": "Iron_Grey",
+        "path": "src/res/mesh/Materials_Modular_Village.mtl.Iron_Grey.json",
+        "uniforms": {
+            "ambient_color": {
+                "a": 1.0,
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "diffuse_color": {
+                "a": 1.0,
+                "b": 0.2745000123977661,
+                "g": 0.28630000352859497,
+                "r": 0.3019999861717224
+            },
+            "specular_color": {
+                "a": 1.0,
+                "b": 1.0,
+                "g": 1.0,
+                "r": 1.0
+            }
         }
     },
     "type": "material"

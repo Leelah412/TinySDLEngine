@@ -387,8 +387,8 @@ bool GameLoop::init_gl(){
 
 #ifndef testload
 	// create mesh
-	ObjLoader::obj_to_mesh("src/res/mesh/Prop_Barrel_1.obj");
-	ObjLoader::obj_to_mesh("src/res/mesh/Prop_Boat_1.obj");
+	ObjLoader::create_model_from_obj("src/res/mesh/Prop_Boat_1.obj");
+	ObjLoader::create_model_from_obj("src/res/mesh/Prop_Barrel_1.obj");
 
 	// load nodes
 	// Create test cube with default material
@@ -399,7 +399,7 @@ bool GameLoop::init_gl(){
 	def_mat->set_texture("u_texture", new Texture("src/res/textures/example.PNG"));
 	//Mesh* mesh = new Mesh((const void*)vertices, sizeof(vertices), indices);
 	//Model* model = new Model(mesh);
-	Model* model = new Model("src/res/mesh/Prop_Boat_1.obj.msh");
+	Model* model = new Model("src/res/mesh/Prop_Barrel_1.obj.msh");
 
 	//model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
 

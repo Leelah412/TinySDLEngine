@@ -1,0 +1,11 @@
+{
+    "body": {
+        "mesh": "src/res/mesh/Prop_Boat_1.obj.msh",
+        "vertex_materials": [
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+        ]
+    },
+    "type": "model"
+}

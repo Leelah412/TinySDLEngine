@@ -1,22 +1,26 @@
 {
     "body": {
-        "ambient_color": {
-            "a": 1.0,
-            "b": 0.0,
-            "g": 0.0,
-            "r": 0.0
-        },
-        "diffuse_color": {
-            "a": 1.0,
-            "b": 0.5450999736785889,
-            "g": 0.5960999727249146,
-            "r": 0.6626999974250793
-        },
-        "specular_color": {
-            "a": 1.0,
-            "b": 1.0,
-            "g": 1.0,
-            "r": 1.0
+        "name": "Burlap",
+        "path": "src/res/mesh/Materials_Modular_Village.mtl.Burlap.json",
+        "uniforms": {
+            "ambient_color": {
+                "a": 1.0,
+                "b": 0.0,
+                "g": 0.0,
+                "r": 0.0
+            },
+            "diffuse_color": {
+                "a": 1.0,
+                "b": 0.5450999736785889,
+                "g": 0.5960999727249146,
+                "r": 0.6626999974250793
+            },
+            "specular_color": {
+                "a": 1.0,
+                "b": 1.0,
+                "g": 1.0,
+                "r": 1.0
+            }
         }
     },
     "type": "material"

@@ -1,0 +1,34 @@
+{
+    "body": {
+        "mesh": "src/res/mesh/Prop_Barrel_1.obj.msh",
+        "vertex_materials": [
+            "src/res/mesh/Materials_Modular_Village.mtl.Iron_Grey.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Iron_Grey.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Iron_Grey.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Iron_Grey.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json",
+            "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+        ]
+    },
+    "type": "model"
+}
