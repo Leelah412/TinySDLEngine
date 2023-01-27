@@ -4,9 +4,11 @@ ObjLoader::ObjLoader(){}
 ObjLoader::~ObjLoader(){}
 
 ObjLoader::Obj* ObjLoader::load(const std::string& path){
+	std::vector<Obj*> groups;
+	// Already add a default group
+	groups.push_back(new Obj());
 	Obj* obj = new Obj();
 
-	//std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
@@ -25,8 +27,10 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 	bool has_uvs = false, has_normals = false;
 
 	while(std::getline(file, line)){
+		if(line.length() == 0){}
+		// TODO: load materials somewhere different
 		// Load material library
-		if(line.substr(0, 6) == "mtllib"){
+		else if(line.substr(0, 6) == "mtllib"){
 			char* buf = new char[64];
 			sscanf_s(line.c_str(), "mtllib %64s\n", buf, 64);
 			// extract relative path
@@ -47,15 +51,15 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 			}
 			delete[] buf;
 		}
-		// for this to work, there must be no space before the "v"!
-		if(line[0] == 'v'){
-			// position
+		// For this to work, there must be no space before the "v"!
+		else if(line[0] == 'v'){
+			// Position
 			if(line[1] == ' '){
 				glm::vec3 vertex;
 				sscanf_s(line.c_str(), "v %f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
 				positions.push_back(vertex);
 			}
-			// uv
+			// UV
 			else if(line[1] == 't'){
 
 				has_uvs = true;
@@ -63,7 +67,7 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 				sscanf_s(line.c_str(), "vt %f %f\n", &uv.x, &uv.y);
 				uvs.push_back(uv);
 			}
-			// normal
+			// Normal
 			else if(line[1] == 'n'){
 				has_normals = true;
 				glm::vec3 normal;
@@ -71,8 +75,12 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 				normals.push_back(normal);
 			}
 		}
-		// when we are at "f", assume, that all vertices are already loaded
-		// create face from vertex attributes
+		// Creating a new group
+		else if(line[0] == 'g'){
+
+		}
+		// Create face from vertex attributes
+		// When we are at "f", assume, that all relevant vertices are already loaded
 		else if(line[0] == 'f' && line[1] == ' '){
 			//std::cout << line << std::endl;
 			unsigned int vrts[3][3] = {0};
@@ -225,8 +233,81 @@ ObjLoader::Obj* ObjLoader::load_mesh(const std::string& path){
 		}
 	}
 
-	return obj;
 	file.close();
+	return obj;
+}
+
+ObjLoader::Mat* ObjLoader::load_material(const std::string& path){
+	std::ifstream file(path.c_str());
+	if(!file.is_open()){
+		printf("Impossible to open the file !\n");
+		return {};
+	}
+	JSON data = JSON::parse(path);
+
+	if(!data.contains("type") || data["type"] != "material"){
+		std::cout << "ERROR: Couldn't load Material: File not a Material!" << std::endl;
+		return nullptr;
+	}
+	if(!data.contains("body") || !data["body"].is_object()){
+		std::cout << "ERROR: Couldn't load Material: Invalid body!" << std::endl;
+		return nullptr;
+	}
+
+	JSON body = data["body"];
+
+	Mat* mat = new Mat();
+	JSON mat_type;
+
+	if(body.contains("ambient_color") && (mat_type = body["ambient_color"]).is_object()){
+		if(mat_type.contains("r") && mat_type["r"].is_number() &&
+			mat_type.contains("g") && mat_type["g"].is_number() &&
+			mat_type.contains("b") && mat_type["b"].is_number() &&
+			mat_type.contains("a") && mat_type["a"].is_number()){
+
+			mat->ambient_color.r = mat_type["r"];
+			mat->ambient_color.g = mat_type["g"];
+			mat->ambient_color.b = mat_type["b"];
+			mat->ambient_color.a = mat_type["a"];
+		}
+		else{
+			std::cout << "WARNING: 'ambient_color' exists, but is invalid!" << std::endl;
+		}
+	}
+
+	if(body.contains("diffuse_color") && (mat_type = body["diffuse_color"]).is_object()){
+		if(mat_type.contains("r") && mat_type["r"].is_number() &&
+			mat_type.contains("g") && mat_type["g"].is_number() &&
+			mat_type.contains("b") && mat_type["b"].is_number() &&
+			mat_type.contains("a") && mat_type["a"].is_number()){
+
+			mat->diffuse_color.r = mat_type["r"];
+			mat->diffuse_color.g = mat_type["g"];
+			mat->diffuse_color.b = mat_type["b"];
+			mat->diffuse_color.a = mat_type["a"];
+		}
+		else{
+			std::cout << "WARNING: 'diffuse_color' exists, but is invalid!" << std::endl;
+		}
+	}
+
+	if(body.contains("specular_color") && (mat_type = body["specular_color"]).is_object()){
+		if(mat_type.contains("r") && mat_type["r"].is_number() &&
+			mat_type.contains("g") && mat_type["g"].is_number() &&
+			mat_type.contains("b") && mat_type["b"].is_number() &&
+			mat_type.contains("a") && mat_type["a"].is_number()){
+
+			mat->specular_color.r = mat_type["r"];
+			mat->specular_color.g = mat_type["g"];
+			mat->specular_color.b = mat_type["b"];
+			mat->specular_color.a = mat_type["a"];
+		}
+		else{
+			std::cout << "WARNING: 'specular_color' exists, but is invalid!" << std::endl;
+		}
+	}
+
+	return mat;
 }
 
 

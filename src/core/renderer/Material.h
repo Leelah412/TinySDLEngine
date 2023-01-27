@@ -115,6 +115,8 @@ class Material : public Resource{
 public:
 	Material();
 	Material(Shader* shader);
+	//Material(const std::string& path);
+	//Material(Shader* shader, const std::string& path);
 	virtual ~Material();
 
 	// Set shader uniforms

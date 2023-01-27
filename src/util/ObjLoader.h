@@ -32,9 +32,16 @@ public:
 		std::vector<unsigned int> indices = {};
 	};
 
+	struct Mat{
+		glm::vec4 ambient_color;
+		glm::vec4 diffuse_color;
+		glm::vec4 specular_color;
+	};
+
 	static Obj* load(const std::string& path);
 	// Load a mesh (.msh) file in the given path
 	static Obj* load_mesh(const std::string& path);
+	static Mat* load_material(const std::string& path);
 	// Create default Material JSON files from the given mtl library
 	// Returns the created JSON data mapped to their filenames
 	// All Materials will (currently) have the same uniforms, no matter the shader
