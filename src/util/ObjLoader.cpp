@@ -3,11 +3,9 @@
 ObjLoader::ObjLoader(){}
 ObjLoader::~ObjLoader(){}
 
-ObjLoader::Obj* ObjLoader::load(const std::string& path){
+std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 	std::vector<Obj*> groups;
-	// Already add a default group
-	groups.push_back(new Obj());
-	Obj* obj = new Obj();
+	//Obj* obj = new Obj();
 
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec2> uvs;
@@ -19,40 +17,19 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 	std::ifstream file(path.c_str());
 	if(!file.is_open()){
 		printf("Impossible to open the file !\n");
-		delete obj;
-		return nullptr;
+		return {};
 	}
+	// Already add a default group
+	groups.push_back(new Obj());
+
 	std::string line;
-
 	bool has_uvs = false, has_normals = false;
-
+	bool success = true;
 	while(std::getline(file, line)){
-		if(line.length() == 0){}
-		// TODO: load materials somewhere different
-		// Load material library
-		else if(line.substr(0, 6) == "mtllib"){
-			char* buf = new char[64];
-			sscanf_s(line.c_str(), "mtllib %64s\n", buf, 64);
-			// extract relative path
-			auto str_it = path.rbegin();
-			int i = path.size() - 1;
-			// start from the back, that will be faster
-			while(i >= 0){
-				// who needs regex lol
-				if(path.at(i) == '/') break;
-				i--;
-			}
-			// relative path exists
-			if(i != -1){
-				mtl_to_material(path.substr(0, i + 1) + buf);
-			}
-			else{
-				mtl_to_material(buf);
-			}
-			delete[] buf;
-		}
-		// For this to work, there must be no space before the "v"!
-		else if(line[0] == 'v'){
+		if(line.length() == 0) continue;
+
+		// Read a vertex attribute
+		if(line[0] == 'v'){
 			// Position
 			if(line[1] == ' '){
 				glm::vec3 vertex;
@@ -61,7 +38,6 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 			}
 			// UV
 			else if(line[1] == 't'){
-
 				has_uvs = true;
 				glm::vec2 uv;
 				sscanf_s(line.c_str(), "vt %f %f\n", &uv.x, &uv.y);
@@ -75,14 +51,16 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 				normals.push_back(normal);
 			}
 		}
-		// Creating a new group
+		// Create new group
 		else if(line[0] == 'g'){
+			// Reset list of used vertices
+			used_attribs = {};
 
+			groups.push_back(new Obj());
 		}
 		// Create face from vertex attributes
 		// When we are at "f", assume, that all relevant vertices are already loaded
 		else if(line[0] == 'f' && line[1] == ' '){
-			//std::cout << line << std::endl;
 			unsigned int vrts[3][3] = {0};
 			int matches;
 
@@ -97,8 +75,8 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 
 				if(matches != 9){
 					printf("File can't be read by our simple parser :( Try exporting with other options\n");
-					delete obj;
-					return nullptr;
+					success = false;
+					break;
 				}
 			}
 			else if(!has_normals && has_uvs){
@@ -112,8 +90,8 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 
 				if(matches != 6){
 					printf("File can't be read by our simple parser :( Try exporting with other options\n");
-					delete obj;
-					return nullptr;
+					success = false;
+					break;
 				}
 			}
 			else if(has_normals && !has_uvs){
@@ -127,8 +105,8 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 
 				if(matches != 6){
 					printf("File can't be read by our simple parser :( Try exporting with other options\n");
-					delete obj;
-					return nullptr;
+					success = false;
+					break;
 				}
 			}
 			else{
@@ -142,17 +120,17 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 
 				if(matches != 3){
 					printf("File can't be read by our simple parser :( Try exporting with other options\n");
-					delete obj;
-					return nullptr;
+					success = false;
+					break;
 				}
 			}
 
 			std::unordered_map<glm::ivec3, unsigned int>::iterator it;
-			// for each vertex of a face
+			// for each vertex of a tri
 			for(int i = 0; i < 3; i++){
 				// vertex already exists -> point to index of existing vertex
 				if((it = used_attribs.find(glm::ivec3(vrts[i][0] - 1, vrts[i][1] - 1, vrts[i][2] - 1))) != used_attribs.end()){
-					obj->indices.push_back(it->second);
+					groups.back()->indices.push_back(it->second);
 				}
 				// otherwise create new vertex
 				else{
@@ -161,27 +139,53 @@ ObjLoader::Obj* ObjLoader::load(const std::string& path){
 					vert.uv = has_uvs ? uvs.at(vrts[i][1] - 1) : glm::vec2(0.0);
 					vert.normal = has_normals ? normals.at(vrts[i][2] - 1) : glm::vec3(0.0);
 
-					obj->vertices.push_back(vert);
-					obj->indices.push_back(obj->vertices.size() - 1);
-					used_attribs.insert(std::pair<glm::ivec3, unsigned int>(glm::ivec3(vrts[i][0] - 1, vrts[i][1] - 1, vrts[i][2] - 1), obj->vertices.size() - 1));
+					groups.back()->vertices.push_back(vert);
+					groups.back()->indices.push_back(groups.back()->vertices.size() - 1);
+					used_attribs.insert(std::pair<glm::ivec3, unsigned int>(glm::ivec3(vrts[i][0] - 1, vrts[i][1] - 1, vrts[i][2] - 1), groups.back()->vertices.size() - 1));
 				}
 			}
+		}
+		// Use given material for current group
+		else if(line.substr(0, 6) == "usemtl"){
+			char* buf = new char[64];
+			sscanf_s(line.c_str(), "usemtl %64s\n", buf, 64);
+			groups.back()->material = buf;
+			delete[] buf;
 		}
 	}
 
 	file.close();
 
-	return obj;
+	// If file couldn't be loaded correctly, delete all elements we've created and return an empty set
+	if(!success){
+		for(int i = 0; i < groups.size(); i++){
+			delete groups.at(i);
+		}
+		return {};
+	}
+
+	// Often, there might be no grouping in an .obj file, so at the end we must check,
+	// if first element has any vertices; if no, delete it.
+	if(groups.size() && !groups.at(0)->vertices.size()){
+		delete groups.at(0);
+		if(groups.size() > 1){
+			groups = std::vector<Obj*>(groups.begin() + 1, groups.end());
+		}
+		else{
+			groups = {};
+		}
+	}
+
+	return groups;
 }
 
-ObjLoader::Obj* ObjLoader::load_mesh(const std::string& path){
-	Obj* obj = new Obj();
+std::vector<ObjLoader::Obj*> ObjLoader::load_mesh(const std::string& path){
+	std::vector<Obj*> objs;
 
 	std::ifstream file(path.c_str());
 	if(!file.is_open()){
 		printf("Impossible to open the file !\n");
-		delete obj;
-		return nullptr;
+		return {};
 	}
 
 	std::string line;
@@ -190,18 +194,28 @@ ObjLoader::Obj* ObjLoader::load_mesh(const std::string& path){
 	glm::vec3 v_position;
 	glm::vec2 v_uv;
 	glm::vec3 v_normal;
-
 	glm::ivec3 indices;
+
+	bool success = true;
 	while(std::getline(file, line)){
 		// skip empty lines
 		if(line.length() == 0){}
 		// mode switch
 		else if(line.at(0) == '#'){
 			if(line.find("vertices") != std::string::npos){
+				// add new submesh
+				objs.push_back(new Obj());
 				mode = 0;
 			}
 			else if(line.find("indices") != std::string::npos){
 				mode = 1;
+			}
+			else if(line.find("material") != std::string::npos){
+				char* buf = new char[128];
+				sscanf_s(line.c_str(), "#material %128s", buf, 128);
+				objs.back()->material = buf;
+				delete[] buf;
+				mode = 2;
 			}
 		}
 		// vertex mode
@@ -213,10 +227,10 @@ ObjLoader::Obj* ObjLoader::load_mesh(const std::string& path){
 
 				std::cout << "ERROR: Couldn't load mesh: Invalid .msh file!" << std::endl;
 				file.close();
-				delete obj;
-				return nullptr;
+				success = false;
+				break;
 			}
-			obj->vertices.push_back({v_position, v_uv, v_normal});
+			objs.back()->vertices.push_back({v_position, v_uv, v_normal});
 
 		}
 		// index mode
@@ -224,17 +238,26 @@ ObjLoader::Obj* ObjLoader::load_mesh(const std::string& path){
 			if(sscanf_s(line.c_str(), "%d %d %d\n", &indices[0], &indices[1], &indices[2]) != 3){
 				std::cout << "ERROR: Couldn't load mesh: Invalid .msh file!" << std::endl;
 				file.close();
-				delete obj;
-				return nullptr;
+				success = false;
+				break;
 			}
-			obj->indices.push_back(indices[0]);
-			obj->indices.push_back(indices[1]);
-			obj->indices.push_back(indices[2]);
+			objs.back()->indices.push_back(indices[0]);
+			objs.back()->indices.push_back(indices[1]);
+			objs.back()->indices.push_back(indices[2]);
 		}
 	}
 
 	file.close();
-	return obj;
+
+	// If file couldn't be loaded correctly, delete all elements we've created and return an empty set
+	if(!success){
+		for(int i = 0; i < objs.size(); i++){
+			delete objs.at(i);
+		}
+		return {};
+	}
+
+	return objs;
 }
 
 ObjLoader::Mat* ObjLoader::load_material(const std::string& path){
@@ -243,7 +266,10 @@ ObjLoader::Mat* ObjLoader::load_material(const std::string& path){
 		printf("Impossible to open the file !\n");
 		return nullptr;
 	}
-	JSON data = JSON::parse(path);
+	return load_material_from_json(JSON::parse(path));
+}
+
+ObjLoader::Mat* ObjLoader::load_material_from_json(const JSON& data){
 
 	if(!data.contains("type") || data["type"] != "material"){
 		std::cout << "ERROR: Couldn't load Material: File not a Material!" << std::endl;
@@ -309,7 +335,6 @@ ObjLoader::Mat* ObjLoader::load_material(const std::string& path){
 
 	return mat;
 }
-
 
 std::map<std::string, JSON> ObjLoader::mtl_to_material(const std::string& path){
 
@@ -432,30 +457,97 @@ std::map<std::string, JSON> ObjLoader::mtl_to_material(const std::string& path){
 
 }
 
-ObjLoader::Obj* ObjLoader::obj_to_mesh(const std::string& path){
-	Obj* obj = load(path);
+std::map<std::string, JSON> ObjLoader::mtl_from_obj(const std::string& path){
+
+	std::ifstream file(path.c_str());
+	if(!file.is_open()){
+		printf("Impossible to open the file !\n");
+		return {};
+	}
+	std::string line;
+
+	std::map<std::string, JSON> mats, tmp;
+	while(std::getline(file, line)){
+		// Load material library
+		if(line.substr(0, 6) == "mtllib"){
+			char* buf = new char[64];
+			sscanf_s(line.c_str(), "mtllib %64s\n", buf, 64);
+			// extract relative path
+			auto str_it = path.rbegin();
+			int i = path.size() - 1;
+			// start from the back, that will be faster
+			while(i >= 0){
+				// who needs regex lol
+				if(path.at(i) == '/') break;
+				i--;
+			}
+			// relative path exists
+			if(i != -1){
+				 tmp = mtl_to_material(path.substr(0, i + 1) + buf);
+			}
+			else{
+				tmp = mtl_to_material(buf);
+			}
+
+			for(auto& m : tmp){
+				mats[m.first] = m.second;
+			}
+			delete[] buf;
+		}
+	}
+
+	return mats;
+}
+
+std::vector<ObjLoader::Obj*> ObjLoader::obj_to_mesh(const std::string& path){
+	std::vector<Obj*> objs = load(path);
 
 	std::ofstream f_out(std::string(path + ".msh").c_str());
 	if(!f_out.is_open()){
-		return obj;
+		return objs;
 	}
 
-	// push vertices in file
-	f_out << "#vertices\n";
-	for(auto& vs : obj->vertices){
-		f_out << vs.position.x << " " << vs.position.y << " " << vs.position.z << " " << vs.uv.x << " " << vs.uv.y << " " << vs.normal.x << " " << vs.normal.y << " " << vs.normal.z << "\n";
-	}
-	// push indices in file
-	f_out << "\n#indices\n";
+	// Create all meshes we've found
+	// New mesh always signalled by "#vertices"
+	for(int i = 0; i < objs.size(); i++){
+		// push vertices in file
+		f_out << "#vertices\n";
+		for(auto& vs : objs.at(i)->vertices){
+			f_out << vs.position.x << " " << vs.position.y << " " << vs.position.z << " " << vs.uv.x << " " << vs.uv.y << " " << vs.normal.x << " " << vs.normal.y << " " << vs.normal.z << "\n";
+		}
+		// push indices in file
+		f_out << "\n#indices\n";
 
-	for(size_t i = 0; i < obj->indices.size(); i += 3){
-		f_out << obj->indices.at(i) << " " << obj->indices.at(i + 1) << " " << obj->indices.at(i + 2) << "\n";
+		for(size_t i = 0; i < objs.at(i)->indices.size(); i += 3){
+			f_out << objs.at(i)->indices.at(i) << " " << objs.at(i)->indices.at(i + 1) << " " << objs.at(i)->indices.at(i + 2) << "\n";
+		}
+
+		// set material, if it exists
+		if(!objs.at(i)->material.empty() && (objs.at(i)->material != "")){
+			f_out << "\n#material " << objs.at(i)->material << "\n";
+		}
+
+		f_out << "\n";
 	}
 
 	f_out.close();
-	return obj;
+	return objs;
 }
 
 void ObjLoader::create_model_from_obj(const std::string& path){
+	// Load the mesh
+	std::vector<Obj*> msh = obj_to_mesh(path);
+
+	// Load the materials
+	std::map<std::string, JSON> mat_files = mtl_from_obj(path);
+
+	// Create the materials from the JSONs
+	std::map<std::string, Mat*> mats;
+	for(auto& m : mat_files){
+		mats.insert( std::pair<std::string, Mat*>(m.first, load_material_from_json(m.second)) );
+	}
+
+	JSON data;
+
 
 }

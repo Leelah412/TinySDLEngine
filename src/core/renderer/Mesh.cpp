@@ -18,31 +18,31 @@ Mesh::~Mesh(){}
 
 void Mesh::load_mesh(const std::string& path){
 	m_filepath = path;
-	ObjLoader::Obj* obj = ObjLoader::load_mesh(path);
+	std::vector<ObjLoader::Obj*> msh = ObjLoader::load_mesh(path);
 	// remove previous mesh
 	delete_mesh();
-	// add new one
-	float* vdata = new float[obj->vertices.size() * (3 + 2 + 3)];
-	for(int i = 0; i < obj->vertices.size(); i++){
-		// TODO: check for a smarter method
-		// what am i even doing
-		ObjLoader::ObjVertex& vert = obj->vertices.at(i);
-		// position
-		std::memcpy(&vdata[i * 8 + 0], &vert.position.x, 4);
-		std::memcpy(&vdata[i * 8 + 1], &vert.position.y, 4);
-		std::memcpy(&vdata[i * 8 + 2], &vert.position.z, 4);
-		// uv
-		std::memcpy(&vdata[i * 8 + 3], &vert.uv.x, 4);
-		std::memcpy(&vdata[i * 8 + 4], &vert.uv.y, 4);
-		// normal
-		std::memcpy(&vdata[i * 8 + 5], &vert.normal.x, 4);
-		std::memcpy(&vdata[i * 8 + 6], &vert.normal.y, 4);
-		std::memcpy(&vdata[i * 8 + 7], &vert.normal.z, 4);
+	// add submeshes
+	for(int i = 0; i < msh.size(); i++){
+		float* vdata = new float[msh.at(i)->vertices.size() * (3 + 2 + 3)];
+		for(int j = 0; j < msh.at(i)->vertices.size(); j++){
+			// TODO: check for a smarter method
+			// what am i even doing
+			ObjLoader::ObjVertex& vert = msh.at(i)->vertices.at(j);
+			// position
+			std::memcpy(&vdata[j * 8 + 0], &vert.position.x, 4);
+			std::memcpy(&vdata[j * 8 + 1], &vert.position.y, 4);
+			std::memcpy(&vdata[j * 8 + 2], &vert.position.z, 4);
+			// uv
+			std::memcpy(&vdata[j * 8 + 3], &vert.uv.x, 4);
+			std::memcpy(&vdata[j * 8 + 4], &vert.uv.y, 4);
+			// normal
+			std::memcpy(&vdata[j * 8 + 5], &vert.normal.x, 4);
+			std::memcpy(&vdata[j * 8 + 6], &vert.normal.y, 4);
+			std::memcpy(&vdata[j * 8 + 7], &vert.normal.z, 4);
+		}
+		add_submesh(vdata, msh.at(i)->vertices.size() * 8 * sizeof(float), msh.at(i)->indices);
+		delete[] vdata;
 	}
-	// TODO: currently adding only one mesh, enhance this to include multiple submeshes
-	add_submesh(vdata, obj->vertices.size() * 8 * sizeof(float), obj->indices);
-
-	delete[] vdata;
 
 	m_modified = false;
 }
