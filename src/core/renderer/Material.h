@@ -4,6 +4,7 @@
 #include "Texture.h"
 //#include "TextureArray.h"
 #include "Shader.h"
+#include "util/ObjLoader.h"
 
 #include <types.h>
 #include <json/single_include/nlohmann/json.hpp>
@@ -54,7 +55,6 @@ typedef struct Uniform{
 		if(uniform_name != comp.uniform_name) return this->uniform_name < comp.uniform_name;
 		return value < comp.value;
 
-		// TODO: add more stuff
 #if 0
 		switch(uniform_type){
 			case GL_FLOAT_VEC2:
@@ -98,15 +98,7 @@ typedef struct Uniform{
 	};
 };
 
-
-
-enum class TEXTURE_TYPE {ALBEDO, NORMAL, METALLIC, ROUGHNESS};
-
-// TODO: add ability to create material from path
-// TODO: like for shaders, use a list of material uniform variables to create the materials, instead of using inheritance
-// read material types and data from files, where shadertype/filepath/string shall also be specified
-// 
-// Each material can have a shader bound to it, while a shader can belong to multiple materials
+// Each Material can have a Shader bound to it, while a Shader can belong to multiple Materials
 // All Materials have the same default material uniforms, and when using the base "Material" class,
 // the same struct has to be used in every shader file depicting a Material.
 // Additionally, further uniforms of a shader will be during runtime for easier and safer access to shader uniforms.
@@ -114,9 +106,12 @@ class Material : public Resource{
 	
 public:
 	Material();
+	// Create Material for given Shader
 	Material(Shader* shader);
-	//Material(const std::string& path);
-	//Material(Shader* shader, const std::string& path);
+	// Create Material from given file without a specified Shader
+	Material(const std::string& path);
+	// Create Material from given file for given Shader
+	Material(Shader* shader, const std::string& path);
 	virtual ~Material();
 
 	// Set shader uniforms
@@ -151,9 +146,7 @@ public:
 		if(reset_texture) m_albedo = nullptr;
 	}
 
-
-	JSON save();
-	void load(const std::string& path);
+	void load_material(const std::string& path);
 
 protected:
 	Shader* m_shader = nullptr;									// Shader bound to material
@@ -193,6 +186,7 @@ protected:
 
 
 private:
+	// TODO: for what do we use these again?
 	static unsigned int s_material_count;
 	unsigned int m_material_id;
 

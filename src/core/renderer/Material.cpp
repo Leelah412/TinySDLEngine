@@ -12,6 +12,15 @@ Material::Material(Shader* shader){
 	m_material_id = ++s_material_count;
 	set_shader(shader);
 }
+Material::Material(const std::string& path){
+	m_material_id = ++s_material_count;
+	load_material(path);
+}
+Material::Material(Shader* shader, const std::string& path){
+	m_material_id = ++s_material_count;
+	set_shader(shader);
+	load_material(path);
+}
 Material::~Material(){}
 
 void Material::bind() const{
@@ -134,31 +143,13 @@ void Material::set_texture(const std::string& uniform_name, const Texture* textu
 	}
 }
 
-JSON Material::save(){
-	JSON shader;
+void Material::load_material(const std::string& path){
+	ObjLoader::Mat* mat = ObjLoader::load_material(path);
+	if(!mat) return;
+	// TODO: for now, only albedo color will be set
+	m_albedo_col = mat->diffuse_color;
 
-	if(m_shader){
-		shader = {"shader", {
-			{"ubershader_path", m_shader->get_filepath()}
-		}};
-	}
-	else{
-		shader = {"shader", NULL};
-	}
-
-	std::vector<JSON> uniforms;
-	//for(int i = 0; i < m_uniforms.size(); i++){
-	//	switch(m_uniforms.ge){
-	//
-	//	}
-	//}
-
-	JSON data = {{"type", "material"}};
-	return data;
-}
-
-void Material::load(const std::string& path){
-
+	m_filepath = path;
 }
 
 }

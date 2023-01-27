@@ -241,7 +241,7 @@ ObjLoader::Mat* ObjLoader::load_material(const std::string& path){
 	std::ifstream file(path.c_str());
 	if(!file.is_open()){
 		printf("Impossible to open the file !\n");
-		return {};
+		return nullptr;
 	}
 	JSON data = JSON::parse(path);
 

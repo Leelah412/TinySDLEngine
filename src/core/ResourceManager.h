@@ -5,6 +5,7 @@
 #include "renderer/Texture.h"
 #include "renderer/Mesh.h"
 #include "renderer/Shader.h"
+#include "renderer/Material.h"
 
 #include <map>
 
@@ -12,7 +13,7 @@
 
 // Use the resource manager to ensure, that resources are unique, and that all used resources are freed anytime "delete_all" is called
 
-enum class RES_TYPE {TEXTURE, MESH, SHADER};
+enum class RES_TYPE {TEXTURE, MESH, SHADER, MATERIAL};
 
 class Resource;
 class ResourceManager{
@@ -42,7 +43,6 @@ public:
 				res = new Texture(path);
 				m_resources.insert(std::pair<std::string, Resource*>(path, res));
 				return res;
-
 			}
 			case RES_TYPE::MESH: {
 				res = new Mesh(path);
@@ -51,6 +51,11 @@ public:
 			}
 			case RES_TYPE::SHADER: {
 				res = new Shader(path);
+				m_resources.insert(std::pair<std::string, Resource*>(path, res));
+				return res;
+			}
+			case RES_TYPE::MATERIAL: {
+				res = new Material(path);
 				m_resources.insert(std::pair<std::string, Resource*>(path, res));
 				return res;
 			}
@@ -71,27 +76,32 @@ public:
 			switch(type){
 				case RES_TYPE::TEXTURE: return new Texture(*(Texture*)m_resources[path]);
 				case RES_TYPE::MESH: return new Mesh(*(Mesh*)m_resources[path]);
+				case RES_TYPE::MATERIAL: return new Material(*(Material*)m_resources[path]);
 				default: return nullptr;
 			}
 		}
-		Resource* res = nullptr;
 
+		Resource* res = nullptr;
+		
 		switch(type){
 			case RES_TYPE::TEXTURE:{
 				res = new Texture(path);
 				m_resources.insert(std::pair<std::string, Resource*>(path, res));
 				return new Texture(*(Texture*)res);
-			
 			}
 			case RES_TYPE::MESH:{
 				res = new Mesh(path);
 				m_resources.insert(std::pair<std::string, Resource*>(path, res));
 				return new Mesh(*(Mesh*)res);
-
+			}
+			case RES_TYPE::MATERIAL:{
+				res = new Material(path);
+				m_resources.insert(std::pair<std::string, Resource*>(path, res));
+				return new Material(*(Material*)res);
 			}
 			default: return nullptr;
 		}
-
+		
 		// Load nothing
 		return nullptr;
 	}
