@@ -6,6 +6,7 @@
 #include "renderer/VertexArray.h"
 #include "renderer/Mesh.h"
 #include "renderer/defaults.h"
+#include "ObjLoader.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -385,7 +386,11 @@ bool GameLoop::init_gl(){
 //#define testload
 
 #ifndef testload
-	// TEST load nodes
+	// create mesh
+	ObjLoader::obj_to_mesh("src/res/mesh/Prop_Barrel_1.obj");
+	ObjLoader::obj_to_mesh("src/res/mesh/Prop_Boat_1.obj");
+
+	// load nodes
 	// Create test cube with default material
 	Material* def_mat = new Material(IRenderManager->get_default_shader());
 	// note: do NOT create new textures with the material, as it won't be tracked by resource manager
@@ -395,6 +400,7 @@ bool GameLoop::init_gl(){
 	//Mesh* mesh = new Mesh((const void*)vertices, sizeof(vertices), indices);
 	//Model* model = new Model(mesh);
 	Model* model = new Model("src/res/mesh/Prop_Boat_1.obj.msh");
+
 	//model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
 
 	ModelNode* parent = new ModelNode(model);

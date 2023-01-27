@@ -113,6 +113,8 @@
                 "model": {
                     "mesh": "src/res/mesh/Prop_Boat_1.obj.msh",
                     "vertex_material": [
+                        {},
+                        {},
                         {}
                     ]
                 },

@@ -5,7 +5,6 @@ ObjLoader::~ObjLoader(){}
 
 std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 	std::vector<Obj*> groups;
-	//Obj* obj = new Obj();
 
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec2> uvs;
@@ -24,6 +23,8 @@ std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 
 	std::string line;
 	bool has_uvs = false, has_normals = false;
+	std::string cur_mat = "";						// material currently applied to a group
+
 	bool success = true;
 	while(std::getline(file, line)){
 		if(line.length() == 0) continue;
@@ -54,9 +55,11 @@ std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 		// Create new group
 		else if(line[0] == 'g'){
 			// Reset list of used vertices
+			// Don't worry, this does not affect the existing vertex attributes we've already read!
 			used_attribs = {};
 
 			groups.push_back(new Obj());
+			groups.back()->material = cur_mat;
 		}
 		// Create face from vertex attributes
 		// When we are at "f", assume, that all relevant vertices are already loaded
@@ -145,11 +148,16 @@ std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 				}
 			}
 		}
-		// Use given material for current group
+		// Create new group for newly used material
 		else if(line.substr(0, 6) == "usemtl"){
+			// Reset list of used vertices
+			used_attribs = {};
+			groups.push_back(new Obj());
+
 			char* buf = new char[64];
 			sscanf_s(line.c_str(), "usemtl %64s\n", buf, 64);
-			groups.back()->material = buf;
+			cur_mat = buf;
+			groups.back()->material = cur_mat;
 			delete[] buf;
 		}
 	}
@@ -164,15 +172,12 @@ std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 		return {};
 	}
 
-	// Often, there might be no grouping in an .obj file, so at the end we must check,
-	// if first element has any vertices; if no, delete it.
-	if(groups.size() && !groups.at(0)->vertices.size()){
-		delete groups.at(0);
-		if(groups.size() > 1){
-			groups = std::vector<Obj*>(groups.begin() + 1, groups.end());
-		}
-		else{
-			groups = {};
+	// Since we create new groups after encountering "g" or "usemtl", and since a "usemtl" could come right after a "g",
+	// there might be empty groups we won't need, so delete them!
+	for(int i = groups.size() - 1; i >= 0; i--){
+		if(groups.at(i)->vertices.empty()){
+			delete groups.at(i);
+			groups.erase(groups.begin() + i);
 		}
 	}
 
@@ -518,8 +523,8 @@ std::vector<ObjLoader::Obj*> ObjLoader::obj_to_mesh(const std::string& path){
 		// push indices in file
 		f_out << "\n#indices\n";
 
-		for(size_t i = 0; i < objs.at(i)->indices.size(); i += 3){
-			f_out << objs.at(i)->indices.at(i) << " " << objs.at(i)->indices.at(i + 1) << " " << objs.at(i)->indices.at(i + 2) << "\n";
+		for(size_t j = 0; j < objs.at(i)->indices.size(); j += 3){
+			f_out << objs.at(i)->indices.at(j) << " " << objs.at(i)->indices.at(j + 1) << " " << objs.at(i)->indices.at(j + 2) << "\n";
 		}
 
 		// set material, if it exists
@@ -547,7 +552,16 @@ void ObjLoader::create_model_from_obj(const std::string& path){
 		mats.insert( std::pair<std::string, Mat*>(m.first, load_material_from_json(m.second)) );
 	}
 
-	JSON data;
+	JSON data = {
+		{"type", "model"},
+		{"body", {
+			{"mesh", path + ".msh"},
+			{"vertex_materials", {
+				
+				}
+			}
+		}}
+	};
 
 
 }

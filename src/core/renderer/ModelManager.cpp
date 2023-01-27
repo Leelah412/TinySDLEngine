@@ -632,9 +632,9 @@ void ModelManager::move_vertex_materials_in_ibo(VertexMaterial* vm, const Disjoi
 	DisjointInterval old = *dj_it;
 	remove_free_ibo_space(*dj_it);
 	if(used_iv.end != old.end)
-		add_free_vbo_space(DisjointInterval(used_iv.end + 1, old.end));
+		add_free_ibo_space(DisjointInterval(used_iv.end + 1, old.end));
 	if(used_iv.start != old.start)
-		add_free_vbo_space(DisjointInterval(old.start, used_iv.start - 1));
+		add_free_ibo_space(DisjointInterval(old.start, used_iv.start - 1));
 }
 
 void ModelManager::concat_free_vbo_space(){
