@@ -185,7 +185,10 @@ ObjLoader::Obj* ObjLoader::load_mesh(const std::string& path){
 
 	glm::ivec3 indices;
 	while(std::getline(file, line)){
-		if(line.at(0) == '#'){
+		// skip empty lines
+		if(line.length() == 0){}
+		// mode switch
+		else if(line.at(0) == '#'){
 			if(line.find("vertices") != std::string::npos){
 				mode = 0;
 			}
@@ -193,8 +196,9 @@ ObjLoader::Obj* ObjLoader::load_mesh(const std::string& path){
 				mode = 1;
 			}
 		}
+		// vertex mode
 		else if(mode == 0){
-			if(sscanf_s(line.c_str(), "%f %f %f %f %f %f %f %f",
+			if(sscanf_s(line.c_str(), "%f %f %f %f %f %f %f %f\n",
 				&v_position[0], &v_position[1], &v_position[2],
 				&v_uv[0], &v_uv[1],
 				&v_normal[0], &v_normal[1], &v_normal[2]) != 8){
@@ -207,8 +211,9 @@ ObjLoader::Obj* ObjLoader::load_mesh(const std::string& path){
 			obj->vertices.push_back({v_position, v_uv, v_normal});
 
 		}
+		// index mode
 		else if(mode == 1){
-			if(sscanf_s(line.c_str(), "%d %d %d", &indices[0], &indices[1], &indices[2]) != 3){
+			if(sscanf_s(line.c_str(), "%d %d %d\n", &indices[0], &indices[1], &indices[2]) != 3){
 				std::cout << "ERROR: Couldn't load mesh: Invalid .msh file!" << std::endl;
 				file.close();
 				delete obj;
@@ -220,6 +225,7 @@ ObjLoader::Obj* ObjLoader::load_mesh(const std::string& path){
 		}
 	}
 
+	return obj;
 	file.close();
 }
 

@@ -18,7 +18,7 @@ Mesh::~Mesh(){}
 
 void Mesh::load_mesh(const std::string& path){
 	m_filepath = path;
-	ObjLoader::Obj* obj = ObjLoader::load(path);
+	ObjLoader::Obj* obj = ObjLoader::load_mesh(path);
 	// remove previous mesh
 	delete_mesh();
 	// add new one
@@ -41,7 +41,6 @@ void Mesh::load_mesh(const std::string& path){
 	}
 	// TODO: currently adding only one mesh, enhance this to include multiple submeshes
 	add_submesh(vdata, obj->vertices.size() * 8 * sizeof(float), obj->indices);
-	// TODO: convert obj to own mesh type
 
 	delete[] vdata;
 
