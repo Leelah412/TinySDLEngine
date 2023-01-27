@@ -392,18 +392,13 @@ bool GameLoop::init_gl(){
 
 	// load nodes
 	// Create test cube with default material
-	Material* def_mat = new Material(IRenderManager->get_default_shader());
+	//Material* def_mat = new Material(IRenderManager->get_default_shader());
 	// note: do NOT create new textures with the material, as it won't be tracked by resource manager
 	// in case of a texture change, the given texture will NOT be deleted!
 	// therfore set texture MUST already exist, if we want at least the possibility of avoiding a mem leak!
-	def_mat->set_texture("u_texture", new Texture("src/res/textures/example.PNG"));
-	//Mesh* mesh = new Mesh((const void*)vertices, sizeof(vertices), indices);
-	//Model* model = new Model(mesh);
-	Model* model = new Model("src/res/mesh/Prop_Barrel_1.obj.msh");
+	//def_mat->set_texture("u_texture", new Texture("src/res/textures/example.PNG"));
 
-	//model->assign_material(*model->get_mesh()->get_submesh_list().begin(), def_mat);
-
-	ModelNode* parent = new ModelNode(model);
+	ModelNode* parent = new ModelNode("src/res/mesh/Prop_Barrel_1.obj.model");
 	parent->set_unique_name("model");
 	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);
 	

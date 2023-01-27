@@ -10,7 +10,7 @@ Model::Model() : m_mesh{nullptr}{
 
 Model::Model(const std::string& path, bool unique){
 	m_model_id = ++m_model_id_count;
-	load_mesh(path, unique);
+	load_model(path, unique);
 }
 
 Model::Model(Mesh* mesh, bool unique){
@@ -19,6 +19,23 @@ Model::Model(Mesh* mesh, bool unique){
 }
 
 Model::~Model(){}
+
+bool Model::load_model(const std::string& path, bool unique){
+	ObjLoader::ModelProps pths = ObjLoader::load_model_paths(path);
+	if(!load_mesh(pths.mesh_pth)){
+		std::cout << "ERROR: Couldn't load Model with Mesh at '" << pths.mesh_pth << "'. Abort." << std::endl;
+		return false;
+	}
+
+	const std::vector<VertexData*>& sl = m_mesh->get_submesh_list();
+	// we can only assign materials to the vertex data, that exist
+	// in normal cases tho, values should always be equivalent!
+	int size = std::min(sl.size(), pths.mat_pths.size());
+	for(int i = 0; i < size; i++){
+		assign_material(sl.at(i), (Material*)ResManager->load_resource(pths.mat_pths.at(i), RES_TYPE::MATERIAL));
+	}
+	return true;
+}
 
 bool Model::load_mesh(const std::string& path, bool unique){
 	reset_mesh();
@@ -34,10 +51,6 @@ bool Model::load_mesh(const std::string& path, bool unique){
 
 	init_vertex_material_list();
 	return true;
-}
-
-bool Model::save_mesh(const std::string& path, bool unique){
-	return false;
 }
 
 bool Model::set_mesh(Mesh* mesh, bool unique){

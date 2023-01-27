@@ -50,10 +50,12 @@ void ModelManager::init_world(){
 
 void ModelManager::add_model(Model* model){
 	if(!model) return;
+	// Model must have a Mesh
+	if(!model->get_mesh()){
+		std::cout << "WARNING: Trying to add a Model without a Mesh!" << std::endl;
+		return;
+	}
 	if(m_models.find(model) != m_models.end()) return;
-
-	// Bind VAO first
-	//IRenderManager->bind(m_vao);
 
 	// Add to lists
 	m_models.insert(model);

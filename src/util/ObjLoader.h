@@ -39,9 +39,16 @@ public:
 		std::string material = "";
 	};
 
-	static std::vector<Obj*> load(const std::string& path);
+	struct ModelProps{
+		std::string mesh_pth;
+		std::vector<std::string> mat_pths;
+	};
+
+	static std::vector<Obj> load(const std::string& path);
+	// Get the paths to a Models Mesh and its Materials
+	static ModelProps load_model_paths(const std::string& path);
 	// Load a mesh (.msh) file in the given path
-	static std::vector<Obj*> load_mesh(const std::string& path);
+	static std::vector<Obj> load_mesh(const std::string& path);
 	static Mat* load_material(const std::string& path);
 	static Mat* load_material_from_json(const JSON& data);
 	// Create default Material JSON files from the given mtl library
@@ -53,7 +60,7 @@ public:
 	static std::map<std::string, JSON> mtl_from_obj(const std::string& path);
 	// Create a mesh file from OBJ data
 	// Returns the vertex and index data
-	static std::vector<Obj*> obj_to_mesh(const std::string& path);
+	static std::vector<Obj> obj_to_mesh(const std::string& path);
 	// Create a Model JSON from an .obj file, containing Mesh - Material pairs
 	static void create_model_from_obj(const std::string& path);
 

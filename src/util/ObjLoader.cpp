@@ -3,8 +3,8 @@
 ObjLoader::ObjLoader(){}
 ObjLoader::~ObjLoader(){}
 
-std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
-	std::vector<Obj*> groups;
+std::vector<ObjLoader::Obj> ObjLoader::load(const std::string& path){
+	std::vector<Obj> groups;
 
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec2> uvs;
@@ -19,7 +19,7 @@ std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 		return {};
 	}
 	// Already add a default group
-	groups.push_back(new Obj());
+	groups.push_back(Obj());
 
 	std::string line;
 	bool has_uvs = false, has_normals = false;
@@ -58,8 +58,8 @@ std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 			// Don't worry, this does not affect the existing vertex attributes we've already read!
 			used_attribs = {};
 
-			groups.push_back(new Obj());
-			groups.back()->material = cur_mat;
+			groups.push_back(Obj());
+			groups.back().material = cur_mat;
 		}
 		// Create face from vertex attributes
 		// When we are at "f", assume, that all relevant vertices are already loaded
@@ -133,7 +133,7 @@ std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 			for(int i = 0; i < 3; i++){
 				// vertex already exists -> point to index of existing vertex
 				if((it = used_attribs.find(glm::ivec3(vrts[i][0] - 1, vrts[i][1] - 1, vrts[i][2] - 1))) != used_attribs.end()){
-					groups.back()->indices.push_back(it->second);
+					groups.back().indices.push_back(it->second);
 				}
 				// otherwise create new vertex
 				else{
@@ -142,9 +142,9 @@ std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 					vert.uv = has_uvs ? uvs.at(vrts[i][1] - 1) : glm::vec2(0.0);
 					vert.normal = has_normals ? normals.at(vrts[i][2] - 1) : glm::vec3(0.0);
 
-					groups.back()->vertices.push_back(vert);
-					groups.back()->indices.push_back(groups.back()->vertices.size() - 1);
-					used_attribs.insert(std::pair<glm::ivec3, unsigned int>(glm::ivec3(vrts[i][0] - 1, vrts[i][1] - 1, vrts[i][2] - 1), groups.back()->vertices.size() - 1));
+					groups.back().vertices.push_back(vert);
+					groups.back().indices.push_back(groups.back().vertices.size() - 1);
+					used_attribs.insert(std::pair<glm::ivec3, unsigned int>(glm::ivec3(vrts[i][0] - 1, vrts[i][1] - 1, vrts[i][2] - 1), groups.back().vertices.size() - 1));
 				}
 			}
 		}
@@ -152,12 +152,12 @@ std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 		else if(line.substr(0, 6) == "usemtl"){
 			// Reset list of used vertices
 			used_attribs = {};
-			groups.push_back(new Obj());
+			groups.push_back(Obj());
 
 			char* buf = new char[64];
 			sscanf_s(line.c_str(), "usemtl %64s\n", buf, 64);
 			cur_mat = buf;
-			groups.back()->material = cur_mat;
+			groups.back().material = cur_mat;
 			delete[] buf;
 		}
 	}
@@ -166,17 +166,13 @@ std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 
 	// If file couldn't be loaded correctly, delete all elements we've created and return an empty set
 	if(!success){
-		for(int i = 0; i < groups.size(); i++){
-			delete groups.at(i);
-		}
 		return {};
 	}
 
 	// Since we create new groups after encountering "g" or "usemtl", and since a "usemtl" could come right after a "g",
 	// there might be empty groups we won't need, so delete them!
 	for(int i = groups.size() - 1; i >= 0; i--){
-		if(groups.at(i)->vertices.empty()){
-			delete groups.at(i);
+		if(groups.at(i).vertices.empty()){
 			groups.erase(groups.begin() + i);
 		}
 	}
@@ -184,8 +180,55 @@ std::vector<ObjLoader::Obj*> ObjLoader::load(const std::string& path){
 	return groups;
 }
 
-std::vector<ObjLoader::Obj*> ObjLoader::load_mesh(const std::string& path){
-	std::vector<Obj*> objs;
+ObjLoader::ModelProps ObjLoader::load_model_paths(const std::string& path){
+	ModelProps props;
+	
+	std::ifstream file(path.c_str());
+	if(!file.is_open()){
+		printf("Impossible to open the file !\n");
+		return {};
+	}
+
+	JSON data = JSON::parse(file);
+	file.close();
+
+	if(!data.contains("type") || data["type"] != "model"){
+		std::cout << "ERROR: Couldn't load Model: File not a Model!" << std::endl;
+		return props;
+	}
+	if(!data.contains("body") || !data["body"].is_object()){
+		std::cout << "ERROR: Couldn't load Model: Invalid body!" << std::endl;
+		return props;
+	}
+	JSON body = data["body"];
+
+	if(!body.contains("mesh") || !body["mesh"].is_string()){
+		std::cout << "ERROR: Couldn't load Model: No or invalid mesh path!" << std::endl;
+		return props;
+	}
+	props.mesh_pth = body["mesh"];
+
+	JSON vms, vm;
+	if(!body.contains("vertex_materials") || !(vms = body["vertex_materials"]).is_array()){
+		std::cout << "ERROR: Couldn't load Model: 'vertex_material' is invalid!" << std::endl;
+		return props;
+	}
+
+	for(int i = 0; i < vms.size(); i++){
+		if((vm = vms[i]).is_string()){
+			props.mat_pths.push_back(vm);
+		}
+		else{
+			std::cout << "WARNING: 'vertex_material' at position " << i << " is invalid! Skipping Material." << std::endl;
+			props.mat_pths.push_back("");
+		}
+	}
+
+	return props;
+}
+
+std::vector<ObjLoader::Obj> ObjLoader::load_mesh(const std::string& path){
+	std::vector<Obj> objs;
 
 	std::ifstream file(path.c_str());
 	if(!file.is_open()){
@@ -209,7 +252,7 @@ std::vector<ObjLoader::Obj*> ObjLoader::load_mesh(const std::string& path){
 		else if(line.at(0) == '#'){
 			if(line.find("vertices") != std::string::npos){
 				// add new submesh
-				objs.push_back(new Obj());
+				objs.push_back(Obj());
 				mode = 0;
 			}
 			else if(line.find("indices") != std::string::npos){
@@ -218,7 +261,7 @@ std::vector<ObjLoader::Obj*> ObjLoader::load_mesh(const std::string& path){
 			else if(line.find("material") != std::string::npos){
 				char* buf = new char[128];
 				sscanf_s(line.c_str(), "#material %128s", buf, 128);
-				objs.back()->material = buf;
+				objs.back().material = buf;
 				delete[] buf;
 				mode = 2;
 			}
@@ -235,7 +278,7 @@ std::vector<ObjLoader::Obj*> ObjLoader::load_mesh(const std::string& path){
 				success = false;
 				break;
 			}
-			objs.back()->vertices.push_back({v_position, v_uv, v_normal});
+			objs.back().vertices.push_back({v_position, v_uv, v_normal});
 
 		}
 		// index mode
@@ -246,9 +289,9 @@ std::vector<ObjLoader::Obj*> ObjLoader::load_mesh(const std::string& path){
 				success = false;
 				break;
 			}
-			objs.back()->indices.push_back(indices[0]);
-			objs.back()->indices.push_back(indices[1]);
-			objs.back()->indices.push_back(indices[2]);
+			objs.back().indices.push_back(indices[0]);
+			objs.back().indices.push_back(indices[1]);
+			objs.back().indices.push_back(indices[2]);
 		}
 	}
 
@@ -256,9 +299,6 @@ std::vector<ObjLoader::Obj*> ObjLoader::load_mesh(const std::string& path){
 
 	// If file couldn't be loaded correctly, delete all elements we've created and return an empty set
 	if(!success){
-		for(int i = 0; i < objs.size(); i++){
-			delete objs.at(i);
-		}
 		return {};
 	}
 
@@ -271,7 +311,9 @@ ObjLoader::Mat* ObjLoader::load_material(const std::string& path){
 		printf("Impossible to open the file !\n");
 		return nullptr;
 	}
-	return load_material_from_json(JSON::parse(path));
+	JSON data = JSON::parse(file);
+	file.close();
+	return load_material_from_json(data);
 }
 
 ObjLoader::Mat* ObjLoader::load_material_from_json(const JSON& data){
@@ -280,17 +322,23 @@ ObjLoader::Mat* ObjLoader::load_material_from_json(const JSON& data){
 		std::cout << "ERROR: Couldn't load Material: File not a Material!" << std::endl;
 		return nullptr;
 	}
-	if(!data.contains("body") || !data["body"].is_object()){
+
+	JSON body;
+	if(!data.contains("body") || !(body = data["body"]).is_object()){
 		std::cout << "ERROR: Couldn't load Material: Invalid body!" << std::endl;
 		return nullptr;
 	}
 
-	JSON body = data["body"];
+	JSON uniforms;
+	if(!body.contains("uniforms") || !(uniforms = body["uniforms"]).is_object()){
+		std::cout << "ERROR: Couldn't load Material: Invalid body!" << std::endl;
+		return nullptr;
+	}
 
 	Mat* mat = new Mat();
 	JSON mat_type;
 
-	if(body.contains("ambient_color") && (mat_type = body["ambient_color"]).is_object()){
+	if(uniforms.contains("ambient_color") && (mat_type = uniforms["ambient_color"]).is_object()){
 		if(mat_type.contains("r") && mat_type["r"].is_number() &&
 			mat_type.contains("g") && mat_type["g"].is_number() &&
 			mat_type.contains("b") && mat_type["b"].is_number() &&
@@ -306,7 +354,7 @@ ObjLoader::Mat* ObjLoader::load_material_from_json(const JSON& data){
 		}
 	}
 
-	if(body.contains("diffuse_color") && (mat_type = body["diffuse_color"]).is_object()){
+	if(uniforms.contains("diffuse_color") && (mat_type = uniforms["diffuse_color"]).is_object()){
 		if(mat_type.contains("r") && mat_type["r"].is_number() &&
 			mat_type.contains("g") && mat_type["g"].is_number() &&
 			mat_type.contains("b") && mat_type["b"].is_number() &&
@@ -322,7 +370,7 @@ ObjLoader::Mat* ObjLoader::load_material_from_json(const JSON& data){
 		}
 	}
 
-	if(body.contains("specular_color") && (mat_type = body["specular_color"]).is_object()){
+	if(uniforms.contains("specular_color") && (mat_type = uniforms["specular_color"]).is_object()){
 		if(mat_type.contains("r") && mat_type["r"].is_number() &&
 			mat_type.contains("g") && mat_type["g"].is_number() &&
 			mat_type.contains("b") && mat_type["b"].is_number() &&
@@ -512,8 +560,8 @@ std::map<std::string, JSON> ObjLoader::mtl_from_obj(const std::string& path){
 	return mats;
 }
 
-std::vector<ObjLoader::Obj*> ObjLoader::obj_to_mesh(const std::string& path){
-	std::vector<Obj*> objs = load(path);
+std::vector<ObjLoader::Obj> ObjLoader::obj_to_mesh(const std::string& path){
+	std::vector<Obj> objs = load(path);
 
 	std::ofstream f_out(std::string(path + ".msh").c_str());
 	if(!f_out.is_open()){
@@ -525,19 +573,19 @@ std::vector<ObjLoader::Obj*> ObjLoader::obj_to_mesh(const std::string& path){
 	for(int i = 0; i < objs.size(); i++){
 		// push vertices in file
 		f_out << "#vertices\n";
-		for(auto& vs : objs.at(i)->vertices){
+		for(auto& vs : objs.at(i).vertices){
 			f_out << vs.position.x << " " << vs.position.y << " " << vs.position.z << " " << vs.uv.x << " " << vs.uv.y << " " << vs.normal.x << " " << vs.normal.y << " " << vs.normal.z << "\n";
 		}
 		// push indices in file
 		f_out << "\n#indices\n";
 
-		for(size_t j = 0; j < objs.at(i)->indices.size(); j += 3){
-			f_out << objs.at(i)->indices.at(j) << " " << objs.at(i)->indices.at(j + 1) << " " << objs.at(i)->indices.at(j + 2) << "\n";
+		for(size_t j = 0; j < objs.at(i).indices.size(); j += 3){
+			f_out << objs.at(i).indices.at(j) << " " << objs.at(i).indices.at(j + 1) << " " << objs.at(i).indices.at(j + 2) << "\n";
 		}
 
 		// set material, if it exists
-		if(!objs.at(i)->material.empty() && (objs.at(i)->material != "")){
-			f_out << "\n#material " << objs.at(i)->material << "\n";
+		if(!objs.at(i).material.empty() && (objs.at(i).material != "")){
+			f_out << "\n#material " << objs.at(i).material << "\n";
 		}
 
 		f_out << "\n";
@@ -549,7 +597,7 @@ std::vector<ObjLoader::Obj*> ObjLoader::obj_to_mesh(const std::string& path){
 
 void ObjLoader::create_model_from_obj(const std::string& path){
 	// Load the mesh
-	std::vector<Obj*> msh = obj_to_mesh(path);
+	std::vector<Obj> msh = obj_to_mesh(path);
 
 	// Load the materials
 	std::map<std::string, JSON> mat_files = mtl_from_obj(path);
@@ -563,7 +611,7 @@ void ObjLoader::create_model_from_obj(const std::string& path){
 	// TODO: make it so, that we don't need to save the path inside the material json
 	std::vector<std::string> mat_paths;
 	for(int i = 0; i < msh.size(); i++){
-		mat_paths.push_back(mat_files[msh.at(i)->material]["body"]["path"]);
+		mat_paths.push_back(mat_files[msh.at(i).material]["body"]["path"]);
 	}
 
 	JSON data = {

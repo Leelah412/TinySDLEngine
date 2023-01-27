@@ -26,8 +26,11 @@ bool ModelNode::load_model(const std::string& path, bool unique){
 	// delete previous model
 	delete_model();
 	// create new model
-	m_model = new Model();
-	if(!m_model->load_mesh(path)) return false;
+	if(!(m_model = new Model(path, unique))) return false;
+	// TODO: set default shader for all materials for now, but allow setting unique shader later on!
+	for(auto& m : m_model->get_vertex_materials()){
+		m.get().material->set_shader(IRenderManager->get_default_shader());
+	}
 	// add model to render list
 	if(m_visible)
 		IModelManager->add_model(m_model);

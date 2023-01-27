@@ -14,20 +14,29 @@
 
 namespace tse{
 
+// Model class containing a Mesh and its Submesh - Material combinations.
+// Model is NOT a Resource, but instead each Model instance is unique,
+// while the Mesh and the Materials used by its submeshes are loaded with ResourceManager
+// and can be non-unique (though in cases, where vertices are modified, that should not be the case)!
 class Model{
 
 public:
 	Model();
+	// Creates a Model with its Meshes and Materials from the given .model file
+	// If "unique" is true, the created Meshes will be unique to the Model
 	Model(const std::string& path, bool unique = true);
 	Model(Mesh* mesh, bool unique = true);
 	virtual ~Model();
 
-	// Load mesh from path
+	// Creates a Model with its Meshes and Materials from the given .model file
+	// If "unique" is true, the created Meshes will be unique to the Model
+	bool load_model(const std::string& path, bool unique = true);
+	// Load Mesh from path and determine, whether the data should be unique to the Model
 	bool load_mesh(const std::string& path, bool unique = true);
 	// Save mesh to the given path
 	// Saving will (force)reload the mesh from the given path again, so we have to tell again,
 	// whether we want the mesh to be unique to the current Model or not
-	bool save_mesh(const std::string& path, bool unique = true);
+	//bool save_mesh(const std::string& path, bool unique = true);
 	// Set current mesh to given mesh
 	bool set_mesh(Mesh* mesh, bool unique = true);
 	// Don't use current mesh

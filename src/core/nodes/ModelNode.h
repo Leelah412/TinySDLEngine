@@ -26,14 +26,15 @@ class ModelNode : public Node{
 
 public:
 	ModelNode();
-	ModelNode(const std::string& path, bool unique = false);
+	ModelNode(const std::string& path, bool unique = true);
 	ModelNode(Model* model);
 	virtual ~ModelNode();
 
 	virtual void update(const time_t& delta) override;
 
-	// Load model from given path
-	virtual bool load_model(const std::string& path, bool unique = false);
+	// Load model from .model file
+	virtual bool load_model(const std::string& path, bool unique = true);
+	// Set already existing Model
 	virtual bool set_model(Model* model);
 	virtual void delete_model();
 

@@ -3,11 +3,9 @@
     "type": "model",
     "body": {
         "mesh": "src/meshes/mesh.msh",
-        // List of submesh - material pairs for the given submeshes in the "msh" file
-        // If nothing specified for a submesh, default material set in "msh" file is used
-        "vertex_materials": {
-            // Ex.: set second submesh to material "material.json"
-            "2": "src/materials/material.json"
-        }
+        // List of submesh - material pairs for the submeshes at the index in the "msh" file
+        "vertex_materials": [
+            "src/materials/material.json"
+		]
     }
 }
