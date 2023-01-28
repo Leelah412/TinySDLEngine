@@ -39,7 +39,7 @@ void LightNode::update_global_rotation(){
 	dir.x = cos(glm::radians(-rot.y)) * cos(glm::radians(rot.x));
 	dir.y = sin(glm::radians(-rot.x));
 	dir.z = sin(glm::radians(-rot.y)) * cos(glm::radians(rot.x));
-	std::cout << glm::to_string(dir) << std::endl;
+	//std::cout << glm::to_string(dir) << std::endl;
 	m_light->direction = glm::vec4(glm::normalize(dir), 0.0f);
 }
 

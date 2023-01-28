@@ -387,6 +387,7 @@ bool GameLoop::init_gl(){
 
 #ifndef testload
 	// create mesh
+	ObjLoader::create_model_from_obj("src/res/mesh/Canopy_Side.obj");
 	ObjLoader::create_model_from_obj("src/res/mesh/Prop_Boat_1.obj");
 	ObjLoader::create_model_from_obj("src/res/mesh/Prop_Barrel_1.obj");
 
@@ -398,7 +399,7 @@ bool GameLoop::init_gl(){
 	// therfore set texture MUST already exist, if we want at least the possibility of avoiding a mem leak!
 	//def_mat->set_texture("u_texture", new Texture("src/res/textures/example.PNG"));
 
-	ModelNode* parent = new ModelNode("src/res/mesh/Prop_Barrel_1.obj.model");
+	ModelNode* parent = new ModelNode("src/res/mesh/Prop_Boat_1.obj.model");
 	parent->set_unique_name("model");
 	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);
 	

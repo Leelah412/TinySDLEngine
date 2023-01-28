@@ -93,7 +93,7 @@ JSON ModelNode::save(){
 			std::string str = vms_it->second.material->get_filepath();
 			// Add Material to array, if filepath exists...
 			if(!str.empty() && (str != "")){
-				vms_json.push_back({"material",  str});
+				vms_json.push_back({{"material",  str}});
 			}
 			// ... otherwise add whole material data
 			// TODO: maybe lets do that another time...
@@ -159,31 +159,38 @@ void ModelNode::load(const JSON& data){
 	
 	Material* cur_mat = nullptr;
 	VertexData* vd = nullptr;
-	int i = 0;
-	for(auto& vm : vms){
-		// TODO: Load material from path
-		if(vm.contains("material") && vm["material"].is_string() && !vm["material"].empty() && (vm["material"] != "")){
-			cur_mat = new Material();
-			vd = mesh->get_submesh(i);
-			cl_model->assign_material(vd, cur_mat);
-
-			i++;
-			continue;
+	for(int i = 0; i < vms.size(); i++){
+		// Load material first, if it exists
+		if(vms.at(i).contains("material") && vms.at(i)["material"].is_string() && !vms.at(i)["material"].empty() && (vms.at(i)["material"] != "")){
+			cur_mat = (Material*)ResManager->load_resource(vms.at(i)["material"], RES_TYPE::MATERIAL);
 		}
+		else continue;
 
-		// Load material from data
-		// First get the shader path to create the material from the shader
-		if(vm.contains("shader") && vm["shader"].is_string() && !vm["shader"].empty() && (vm["shader"] != "")){
+		// Create Shader and assign it to Material, if it exists
+		if(vms.at(i).contains("shader") && vms.at(i)["shader"].is_string() && !vms.at(i)["shader"].empty() && (vms.at(i)["shader"] != "")){
+
 			// Load Shader with ResourceManager
-			Shader* sh = (Shader*)ResManager->load_resource(vm["shader"], RES_TYPE::SHADER);
-			cur_mat = new Material(sh);
+			Shader* sh = (Shader*)ResManager->load_resource(vms.at(i)["shader"], RES_TYPE::SHADER);
+			// Material was created just now or has no Shader
+			if(cur_mat->get_count() <= 1 || !cur_mat->get_shader()){
+				cur_mat->set_shader(sh);
+			}
+			// Material existed previously and has a valid Shader, but it's not the same as the one we want
+			else if(cur_mat->get_shader() != sh){
+				// TODO: multiple materials might be made out of a single material with different shaders
+				// -- the ideal solution would normally be to just save the shader path inside the material json,
+				// -- but when loading materials from an mtl library, thats not an option
+			}
+			// No need to set Shader to a Material, which already has the Shader assigned to it
+		}
+		// Shader doesn't exist -> use default shader
+		else if(cur_mat->get_count() <= 1){
+			cur_mat->set_shader(IRenderManager->get_default_shader());
 		}
 
 		// Assign material to the current submesh
 		vd = mesh->get_submesh(i);
 		cl_model->assign_material(vd, cur_mat);
-
-		i++;
 	}
 
 	// Must set model AFTER loading all VMs (currently)

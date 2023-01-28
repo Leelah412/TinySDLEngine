@@ -27,6 +27,11 @@ void Material::bind() const{
 	// Current texture slot
 	int slot = 0;
 
+	// TODO: implement other material values too!
+
+	// Diffuse
+	m_shader->set_uniform_4f("u_material.albedo_color", m_albedo_col.r, m_albedo_col.g, m_albedo_col.b, m_albedo_col.a);
+
 	auto it = m_uniforms.begin();
 	for(it; it != m_uniforms.end(); it++){
 		if(!it->second.value) continue;

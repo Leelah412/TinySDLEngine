@@ -28,18 +28,17 @@ in vec3 v_position;
 in vec2 v_tex_coord;
 in vec3 v_normal;
 
+//uniform sampler2D u_texture;
+uniform mat4 U_VIEW;
+uniform vec4 u_view_pos;
+
 //uniform vec4 u_color = vec4(1.0, 1.0, 1.0, 1.0);
 // default material
 struct Material{
-    vec3 albedo_color;
-    vec3 diffuse_color;
-    vec3 specular_color;
+    vec4 albedo_color;
+    vec4 specular_color;
 };
 uniform Material u_material;
-
-uniform sampler2D u_texture;
-uniform mat4 U_VIEW;
-uniform vec4 u_view_pos;
 
 struct Light{
     vec4 position;
@@ -60,8 +59,8 @@ layout(std140, binding = 0) uniform LightBlock{
 };
 
 void main(){
-	vec4 tex_color = texture(u_texture, v_tex_coord);
-	vec3 amb = u_light[0].ambient.rgb * tex_color.rgb;
+	//vec4 tex_color = texture(u_texture, v_tex_coord);
+	vec3 amb = u_light[0].ambient.rgb * u_material.albedo_color.rgb;
         
     // diffuse 
     vec3 norm = normalize(v_normal);
@@ -93,12 +92,13 @@ void main(){
     // attenuation
     float dist = length(lightDir - v_position);
     float attenuation = 1.0 / (u_light[0].constant + u_light[0].linear * dist + u_light[0].quadratic * (dist * dist));
-    amb *= attenuation; 
+    amb *= attenuation;
     dfs *= attenuation;
     specular *= attenuation;
 
     vec3 result = amb + dfs + specular;
 
    	color = vec4(result, 1.0);
+    //color = u_material.albedo_color;
 	//color = tex_color * u_color;
 };

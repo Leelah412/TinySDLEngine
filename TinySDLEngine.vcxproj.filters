@@ -1175,7 +1175,7 @@
     <ClInclude Include="src\util\json\single_include\nlohmann\json.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="src\types.h">
+    <ClInclude Include="src\util\types.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -96,7 +96,7 @@
     <ClInclude Include="src\core\renderer\VertexMaterial.h" />
     <ClInclude Include="src\core\ResourceManager.h" />
     <ClInclude Include="src\core\renderer\Window.h" />
-    <ClInclude Include="src\types.h" />
+    <ClInclude Include="src\util\types.h" />
     <ClInclude Include="src\util\json\single_include\nlohmann\json.hpp" />
     <ClInclude Include="src\util\SDLEventManager.h" />
     <ClInclude Include="src\GameLoop.h" />

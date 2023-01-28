@@ -193,15 +193,21 @@ typedef struct MeshRender : public RenderOperation{
 		// reset shader state
 		IRenderManager->bind((Shader*)nullptr);
 		Shader* prev_sh = nullptr;
+		Material* cur_mat = nullptr;
+
+		int tst_count = 0, mat_change_count = 0;
 
 		// TODO: for camera{ for shader{ for material { <render models with same material + no tmp. uniform changes as batch>
 		// render world once for each active camera
 		for(auto cam : cameras){
 			// set viewport to camera
 			glViewport(cam->get_viewport_x(), cam->get_viewport_y(), cam->get_viewport_width(), cam->get_viewport_height());
-
+			tst_count = 0;
+			mat_change_count = 0;
 			for(auto vm : world){
 				if(!vm->vertex_data) continue;
+
+				std::cout << "count: " << ++tst_count << std::endl;
 
 				const DisjointInterval& v = IModelManager->get_vertex_buffer_interval(vm),
 										i = IModelManager->get_index_buffer_interval(vm);
@@ -213,12 +219,15 @@ typedef struct MeshRender : public RenderOperation{
 				if(!vm->material || !vm->material->get_shader()){
 					// bind default shader, if no material or shader applied
 					IRenderManager->bind(IRenderManager->get_default_shader());
+					std::cout << "no material or shader" << std::endl;
 				}
 				// material exists with shader
-				else{
+				else if(cur_mat != vm->material){
 					// bind material
 					IRenderManager->bind(vm->material->get_shader_mutable());
 					vm->material->bind();
+					cur_mat = vm->material;
+					std::cout << "matchangecount: " << ++mat_change_count << std::endl;
 				}
 
 				// if bound new shader, set camera uniform and bind lights
