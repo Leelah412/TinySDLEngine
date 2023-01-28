@@ -130,33 +130,6 @@
                 },
                 "visible": true
             },
-            "canopy": {
-                "children": [],
-                "class": "ModelNode",
-                "model": {
-                    "mesh": "src/res/mesh/Canopy_Side.obj.msh",
-                    "vertex_material": [
-                        {
-                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
-                        },
-                        {
-                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Canvas.json"
-                        }
-                    ]
-                },
-                "name": "canopy",
-                "position": {
-                    "x": 2.0,
-                    "y": 0.0,
-                    "z": 0.0
-                },
-                "rotation": {
-                    "pitch": 0.0,
-                    "roll": 0.0,
-                    "yaw": 0.0
-                },
-                "visible": true
-            },
             "fps_camera": {
                 "active": true,
                 "camera": {
@@ -267,7 +240,12 @@
                 "children": [
                     "boat",
                     "barrel",
-                    "canopy",
+                    "wheel",
+                    "wall1",
+                    "wall2",
+                    "wall3",
+                    "wall4",
+                    "wall5",
                     "fps_camera"
                 ],
                 "class": "Node",
@@ -282,6 +260,813 @@
                     "roll": 0.0,
                     "yaw": 0.0
                 }
+            },
+            "wall1": {
+                "children": [],
+                "class": "ModelNode",
+                "model": {
+                    "mesh": "src/res/mesh/Stone_Wall_1.obj.msh",
+                    "vertex_material": [
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        }
+                    ]
+                },
+                "name": "wall1",
+                "position": {
+                    "x": -3.0,
+                    "y": 0.0,
+                    "z": 1.0
+                },
+                "rotation": {
+                    "pitch": 0.0,
+                    "roll": 0.0,
+                    "yaw": 0.0
+                },
+                "visible": true
+            },
+            "wall2": {
+                "children": [],
+                "class": "ModelNode",
+                "model": {
+                    "mesh": "src/res/mesh/Stone_Wall_2.obj.msh",
+                    "vertex_material": [
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        }
+                    ]
+                },
+                "name": "wall2",
+                "position": {
+                    "x": -3.0,
+                    "y": 0.0,
+                    "z": -1.0
+                },
+                "rotation": {
+                    "pitch": 0.0,
+                    "roll": 0.0,
+                    "yaw": 0.0
+                },
+                "visible": true
+            },
+            "wall3": {
+                "children": [],
+                "class": "ModelNode",
+                "model": {
+                    "mesh": "src/res/mesh/Stone_Wall_3.obj.msh",
+                    "vertex_material": [
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        }
+                    ]
+                },
+                "name": "wall3",
+                "position": {
+                    "x": -3.0,
+                    "y": 0.0,
+                    "z": 2.0
+                },
+                "rotation": {
+                    "pitch": 0.0,
+                    "roll": 0.0,
+                    "yaw": 0.0
+                },
+                "visible": true
+            },
+            "wall4": {
+                "children": [],
+                "class": "ModelNode",
+                "model": {
+                    "mesh": "src/res/mesh/Stone_Wall_4.obj.msh",
+                    "vertex_material": [
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        }
+                    ]
+                },
+                "name": "wall4",
+                "position": {
+                    "x": -3.0,
+                    "y": 0.0,
+                    "z": -2.0
+                },
+                "rotation": {
+                    "pitch": 0.0,
+                    "roll": 0.0,
+                    "yaw": 0.0
+                },
+                "visible": true
+            },
+            "wall5": {
+                "children": [],
+                "class": "ModelNode",
+                "model": {
+                    "mesh": "src/res/mesh/Stone_Wall_5.obj.msh",
+                    "vertex_material": [
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray_Light.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Brit_Gray.json"
+                        }
+                    ]
+                },
+                "name": "wall5",
+                "position": {
+                    "x": -3.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "pitch": 0.0,
+                    "roll": 0.0,
+                    "yaw": 0.0
+                },
+                "visible": true
+            },
+            "wheel": {
+                "children": [],
+                "class": "ModelNode",
+                "model": {
+                    "mesh": "src/res/mesh/Waterwheel_1.obj.msh",
+                    "vertex_material": [
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Darker.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Darker.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Darker.json"
+                        }
+                    ]
+                },
+                "name": "wheel",
+                "position": {
+                    "x": 2.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "pitch": 0.0,
+                    "roll": 0.0,
+                    "yaw": 0.0
+                },
+                "visible": true
             }
         },
         "root": "root"

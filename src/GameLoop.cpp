@@ -383,13 +383,19 @@ bool GameLoop::init_gl(){
 	};
 #endif
 
-//#define testload
+#define testload
 
 #ifndef testload
 	// create mesh
-	ObjLoader::create_model_from_obj("src/res/mesh/Canopy_Side.obj");
 	ObjLoader::create_model_from_obj("src/res/mesh/Prop_Boat_1.obj");
 	ObjLoader::create_model_from_obj("src/res/mesh/Prop_Barrel_1.obj");
+	ObjLoader::create_model_from_obj("src/res/mesh/Waterwheel_1.obj");
+
+	ObjLoader::create_model_from_obj("src/res/mesh/Stone_Wall_1.obj");
+	ObjLoader::create_model_from_obj("src/res/mesh/Stone_Wall_2.obj");
+	ObjLoader::create_model_from_obj("src/res/mesh/Stone_Wall_3.obj");
+	ObjLoader::create_model_from_obj("src/res/mesh/Stone_Wall_4.obj");
+	ObjLoader::create_model_from_obj("src/res/mesh/Stone_Wall_5.obj");
 
 	// load nodes
 	// Create test cube with default material
@@ -405,9 +411,29 @@ bool GameLoop::init_gl(){
 	ModelNode* barrel = new ModelNode("src/res/mesh/Prop_Barrel_1.obj.model");
 	barrel->set_unique_name("barrel");
 	barrel->set_position_x(-2.0f);
-	ModelNode* canopy = new ModelNode("src/res/mesh/Canopy_Side.obj.model");
-	canopy->set_unique_name("canopy");
-	canopy->set_position_x(2.0f);
+	ModelNode* wheel = new ModelNode("src/res/mesh/Waterwheel_1.obj.model");
+	wheel->set_unique_name("wheel");
+	wheel->set_position_x(2.0f);
+
+	ModelNode* wall1 = new ModelNode("src/res/mesh/Stone_Wall_1.obj.model");
+	wall1->set_unique_name("wall1");
+	wall1->set_position_x(-3.0f);
+	wall1->set_position_z(1.0f);
+	ModelNode* wall2 = new ModelNode("src/res/mesh/Stone_Wall_2.obj.model");
+	wall2->set_unique_name("wall2");
+	wall2->set_position_x(-3.0f);
+	wall2->set_position_z(-1.0f);
+	ModelNode* wall3 = new ModelNode("src/res/mesh/Stone_Wall_3.obj.model");
+	wall3->set_unique_name("wall3");
+	wall3->set_position_x(-3.0f);
+	wall3->set_position_z(2.0f);
+	ModelNode* wall4 = new ModelNode("src/res/mesh/Stone_Wall_4.obj.model");
+	wall4->set_unique_name("wall4");
+	wall4->set_position_x(-3.0f);
+	wall4->set_position_z(-2.0f);
+	ModelNode* wall5 = new ModelNode("src/res/mesh/Stone_Wall_5.obj.model");
+	wall5->set_unique_name("wall5");
+	wall5->set_position_x(-3.0f);
 
 	// camera
 	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);	
@@ -418,7 +444,12 @@ bool GameLoop::init_gl(){
 	// creating tree
 	INodeTree->get_root_node()->add_child(boat);
 	INodeTree->get_root_node()->add_child(barrel);
-	INodeTree->get_root_node()->add_child(canopy);
+	INodeTree->get_root_node()->add_child(wheel);
+	INodeTree->get_root_node()->add_child(wall1);
+	INodeTree->get_root_node()->add_child(wall2);
+	INodeTree->get_root_node()->add_child(wall3);
+	INodeTree->get_root_node()->add_child(wall4);
+	INodeTree->get_root_node()->add_child(wall5);
 	INodeTree->get_root_node()->add_child(camnode);
 	INodeTree->get_root_node()->set_unique_name("root");
 	
