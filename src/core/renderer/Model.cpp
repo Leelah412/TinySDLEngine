@@ -93,7 +93,7 @@ void Model::add_vertex_material(VertexData* v, Material* m, std::vector<Uniform>
 	// check, if vertex data belongs to mesh
 	if(!m_mesh->has_submesh(v)) return;
 	VertexMaterial mat(v, m, uniform_changes);
-	// don't forget to assign ID, as otherwise, Model might not get rendered!
+	// don't forget to assign ID to access Model containing VertexMaterial faster, when rendering in ModelManager!
 	mat.id = m_model_id;
 	m_vertex_materials.insert(std::pair<VertexData*, VertexMaterial>(v, mat));
 }
@@ -103,6 +103,7 @@ void Model::assign_material(VertexData* v, Material* m, std::vector<Uniform> uni
 	auto vm = m_vertex_materials.find(v);
 	if(vm == m_vertex_materials.end()) return;
 
+	vm->second.id = m_model_id;						// prob. redundant, but to be safe
 	vm->second.vertex_data = v;
 	vm->second.material = m;
 	vm->second.uniform_changes = uniform_changes;
@@ -112,6 +113,7 @@ void Model::remove_material(VertexData* v){
 	auto vm = m_vertex_materials.find(v);
 	if(vm == m_vertex_materials.end()) return;
 
+	vm->second.id = m_model_id;
 	vm->second.vertex_data = v;
 	vm->second.material = nullptr;
 	vm->second.uniform_changes = {};

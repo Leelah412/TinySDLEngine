@@ -399,17 +399,30 @@ bool GameLoop::init_gl(){
 	// therfore set texture MUST already exist, if we want at least the possibility of avoiding a mem leak!
 	//def_mat->set_texture("u_texture", new Texture("src/res/textures/example.PNG"));
 
-	ModelNode* parent = new ModelNode("src/res/mesh/Prop_Boat_1.obj.model");
-	parent->set_unique_name("model");
-	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);
-	
+	// models
+	ModelNode* boat = new ModelNode("src/res/mesh/Prop_Boat_1.obj.model");
+	boat->set_unique_name("boat");
+	ModelNode* barrel = new ModelNode("src/res/mesh/Prop_Barrel_1.obj.model");
+	barrel->set_unique_name("barrel");
+	barrel->set_position_x(-20.0f);
+	ModelNode* canopy = new ModelNode("src/res/mesh/Canopy_Side.obj.model");
+	canopy->set_unique_name("canopy");
+	canopy->set_position_x(20.0f);
+
+	// camera
+	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);	
 	camnode->set_unique_name("fps_camera");
 	camnode->set_position(glm::vec3(-2.0f, 2.0f, 0.0f));
 	camnode->set_pitch(45.0f);
-	INodeTree->get_root_node()->add_child(parent);
+
+	// creating tree
+	INodeTree->get_root_node()->add_child(boat);
+	INodeTree->get_root_node()->add_child(barrel);
+	INodeTree->get_root_node()->add_child(canopy);
 	INodeTree->get_root_node()->add_child(camnode);
 	INodeTree->get_root_node()->set_unique_name("root");
 	
+	// add light
 	Light light = Light();
 	light.position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	light.direction = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);

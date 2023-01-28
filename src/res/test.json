@@ -1,6 +1,162 @@
 {
     "body": {
         "nodes": {
+            "barrel": {
+                "children": [],
+                "class": "ModelNode",
+                "model": {
+                    "mesh": "src/res/mesh/Prop_Barrel_1.obj.msh",
+                    "vertex_material": [
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Iron_Grey.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Iron_Grey.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Iron_Grey.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Iron_Grey.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        }
+                    ]
+                },
+                "name": "barrel",
+                "position": {
+                    "x": -20.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "pitch": 0.0,
+                    "roll": 0.0,
+                    "yaw": 0.0
+                },
+                "visible": true
+            },
+            "boat": {
+                "children": [],
+                "class": "ModelNode",
+                "model": {
+                    "mesh": "src/res/mesh/Prop_Boat_1.obj.msh",
+                    "vertex_material": [
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        }
+                    ]
+                },
+                "name": "boat",
+                "position": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "pitch": 0.0,
+                    "roll": 0.0,
+                    "yaw": 0.0
+                },
+                "visible": true
+            },
+            "canopy": {
+                "children": [],
+                "class": "ModelNode",
+                "model": {
+                    "mesh": "src/res/mesh/Canopy_Side.obj.msh",
+                    "vertex_material": [
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
+                        },
+                        {
+                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Canvas.json"
+                        }
+                    ]
+                },
+                "name": "canopy",
+                "position": {
+                    "x": 20.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rotation": {
+                    "pitch": 0.0,
+                    "roll": 0.0,
+                    "yaw": 0.0
+                },
+                "visible": true
+            },
             "fps_camera": {
                 "active": true,
                 "camera": {
@@ -107,39 +263,11 @@
                     "yaw": 0.0
                 }
             },
-            "model": {
-                "children": [],
-                "class": "ModelNode",
-                "model": {
-                    "mesh": "src/res/mesh/Prop_Boat_1.obj.msh",
-                    "vertex_material": [
-                        {
-                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
-                        },
-                        {
-                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json"
-                        },
-                        {
-                            "material": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Dark.json"
-                        }
-                    ]
-                },
-                "name": "model",
-                "position": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": 0.0
-                },
-                "rotation": {
-                    "pitch": 0.0,
-                    "roll": 0.0,
-                    "yaw": 0.0
-                },
-                "visible": true
-            },
             "root": {
                 "children": [
-                    "model",
+                    "boat",
+                    "barrel",
+                    "canopy",
                     "fps_camera"
                 ],
                 "class": "Node",

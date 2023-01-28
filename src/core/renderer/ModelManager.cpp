@@ -55,10 +55,10 @@ void ModelManager::add_model(Model* model){
 		std::cout << "WARNING: Trying to add a Model without a Mesh!" << std::endl;
 		return;
 	}
-	if(m_models.find(model) != m_models.end()) return;
+	if(m_models.find(model->get_model_id()) != m_models.end()) return;
 
 	// Add to lists
-	m_models.insert(model);
+	m_models.insert( std::pair<unsigned int, Model*>(model->get_model_id(), model) );
 	m_cur_submeshes[model] = {};
 	auto gvm = model->get_vertex_materials();
 
@@ -182,7 +182,7 @@ void ModelManager::update_model(Model* model){
 
 void ModelManager::remove_model(Model* model){
 	if(!model) return;
-	m_models.erase(model);
+	m_models.erase(model->get_model_id());
 
 	// TODO: Remove from buffer
 
@@ -196,7 +196,7 @@ void ModelManager::remove_model(Model* model){
 	m_cur_submeshes.erase(model);
 }
 
-const std::set<Model*>& ModelManager::get_models() const{
+const std::map<unsigned int, Model*>& ModelManager::get_models() const{
 	return m_models;
 }
 

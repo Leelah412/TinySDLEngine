@@ -44,7 +44,7 @@ public:
 	// Replace mesh of model with given mesh
 	//virtual void update_model_mesh(Mesh* mesh, Model* model);
 
-	const std::set<Model*>& get_models() const;
+	const std::map<unsigned int, Model*>& get_models() const;
 	const std::set<VertexMaterial*, VertexMaterial::less>& get_world() const;
 	VertexArray* get_vertex_array() const;
 	const DisjointInterval& get_vertex_buffer_interval(VertexMaterial* vm) const;
@@ -65,8 +65,7 @@ public:
 	static ModelManager* get_default_model_manager();
 
 private:
-
-	std::set<Model*> m_models = {};												// Models to be rendered
+	std::map<unsigned int, Model*> m_models = {};								// Models to be rendered, sorted by ID
 	std::unordered_map<Model*, std::set<VertexMaterial*>> m_cur_submeshes = {};	// Currently saved submeshes of the model
 	std::set<VertexMaterial*, VertexMaterial::less> m_world = {};				// Contains all vertex and material information to be rendered in the game world
 
@@ -192,22 +191,26 @@ typedef struct MeshRender : public RenderOperation{
 		// shader state might have changed, without render manager knowing
 		// reset shader state
 		IRenderManager->bind((Shader*)nullptr);
-		Shader* prev_sh = nullptr;
+		Shader* cur_sh = nullptr;
 		Material* cur_mat = nullptr;
-
-		int tst_count = 0, mat_change_count = 0;
+		const std::map<unsigned int, Model*>& models = IModelManager->get_models();
 
 		// TODO: for camera{ for shader{ for material { <render models with same material + no tmp. uniform changes as batch>
 		// render world once for each active camera
 		for(auto cam : cameras){
 			// set viewport to camera
 			glViewport(cam->get_viewport_x(), cam->get_viewport_y(), cam->get_viewport_width(), cam->get_viewport_height());
-			tst_count = 0;
-			mat_change_count = 0;
+
 			for(auto vm : world){
 				if(!vm->vertex_data) continue;
-
-				std::cout << "count: " << ++tst_count << std::endl;
+				// find the corresponding model of vm
+				// assumes, that ID of VertexMaterial is equivalent to Model ID
+				auto it = models.find(vm->id);
+				if(it == models.end()){
+					std::cout << "WARNING: Model has vertices in render queue, but does not exist! Skipping Model." << std::endl;
+					continue;
+				}
+				Model* mdl = it->second;
 
 				const DisjointInterval& v = IModelManager->get_vertex_buffer_interval(vm),
 										i = IModelManager->get_index_buffer_interval(vm);
@@ -227,21 +230,24 @@ typedef struct MeshRender : public RenderOperation{
 					IRenderManager->bind(vm->material->get_shader_mutable());
 					vm->material->bind();
 					cur_mat = vm->material;
-					std::cout << "matchangecount: " << ++mat_change_count << std::endl;
 				}
 
 				// if bound new shader, set camera uniform and bind lights
-				if(prev_sh != IRenderManager->get_shader_state()){
-					prev_sh = IRenderManager->get_shader_state();
+				if(cur_sh != IRenderManager->get_shader_state()){
+					cur_sh = IRenderManager->get_shader_state();
 					// "activate" camera by setting mvp matrix uniform in current shader
-					prev_sh->set_uniform_mat4f(TSE_DEFAULT_SHADER_MVP_UNIFORM, cam->get_camera_view());
+					cur_sh->set_uniform_mat4f(TSE_DEFAULT_SHADER_MVP_UNIFORM, cam->get_camera_view());
 					//prev_sh->set_uniform_4f("u_view_pos", cam->get_position().x, cam->get_position().y, cam->get_position().z, 0.0f);
 					// bind lights
 					glm::mat4 cam_view = cam->get_camera_view();
 					glm::vec3 cam_pos = cam->get_position();
-					prev_sh->set_uniform_4f("u_view_pos", cam_pos.x, cam_pos.y, cam_pos.z, 0.0f);
-					glUniformBlockBinding(prev_sh->get_program_id(), IModelManager->get_light_ubo()->get_buffer_id(), 0);
+					cur_sh->set_uniform_4f("u_view_pos", cam_pos.x, cam_pos.y, cam_pos.z, 0.0f);
+					glUniformBlockBinding(cur_sh->get_program_id(), IModelManager->get_light_ubo()->get_buffer_id(), 0);
 				}
+
+				// TODO: use uniform buffer for transforms
+				// set model uniform for current model
+				//cur_sh->set_uniform_4f("u_model", mdl.);
 
 				// render submesh				
 				// index buffer interval exists

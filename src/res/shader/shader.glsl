@@ -10,9 +10,10 @@ out vec2 v_tex_coord;
 out vec3 v_normal;
 
 uniform mat4 U_VIEW;
+uniform mat4 u_model;
 
 void main(){
-	gl_Position = U_VIEW * position;
+	gl_Position = U_VIEW * u_model * position;
 	v_position = position.xyz;
     v_tex_coord = tex_coord;
 	v_normal = normal;
