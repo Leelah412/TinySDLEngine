@@ -119,6 +119,14 @@ void Model::remove_material(VertexData* v){
 	vm->second.uniform_changes = {};
 }
 
+const glm::mat4& Model::get_transform(){
+	return m_transform;
+}
+
+void Model::set_transform(const glm::mat4& transform){
+	m_transform = transform;
+}
+
 unsigned int Model::get_model_id() const{
 	return m_model_id;
 }

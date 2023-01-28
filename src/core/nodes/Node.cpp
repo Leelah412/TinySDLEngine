@@ -250,6 +250,24 @@ void Node::update_global_rotation(){
 	}
 }
 
+glm::mat4 Node::get_transform(){
+	glm::mat4 res = glm::rotate(glm::mat4(1.0f), glm::radians(m_global_rotation.x), glm::vec3(1, 0, 0));
+	res = glm::rotate(res, glm::radians(m_global_rotation.y), glm::vec3(0, 1, 0));
+	res = glm::rotate(res, glm::radians(m_global_rotation.z), glm::vec3(0, 0, 1));
+	res = glm::translate(res, m_global_position);
+
+	return res;
+}
+
+glm::mat4 Node::get_local_transform(){
+	glm::mat4 res = glm::rotate(glm::mat4(1.0f), glm::radians(m_rotation.x), glm::vec3(1, 0, 0));
+	res = glm::rotate(res, glm::radians(m_rotation.y), glm::vec3(0, 1, 0));
+	res = glm::rotate(res, glm::radians(m_rotation.z), glm::vec3(0, 0, 1));
+	res = glm::translate(res, m_position);
+
+	return res;
+}
+
 
 uint64_t Node::get_ID() const{
 	return m_ID;

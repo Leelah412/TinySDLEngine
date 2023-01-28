@@ -18,7 +18,8 @@ ModelNode::~ModelNode(){
 }
 
 void ModelNode::update(const time_t& delta){
-	// push/update mesh in(to) buffer
+	// update Model transform
+	//m_model->set_transform();
 	
 }
 

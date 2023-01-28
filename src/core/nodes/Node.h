@@ -137,6 +137,11 @@ public:
 	virtual float get_global_roll();
 	virtual void update_global_rotation();
 
+	// Returns the transformation matrix created by the global position, TODO scale and rotation values
+	virtual glm::mat4 get_transform();
+	// Returns the local transformation matrix
+	virtual glm::mat4 get_local_transform();
+
 	uint64_t get_ID() const;
 	std::string get_unique_name() const;
 	bool set_unique_name(std::string name);						// assign a new unique name for the node | returns false, if name already exists

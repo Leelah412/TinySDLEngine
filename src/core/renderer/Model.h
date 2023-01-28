@@ -52,11 +52,17 @@ public:
 	// Remove material of the given vertex data
 	virtual void remove_material(VertexData* v);
 
+	const glm::mat4& get_transform();
+	virtual void set_transform(const glm::mat4& transform);
+
 	unsigned int get_model_id() const;
 
 protected:
 	Mesh* m_mesh;															// Reference to the mesh of the model
 	std::unordered_map<VertexData*, VertexMaterial> m_vertex_materials;		// Applies Materials to Mesh data
+	// TODO: maybe turn into a vector, such that a single model can be rendered multiple times at once
+	glm::mat4 m_transform = glm::mat4(1.0);									// Apply a transformation to the position of the Model, when rendering
+	
 
 	// Determines, whether we need to create a new file for the model, when saving the scene or can point to an existing one
 	// Non-unique assumes, that the Mesh is loaded from its given Resource path
