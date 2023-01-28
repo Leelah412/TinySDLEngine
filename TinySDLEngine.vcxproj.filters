@@ -15,10 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\GameLoop.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
+    <ClCompile Include="src\Application.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="src\util\Object.cpp">
@@ -54,7 +51,7 @@
     <ClCompile Include="src\core\renderer\Texture.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\stb_image.cpp">
+    <ClCompile Include="include\stb_image.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="include\glm\detail\glm.cpp">
@@ -150,9 +147,12 @@
     <ClCompile Include="src\core\renderer\Window.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="examples\test\main.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GameLoop.h">
+    <ClInclude Include="src\Application.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="src\util\Object.h">
@@ -197,7 +197,7 @@
     <ClInclude Include="src\core\renderer\Texture.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\stb_image.h">
+    <ClInclude Include="include\stb_image.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="include\glm\detail\_features.hpp">
@@ -1598,5 +1598,6 @@
       <Filter>Headerdateien</Filter>
     </None>
     <None Include="src\res\shader\shader.glsl" />
+    <None Include="examples\test\config.json" />
   </ItemGroup>
 </Project>

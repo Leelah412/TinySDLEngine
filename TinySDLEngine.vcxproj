@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="examples\test\main.cpp" />
     <ClCompile Include="src\core\nodes\LightNode.cpp" />
     <ClCompile Include="src\core\renderer\Buffer.cpp" />
     <ClCompile Include="src\core\renderer\Camera.cpp" />
@@ -43,8 +44,7 @@
     <ClCompile Include="src\core\world\shapes\CollisionShape.cpp" />
     <ClCompile Include="src\core\world\WorldObject.cpp" />
     <ClCompile Include="src\util\SDLEventManager.cpp" />
-    <ClCompile Include="src\GameLoop.cpp" />
-    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\core\nodes\CameraNode.cpp" />
     <ClCompile Include="src\core\nodes\DynamicObject.cpp" />
     <ClCompile Include="src\core\nodes\FirstPersonCamera.cpp" />
@@ -63,7 +63,7 @@
     <ClCompile Include="include\imgui\imgui_tables.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\util\ObjLoader.cpp" />
-    <ClCompile Include="src\util\stb_image.cpp" />
+    <ClCompile Include="include\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\nodes\LightNode.h" />
@@ -99,7 +99,7 @@
     <ClInclude Include="src\util\types.h" />
     <ClInclude Include="include\json\single_include\nlohmann\json.hpp" />
     <ClInclude Include="src\util\SDLEventManager.h" />
-    <ClInclude Include="src\GameLoop.h" />
+    <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\core\nodes\CameraNode.h" />
     <ClInclude Include="src\core\nodes\DynamicObject.h" />
     <ClInclude Include="src\core\nodes\FirstPersonCamera.h" />
@@ -407,9 +407,10 @@
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="src\util\ObjLoader.h" />
-    <ClInclude Include="src\util\stb_image.h" />
+    <ClInclude Include="include\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="examples\test\config.json" />
     <None Include="src\res\shader\shader.glsl" />
     <None Include="include\glm\detail\func_common.inl" />
     <None Include="include\glm\detail\func_common_simd.inl" />
