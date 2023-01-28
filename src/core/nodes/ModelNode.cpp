@@ -19,7 +19,7 @@ ModelNode::~ModelNode(){
 
 void ModelNode::update(const time_t& delta){
 	// update Model transform
-	//m_model->set_transform();
+	m_model->set_transform(get_transform());
 	
 }
 
@@ -126,6 +126,7 @@ JSON ModelNode::save(){
 }
 
 void ModelNode::load(const JSON& data){
+	Node::load(data);
 
 	if(data.contains("visible") && data["visible"].is_boolean()){
 		m_visible = data["visible"];

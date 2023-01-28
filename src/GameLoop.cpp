@@ -404,10 +404,10 @@ bool GameLoop::init_gl(){
 	boat->set_unique_name("boat");
 	ModelNode* barrel = new ModelNode("src/res/mesh/Prop_Barrel_1.obj.model");
 	barrel->set_unique_name("barrel");
-	barrel->set_position_x(-20.0f);
+	barrel->set_position_x(-2.0f);
 	ModelNode* canopy = new ModelNode("src/res/mesh/Canopy_Side.obj.model");
 	canopy->set_unique_name("canopy");
-	canopy->set_position_x(20.0f);
+	canopy->set_position_x(2.0f);
 
 	// camera
 	FirstPersonCamera* camnode = new FirstPersonCamera(tse::PERSPECTIVE, 640.0f, 480.0f);	
@@ -446,6 +446,8 @@ bool GameLoop::init_gl(){
 
 #ifdef testload
 	SceneLoader::load_scene("src/res/test.json");
+	// compare and check, if scene is loaded correctly, i.e. loaded scene outputs the same as saved scene
+	SceneLoader::save_scene("src/res/test_load_comp.json");
 #endif
 
 	return true;

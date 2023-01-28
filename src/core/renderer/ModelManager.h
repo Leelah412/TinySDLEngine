@@ -247,7 +247,7 @@ typedef struct MeshRender : public RenderOperation{
 
 				// TODO: use uniform buffer for transforms
 				// set model uniform for current model
-				//cur_sh->set_uniform_4f("u_model", mdl.);
+				cur_sh->set_uniform_mat4f("u_model", mdl->get_transform());
 
 				// render submesh				
 				// index buffer interval exists

@@ -1,17 +1,2 @@
-﻿  GameLoop.cpp
-  SceneLoader.cpp
-  CameraNode.cpp
-  DynamicObject.cpp
-  FirstPersonCamera.cpp
-  LightNode.cpp
-  ModelNode.cpp
-  Node.cpp
-  PhysicsObject.cpp
-  Sprite.cpp
-  Model.cpp
-  ModelManager.cpp
-  CollisionHandler.cpp
-  main.cpp
-  Code wird generiert...
-  LINK : C:\Users\Halil\source\repos\TinySDLEngine\x64\Debug\TinySDLEngine.exe wurde nicht gefunden oder beim letzten inkrementellen Linkvorgang nicht erstellt; vollständiger Link wird durchgeführt.
+﻿  ModelNode.cpp
   TinySDLEngine.vcxproj -> C:\Users\Halil\source\repos\TinySDLEngine\x64\Debug\TinySDLEngine.exe
