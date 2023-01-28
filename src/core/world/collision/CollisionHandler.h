@@ -6,7 +6,7 @@
 #include <nodes/PhysicsObject.h>
 #include <nodes/DynamicObject.h>
 #include <world/shapes/collision_shapes.h>
-#include "util/glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include <map>
 #include <set>

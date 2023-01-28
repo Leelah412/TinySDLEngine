@@ -4,7 +4,7 @@
 #include <Object.h>
 #include <renderer/RenderManager.h>
 #include "types.h"
-#include <util/json/single_include/nlohmann/json.hpp>
+#include <json/single_include/nlohmann/json.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <SDL.h>

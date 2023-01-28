@@ -3,7 +3,7 @@
 
 #include "nodes/Node.h"
 #include "types.h"
-#include <util/json/single_include/nlohmann/json.hpp>
+#include <json/single_include/nlohmann/json.hpp>
 
 #include <string>
 #include <unordered_map>
