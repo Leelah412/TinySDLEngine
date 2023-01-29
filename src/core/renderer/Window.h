@@ -17,10 +17,10 @@ public:
 
 	~Window();
 
-	SDL_Window* get_window() const;
+	SDL_Window* window() const;
 	void set_window(SDL_Window* window);
 
-	SDL_GLContext get_context() const;
+	SDL_GLContext context() const;
 	void create_context();
 
 	std::string title();

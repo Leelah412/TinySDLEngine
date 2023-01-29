@@ -13,7 +13,7 @@ std::vector<ObjLoader::Obj> ObjLoader::load(const std::string& path){
 	// value is index of existing vertex
 	std::unordered_map<glm::ivec3, unsigned int> used_attribs;
 
-	std::ifstream file(path.c_str());
+	std::ifstream file(path);
 	if(!file.is_open()){
 		printf("Impossible to open the file !\n");
 		return {};

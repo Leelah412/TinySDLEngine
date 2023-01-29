@@ -147,10 +147,16 @@
     <ClCompile Include="src\core\renderer\Window.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="examples\test\main.cpp">
+    <ClCompile Include="src\util\Config.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\Config.cpp">
+    <ClCompile Include="src\editor\Editor.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="examples\dungeon\res\nodes\WorldGenerator.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="examples\dungeon\main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1184,6 +1190,12 @@
     <ClInclude Include="src\util\Config.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="src\editor\Editor.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="examples\dungeon\res\nodes\WorldGenerator.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\glm\detail\func_common.inl">
@@ -1605,5 +1617,6 @@
     </None>
     <None Include="src\res\shader\shader.glsl" />
     <None Include="examples\test\config.json" />
+    <None Include="examples\dungeon\config.json" />
   </ItemGroup>
 </Project>

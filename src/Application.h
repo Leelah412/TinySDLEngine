@@ -38,36 +38,35 @@ class Application : public SEMObject{
 
 public:
 	Application();
-	~Application();
+	virtual ~Application();
 
 	// Handle interrupts (e.g. quit or pause commands)
-	void handle_event(SDL_Event sdl_event, SEM_EVENT event, SEM_EVENT_EXT ext) override;
+	virtual void handle_event(SDL_Event sdl_event, SEM_EVENT event, SEM_EVENT_EXT ext) override;
 
 	// Initialize Application
-	int init(const std::string& config_path);
+	virtual int init(const std::string& config_path);
 
 	/* MAIN LOOP */
-	int loop();
+	virtual int loop();
 
-	void update(const time_t& delta_time);
-	void input();
-	void render();
+	virtual void update(const time_t& delta_time);
+	virtual void input();
+	virtual void render();
 
 	/* LOOP COMMANDS */
-	int start();
-	int stop();
-	int pause();
-	int resume();
-	int quit();							// Quit the application
-
-	/* TODO: move to Config.h FPS */
-	uint8_t get_max_fps();
-	void set_max_fps(uint8_t fps);
+	virtual int start();
+	virtual int stop();
+	virtual int pause();
+	virtual int resume();
+	virtual int quit();							// Quit the application
 
 	/* TIME GETTERS */
 	time_t get_curtime();
 	time_t get_prevtime();
 	time_t get_delta();					// Return the difference between the times of the current and previous frame
+
+	/* WINDOW */
+	const Window* get_window() const;
 
 private:
 	bool m_initialized = false;			//
@@ -79,7 +78,7 @@ private:
 	time_t m_delta = 0;					// Delta between current and previous frame
 	time_t m_pausetime = 0;				// Time at point of pausing the loop
 
-	Window* m_window = nullptr;			// Window, on which the loop runs
+	Window* m_window = nullptr;			// Window, on which the Application runs
 
 	/* OPEN GL (TODO: variables to be refactored into an own renderer class) */
 

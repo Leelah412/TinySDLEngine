@@ -79,7 +79,7 @@ int Application::init(const std::string& config_path){
 
 	// TODO: put SDL flags in config too!
 	m_window = new Window(Config::title, Config::window_x, Config::window_y, Config::window_w, Config::window_h, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-	if(!m_window->get_window()){
+	if(!m_window->window()){
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 		SDL_Quit();
 		return 3;
@@ -100,7 +100,7 @@ int Application::init(const std::string& config_path){
 
 	// Must create OpenGL context BEFORE initializing glew!!!
 	m_window->create_context();
-	if(!m_window->get_context()){
+	if(!m_window->context()){
 		printf("OpenGL Context could not be created! SDL_Error: %s\n", SDL_GetError());
 		SDL_Quit();
 		return 4;
@@ -134,16 +134,14 @@ int Application::init(const std::string& config_path){
 	cout << "OpenGL initialized" << endl;
 
 	// Initialize ImGui
+	// TODO: per default, don't use imgui in base class Application, so remove!
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
 
-	ImGui_ImplSDL2_InitForOpenGL(m_window->get_window(), m_window->get_context());
+	ImGui_ImplSDL2_InitForOpenGL(m_window->window(), m_window->context());
 	ImGui_ImplOpenGL3_Init("#version 420");
 
 	cout << "ImGui initialized" << endl;
-
-	// TODO: connect collision handler with static parent/child mutation signals of physics object,
-	// such that the collision handler lists get updated any time a physics object gets added to/removed from the node tree
 
 	m_initialized = true;
 
@@ -188,41 +186,11 @@ void Application::input(){
 
 // renders all objects
 void Application::render(){
-
-	//m_vertex_array->get_buffer_object((unsigned int)0)->get_shader()->set_uniform_4f("u_color", 0.8, 0.8, 0.2, 1.0);
-
 	IRenderer->clear();
 	IRenderer->draw();
 
-	/*
-	// Start the Dear ImGui frame
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame();
-	ImGui::NewFrame();
-
-	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-	if(show_demo_window)
-		ImGui::ShowDemoWindow(&show_demo_window);
-
-	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-	if(open){
-		static float f = 0.0f;
-
-		ImGui::Begin("Hello, world!", &open);                          // Create a window called "Hello, world!" and append into it.
-
-		ImGui::Checkbox("Show Demo", &show_demo_window);
-		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
-		ImGui::End();
-	}
-
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	*/
-
 	// Render OpenGL on SDL Window
-	SDL_GL_SwapWindow(m_window->get_window());
+	SDL_GL_SwapWindow(m_window->window());
 }
 
 int Application::loop(){
@@ -305,6 +273,10 @@ time_t Application::get_prevtime(){
 }
 time_t Application::get_delta(){
 	return m_delta;
+}
+
+const Window* Application::get_window() const{
+	return m_window;
 }
 
 bool Application::init_gl(){

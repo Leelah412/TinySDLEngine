@@ -148,9 +148,10 @@ public:
 	bool set_unique_name(std::string name);						// assign a new unique name for the node | returns false, if name already exists
 
 	Node* get_parent() const;
+	// Set parent to the given Node
+	// Updates global transformation based on global transformation of parent + local transformation of child
 	virtual void set_parent(Node* parent);
-	// Switch parent and possibly keep the global dimensions of the node
-	// Use this, if updating transformation of child in any way is desired
+	// Switch parent and possibly keep the previous global dimensions of the childe node (i.e. update local transformations instead)
 	virtual void switch_parent(Node* parent, bool keep_gl_pos = false, bool keep_gl_rot = false, bool keep_gl_scale = false);
 
 	const std::vector<Node*>& get_children() const;

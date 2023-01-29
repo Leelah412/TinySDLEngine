@@ -164,8 +164,9 @@ void SceneLoader::load_scene(const std::string& path){
 				std::cout << "WARNING: Trying to adopt child, that doesn't exist! Try next child." << std::endl;
 				continue;
 			}
+			new_node->add_child(done[ch]);
 			// Call "switch_parent" from child instead of "add_child" from parent, since we want the child to have its transformation updated based on new parent immediately
-			done[ch]->switch_parent(new_node);
+			//done[ch]->switch_parent(new_node);
 		}
 
 		done.insert(std::pair<std::string, Node*>(front, new_node));

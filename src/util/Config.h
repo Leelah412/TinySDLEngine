@@ -17,6 +17,7 @@
 
 namespace tse{
 
+// Static class containing program configurations
 typedef struct Config{
 	static std::string title;
 	static int window_x;

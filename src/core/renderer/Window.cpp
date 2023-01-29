@@ -19,7 +19,7 @@ Window::~Window(){
 	SDL_DestroyWindow(m_window);
 };
 
-SDL_Window* Window::get_window() const{
+SDL_Window* Window::window() const{
 	return m_window;
 }
 void Window::set_window(SDL_Window* window){
@@ -29,7 +29,7 @@ void Window::set_window(SDL_Window* window){
 	// TODO: must initialize gl stuff too!
 }
 
-SDL_GLContext Window::get_context() const{
+SDL_GLContext Window::context() const{
 	return m_context;
 }
 void Window::create_context(){

@@ -2,13 +2,13 @@
 
 namespace tse{
 
-std::string Config::title = "TinySDLEngine";
-int Config::window_x = SDL_WINDOWPOS_UNDEFINED;
-int Config::window_y = SDL_WINDOWPOS_UNDEFINED;
-int Config::window_w = 1280;
-int Config::window_h = 720;
-int Config::max_fps = 60;
-bool Config::vsync_on = true;
+std::string Config::title = TSE_CONFIG_DEFAULT_TITLE;
+int Config::window_x = TSE_CONFIG_DEFAULT_WINDOW_X;
+int Config::window_y = TSE_CONFIG_DEFAULT_WINDOW_Y;
+int Config::window_w = TSE_CONFIG_DEFAULT_WINDOW_W;
+int Config::window_h = TSE_CONFIG_DEFAULT_WINDOW_H;
+int Config::max_fps = TSE_CONFIG_DEFAULT_MAX_FPS;
+bool Config::vsync_on = TSE_CONFIG_DEFAULT_VSYNC_ON;
 
 int apply_config(const JSON& config){
 

@@ -10,6 +10,10 @@
 
 using namespace tse;
 
+// TODO: move to src again, but keep config in project folder
+// -- when doing actual projects with sandboxes "seperate" from the engine, each sandbox will have a single "app.cpp" file,
+// -- which will be invoked any time the game is supposed to run
+
 int main(int argc, char* args[]){
 
 	// Initializes the application

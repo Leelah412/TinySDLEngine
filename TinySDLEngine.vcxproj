@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="examples\test\main.cpp" />
+    <ClCompile Include="examples\dungeon\main.cpp" />
+    <ClCompile Include="examples\dungeon\res\nodes\WorldGenerator.cpp" />
     <ClCompile Include="src\core\nodes\LightNode.cpp" />
     <ClCompile Include="src\core\renderer\Buffer.cpp" />
     <ClCompile Include="src\core\renderer\Camera.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="src\core\world\shapes\CollisionBox.cpp" />
     <ClCompile Include="src\core\world\shapes\CollisionShape.cpp" />
     <ClCompile Include="src\core\world\WorldObject.cpp" />
+    <ClCompile Include="src\editor\Editor.cpp" />
     <ClCompile Include="src\util\Config.cpp" />
     <ClCompile Include="src\util\SDLEventManager.cpp" />
     <ClCompile Include="src\Application.cpp" />
@@ -67,6 +69,7 @@
     <ClCompile Include="include\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="examples\dungeon\res\nodes\WorldGenerator.h" />
     <ClInclude Include="src\core\nodes\LightNode.h" />
     <ClInclude Include="src\core\renderer\Light.h" />
     <ClInclude Include="src\core\renderer\UniformBuffer.h" />
@@ -77,6 +80,7 @@
     <ClInclude Include="src\core\world\shapes\CollisionShape.h" />
     <ClInclude Include="src\core\world\shapes\collision_shapes.h" />
     <ClInclude Include="src\core\world\WorldObject.h" />
+    <ClInclude Include="src\editor\Editor.h" />
     <ClInclude Include="src\math\Interval.h" />
     <ClInclude Include="src\core\renderer\Buffer.h" />
     <ClInclude Include="src\core\renderer\Camera.h" />
@@ -412,6 +416,7 @@
     <ClInclude Include="include\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="examples\dungeon\config.json" />
     <None Include="examples\test\config.json" />
     <None Include="src\res\shader\shader.glsl" />
     <None Include="include\glm\detail\func_common.inl" />

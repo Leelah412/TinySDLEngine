@@ -350,6 +350,10 @@ Node* Node::add_child(Node* child){
 		return child;
 	}
 	child->set_parent(this);
+	// update childs global transformations
+	child->update_global_position();
+	child->update_global_rotation();
+	child->update_global_scale();
 	// update
 	NTEventManager->child_added(this, child);
 	return child;
