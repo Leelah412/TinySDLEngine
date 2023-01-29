@@ -2,7 +2,7 @@
 #define __SCENE_LOADER_H__
 
 #include "nodes/Node.h"
-#include "types.h"
+#include "util/types.h"
 #include <json/single_include/nlohmann/json.hpp>
 
 #include <string>

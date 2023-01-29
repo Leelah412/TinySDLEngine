@@ -1,10 +1,10 @@
 #ifndef __OBJ_LOADER_H__
 #define __OBJ_LOADER_H__
 
+#include "util/types.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/hash.hpp>
 #include <json/single_include/nlohmann/json.hpp>
-#include <types.h>
 
 #include <string>
 #include <vector>

@@ -43,6 +43,7 @@
     <ClCompile Include="src\core\world\shapes\CollisionBox.cpp" />
     <ClCompile Include="src\core\world\shapes\CollisionShape.cpp" />
     <ClCompile Include="src\core\world\WorldObject.cpp" />
+    <ClCompile Include="src\util\Config.cpp" />
     <ClCompile Include="src\util\SDLEventManager.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\core\nodes\CameraNode.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="src\core\renderer\VertexMaterial.h" />
     <ClInclude Include="src\core\ResourceManager.h" />
     <ClInclude Include="src\core\renderer\Window.h" />
+    <ClInclude Include="src\util\Config.h" />
     <ClInclude Include="src\util\types.h" />
     <ClInclude Include="include\json\single_include\nlohmann\json.hpp" />
     <ClInclude Include="src\util\SDLEventManager.h" />
@@ -626,7 +628,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)TinySDLEngine\src;$(SolutionDir)TinySDLEngine\core;$(SolutionDir)TinySDLEngine\util</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)TinySDLEngine\src;$(SolutionDir)TinySDLEngine\src\core;$(SolutionDir)TinySDLEngine\include;$(SolutionDir)TinySDLEngine\lib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -656,7 +658,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)TinySDLEngine\src;$(SolutionDir)TinySDLEngine\src\core;$(SolutionDir)TinySDLEngine\src\util;$(SolutionDir)TinySDLEngine\include;$(SolutionDir)TinySDLEngine\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)TinySDLEngine\src;$(SolutionDir)TinySDLEngine\src\core;$(SolutionDir)TinySDLEngine\include;$(SolutionDir)TinySDLEngine\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

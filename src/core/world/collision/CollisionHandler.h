@@ -1,7 +1,7 @@
 #ifndef __COLLISION_HANDLER_H__
 #define __COLLISION_HANDLER_H__
 
-#include <Object.h>
+#include "util/Object.h"
 #include <nodes/Node.h>
 #include <nodes/PhysicsObject.h>
 #include <nodes/DynamicObject.h>

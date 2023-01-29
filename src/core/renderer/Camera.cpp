@@ -5,7 +5,7 @@
 namespace tse{
 
 Camera::Camera(){
-	set_viewport_size(640, 480);
+	set_viewport_size(Config::window_w, Config::window_h);
 
 	update_projection_matrix();
 }

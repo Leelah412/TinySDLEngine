@@ -4,7 +4,7 @@
 #include "Resource.h"
 #include "VertexData.h"
 #include "Material.h"
-#include "ObjLoader.h"
+#include "util/ObjLoader.h"
 
 #include <string>
 #include <vector>

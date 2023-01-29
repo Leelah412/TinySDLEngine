@@ -1,8 +1,5 @@
 #include "Application.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
 #include <fstream>
 #include <sstream>
 #include <memory>
@@ -63,9 +60,7 @@ int Application::init(const std::string& config_path){
 	JSON config = JSON::parse(file);
 	file.close();
 
-	// Invalid, if return value is NOT equal 0
-	if(validate_config(config, config_path) != 0) return -1;
-	JSON body = config["body"];
+	apply_config(config);
 
 	// Initialize event manager first!
 	delete EventManager;
@@ -80,10 +75,10 @@ int Application::init(const std::string& config_path){
 		return 1;
 	}
 
-	cout << "SDL initialized" << endl;
+	std::cout << "SDL initialized" << std::endl;
 
 	// TODO: put SDL flags in config too!
-	m_window = new Window(body["title"], body["window_x"], body["window_y"], body["window_w"], body["window_h"], SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+	m_window = new Window(Config::title, Config::window_x, Config::window_y, Config::window_w, Config::window_h, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 	if(!m_window->get_window()){
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 		SDL_Quit();
@@ -237,7 +232,7 @@ int Application::loop(){
 		// always check for input
 		input();
 		// update, if delta is above fps
-		if((m_delta = m_curtime - m_prevtime) > (1000 / m_max_fps)){
+		if((m_delta = m_curtime - m_prevtime) > (1000 / Config::max_fps)){
 			m_prevtime = m_curtime;
 			update(m_delta);
 			render();
@@ -302,13 +297,6 @@ int Application::quit(){
 	return 0;
 }
 
-uint8_t Application::get_max_fps(){
-	return m_max_fps;
-}
-void Application::set_max_fps(uint8_t fps){
-	m_max_fps = fps;
-}
-
 time_t Application::get_curtime(){
 	return m_curtime;
 }
@@ -336,56 +324,6 @@ bool Application::init_gl(){
 
 	return true;
 }
-
-int Application::validate_config(JSON& config, const std::string& config_path){
-
-	if(config["type"] != "config"){
-		std::cout << "ERROR: File at '" << config_path << "' is not a config file! Abort." << std::endl;
-		return -1;
-	}
-
-	JSON body;
-	if(!config.contains("body") || !(body = config["body"]).is_object()){
-		std::cout << "ERROR: File at '" << config_path << "' is not a config file! Abort." << std::endl;
-		return -1;
-	}
-
-	// If title doesn't exist or is invalid, assign default one
-	if(!body.contains("title") || !body["title"].is_string()){
-		body["title"] = "TinySDLEngine";
-	}
-	// Window
-	if(!body.contains("window_x") || !body["window_x"].is_number_integer()){
-		body["window_x"] = SDL_WINDOWPOS_UNDEFINED;
-	}
-	if(!body.contains("window_y") || !body["window_y"].is_number_integer()){
-		body["window_y"] = SDL_WINDOWPOS_UNDEFINED;
-	}
-	if(!body.contains("window_w") || !body["window_w"].is_number_integer()){
-		body["window_w"] = 1280;
-	}
-	if(!body.contains("window_h") || !body["window_h"].is_number_integer()){
-		body["window_h"] = 720;
-	}
-	if(!body.contains("max_fps") || !body["max_fps"].is_number_integer()){
-		body["max_fps"] = 60;
-	}
-
-	// GL Config
-	JSON gl;
-	if(!body.contains("gl_config") || !(gl = body["gl_config"]).is_object()){
-		gl = {};
-		gl["vsync_on"] = true;
-		body["gl_config"] = gl;
-	}
-
-	// Reassign body, in case we manipulated values
-	config["body"] = body;
-
-	return 0;
-}
-
-
 
 }
 

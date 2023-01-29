@@ -1,7 +1,7 @@
 {
     "body": {
         "name": "Burlap",
-        "path": "src/res/mesh/Materials_Modular_Village.mtl.Burlap.json",
+        "path": "examples/test/res/mesh/Materials_Modular_Village.mtl.Burlap.json",
         "uniforms": {
             "ambient_color": {
                 "a": 1.0,

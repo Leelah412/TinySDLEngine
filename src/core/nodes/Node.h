@@ -1,9 +1,10 @@
 #ifndef __NODE_H__
 #define __NODE_H__
 
-#include <Object.h>
+#include "util/Object.h"
+#include "util/Config.h"
 #include <renderer/RenderManager.h>
-#include "types.h"
+#include "util/types.h"
 #include <json/single_include/nlohmann/json.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

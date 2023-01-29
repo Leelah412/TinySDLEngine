@@ -5,8 +5,8 @@
 //#include "TextureArray.h"
 #include "Shader.h"
 #include "util/ObjLoader.h"
+#include "util/types.h"
 
-#include <types.h>
 #include <json/single_include/nlohmann/json.hpp>
 #include <GL/glew.h>
 #include <glm/glm.hpp>

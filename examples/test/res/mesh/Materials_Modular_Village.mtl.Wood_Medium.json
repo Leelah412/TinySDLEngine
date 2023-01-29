@@ -1,7 +1,7 @@
 {
     "body": {
         "name": "Wood_Medium",
-        "path": "src/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
+        "path": "examples/test/res/mesh/Materials_Modular_Village.mtl.Wood_Medium.json",
         "uniforms": {
             "ambient_color": {
                 "a": 1.0,

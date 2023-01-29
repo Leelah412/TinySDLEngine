@@ -1,7 +1,7 @@
 {
     "body": {
         "name": "Dark_Red_Roof",
-        "path": "src/res/mesh/Materials_Modular_Village.mtl.Dark_Red_Roof.json",
+        "path": "examples/test/res/mesh/Materials_Modular_Village.mtl.Dark_Red_Roof.json",
         "uniforms": {
             "ambient_color": {
                 "a": 1.0,

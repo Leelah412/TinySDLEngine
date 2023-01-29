@@ -1,7 +1,7 @@
 {
     "body": {
         "name": "Candlelight",
-        "path": "src/res/mesh/Materials_Modular_Village.mtl.Candlelight.json",
+        "path": "examples/test/res/mesh/Materials_Modular_Village.mtl.Candlelight.json",
         "uniforms": {
             "ambient_color": {
                 "a": 1.0,

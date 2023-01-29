@@ -1,8 +1,8 @@
 #ifndef __OBJECT_H__
 #define __OBJECT_H__
 
+#include "util/SDLEventManager.h"
 #include <string>
-#include <SDLEventManager.h>
 
 using namespace std;
 typedef string SIGNAL;

@@ -1,7 +1,7 @@
 {
     "body": {
         "name": "Canvas",
-        "path": "src/res/mesh/Materials_Modular_Village.mtl.Canvas.json",
+        "path": "examples/test/res/mesh/Materials_Modular_Village.mtl.Canvas.json",
         "uniforms": {
             "ambient_color": {
                 "a": 1.0,

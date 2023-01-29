@@ -1,7 +1,7 @@
 {
     "body": {
         "name": "Iron_Grey_-_Dark",
-        "path": "src/res/mesh/Materials_Modular_Village.mtl.Iron_Grey_-_Dark.json",
+        "path": "examples/test/res/mesh/Materials_Modular_Village.mtl.Iron_Grey_-_Dark.json",
         "uniforms": {
             "ambient_color": {
                 "a": 1.0,

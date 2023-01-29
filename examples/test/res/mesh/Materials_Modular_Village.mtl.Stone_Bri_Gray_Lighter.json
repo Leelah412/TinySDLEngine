@@ -1,7 +1,7 @@
 {
     "body": {
         "name": "Stone_Bri_Gray_Lighter",
-        "path": "src/res/mesh/Materials_Modular_Village.mtl.Stone_Bri_Gray_Lighter.json",
+        "path": "examples/test/res/mesh/Materials_Modular_Village.mtl.Stone_Bri_Gray_Lighter.json",
         "uniforms": {
             "ambient_color": {
                 "a": 1.0,

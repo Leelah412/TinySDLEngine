@@ -1,26 +1,4 @@
 ﻿  main.cpp
-  LightNode.cpp
-  Material.cpp
-  Mesh.cpp
-  Model.cpp
-  ModelManager.cpp
-  Renderer.cpp
-  RenderManager.cpp
-  TextureArray.cpp
-  Texture.cpp
-  ResourceManager.cpp
-  SceneLoader.cpp
-  CollisionHandler.cpp
   Application.cpp
-  CameraNode.cpp
-  DynamicObject.cpp
-  FirstPersonCamera.cpp
-  ModelNode.cpp
-  Node.cpp
-  PhysicsObject.cpp
-  Code wird generiert...
-  Kompilieren...
-  Sprite.cpp
-  stb_image.cpp
   Code wird generiert...
   TinySDLEngine.vcxproj -> C:\Users\Halil\source\repos\TinySDLEngine\x64\Debug\TinySDLEngine.exe

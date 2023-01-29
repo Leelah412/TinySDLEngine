@@ -1,5 +1,4 @@
 #include <Application.h>
-#include <iostream>
 
 #include "nodes/FirstPersonCamera.h"
 #include "nodes/ModelNode.h"
@@ -7,7 +6,7 @@
 #include "renderer/VertexArray.h"
 #include "renderer/Mesh.h"
 #include "renderer/defaults.h"
-#include "ObjLoader.h"
+#include "util/ObjLoader.h"
 
 using namespace tse;
 
@@ -16,7 +15,7 @@ int main(int argc, char* args[]){
 	// Initializes the application
 	TSE_APPLICATION_INIT("examples/test/config.json");
 
-	// Put your initializer code here
+	// Put your scene initializer code here
 
 #define testload
 
@@ -71,7 +70,7 @@ int main(int argc, char* args[]){
 	wall5->set_position_x(-3.0f);
 
 	// camera
-	FirstPersonCamera* camnode = new FirstPersonCamera(PERSPECTIVE, 640.0f, 480.0f);
+	FirstPersonCamera* camnode = new FirstPersonCamera(PERSPECTIVE, Config::window_w, Config::window_h);
 	camnode->set_unique_name("fps_camera");
 	camnode->set_position(glm::vec3(-2.0f, 2.0f, 0.0f));
 	camnode->set_pitch(45.0f);
