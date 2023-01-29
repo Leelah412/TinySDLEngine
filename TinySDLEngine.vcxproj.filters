@@ -1618,5 +1618,6 @@
     <None Include="src\res\shader\shader.glsl" />
     <None Include="examples\test\config.json" />
     <None Include="examples\dungeon\config.json" />
+    <None Include="src\res\shader\default_shader.glsl" />
   </ItemGroup>
 </Project>

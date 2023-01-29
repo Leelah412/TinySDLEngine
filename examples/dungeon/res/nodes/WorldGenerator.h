@@ -14,7 +14,7 @@
 #define MESH_PATH "examples/dungeon/res/mesh"
 #define WORLD_WIDTH 16
 #define WORLD_HEIGHT 16			// "horizontal" height!
-#define TILE_SIZE 8.0f
+#define TILE_SIZE 6.0f
 
 using namespace tse;
 
@@ -34,6 +34,7 @@ public:
 
 	void generate();
 
+	virtual std::string get_class_name() override;
 
 private:
 

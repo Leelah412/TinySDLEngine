@@ -56,3 +56,7 @@ void WorldGenerator::generate(){
 	}
 
 }
+
+std::string WorldGenerator::get_class_name(){
+	return NodeName(WorldGenerator);
+}

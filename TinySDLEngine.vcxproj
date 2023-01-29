@@ -418,6 +418,7 @@
   <ItemGroup>
     <None Include="examples\dungeon\config.json" />
     <None Include="examples\test\config.json" />
+    <None Include="src\res\shader\default_shader.glsl" />
     <None Include="src\res\shader\shader.glsl" />
     <None Include="include\glm\detail\func_common.inl" />
     <None Include="include\glm\detail\func_common_simd.inl" />

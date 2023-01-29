@@ -16,7 +16,7 @@ struct Light{
     float constant = 1.0;
     float linear;
     float quadratic;
-    float dummy = 0.0;
+    float spread = 1.0;
 };
 
 }

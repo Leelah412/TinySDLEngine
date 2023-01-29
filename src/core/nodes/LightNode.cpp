@@ -119,6 +119,10 @@ JSON LightNode::save(){
 			"quadratic",
 			m_light->quadratic
 		},
+		{
+			"spread",
+			m_light->spread
+		},
 
 	};
 
@@ -360,6 +364,15 @@ void LightNode::load(const JSON& data){
 	else{
 		m_light->quadratic = 0.0f;
 		std::cout << "WARNING: Loading 'LightNode': 'light.quadratic' doesn't exist or is not a number!" << std::endl;
+	}
+
+	// SPREAD
+	if(light.contains("spread") && (it1 = light["spread"]).is_number()){
+		m_light->spread = it1;
+	}
+	else{
+		m_light->spread = 1.0f;
+		std::cout << "WARNING: Loading 'LightNode': 'light.spread' doesn't exist or is not a number!" << std::endl;
 	}
 }
 

@@ -13,10 +13,11 @@ uniform mat4 U_VIEW;
 uniform mat4 u_model;
 
 void main(){
-	gl_Position = U_VIEW * u_model * position;
-	v_position = position.xyz;
+	v_position = vec3(u_model * position);
     v_tex_coord = tex_coord;
 	v_normal = normal;
+
+	gl_Position = U_VIEW * vec4(v_position, 1.0);
 };
 
 
@@ -52,7 +53,7 @@ struct Light{
 	float constant;
     float linear;
     float quadratic;
-    float dummy;
+    float spread;
 };
 
 layout(std140, binding = 0) uniform LightBlock{
@@ -66,14 +67,10 @@ void main(){
     // diffuse 
     vec3 norm = normalize(v_normal);
     vec3 lightDir = normalize(u_light[0].position.xyz - v_position);
-    
     float diff = max(dot(norm, lightDir), 0.0);
-    // TODO: when implementing materials, use this
-    //vec3 diffuse = light.diffuse * diff * texture(material.diffuse, TexCoords).rgb; 
-    vec3 dfs = u_light[0].diffuse.rgb * diff;
-    //
+    vec3 dfs = u_light[0].diffuse.rgb * diff * u_material.albedo_color.rgb * u_light[0].spread;
+
     // specular
-    //vec3 viewPos = vec3(-2.0f, 2.0f, 0.0f);
     vec3 viewDir = normalize(u_view_pos.xyz - v_position);
     vec3 reflectDir = reflect(-lightDir, norm);  
     //float spec = pow(max(dot(vec3(U_VIEW.m03, U_VIEW.m13, U_VIEW.m23), reflectDir), 0.0), material.shininess);
@@ -91,7 +88,7 @@ void main(){
     specular *= intensity;
     
     // attenuation
-    float dist = length(lightDir - v_position);
+    float dist = length(lightDir - v_position) / u_light[0].spread;
     float attenuation = 1.0 / (u_light[0].constant + u_light[0].linear * dist + u_light[0].quadratic * (dist * dist));
     amb *= attenuation;
     dfs *= attenuation;

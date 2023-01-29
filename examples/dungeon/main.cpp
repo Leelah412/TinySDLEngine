@@ -44,6 +44,7 @@ int main(int argc, char* args[]){
 	light.constant = 1.0f;
 	light.linear = 0.09f;
 	light.quadratic = 0.032f;
+	light.spread = 5.0f;
 	LightNode* lightnode = new LightNode(light);
 	lightnode->set_unique_name("light");
 	lightnode->turn_on();
@@ -53,13 +54,11 @@ int main(int argc, char* args[]){
 	camnode->activate_camera();
 
 	// For testing purposes, call the SceneLoader save function
-	SceneLoader::save_scene("examples/dungeon/res/test.json");
+	SceneLoader::save_scene("examples/dungeon/res/scenes/dungeon.json");
 #endif
 
 #ifdef testload
-	SceneLoader::load_scene("examples/dungeon/res/test.json");
-	// compare and check, if scene is loaded correctly, i.e. loaded scene outputs the same as saved scene
-	SceneLoader::save_scene("examples/dungeon/res/test_load_comp.json");
+	SceneLoader::load_scene("examples/dungeon/res/scenes/dungeon.json");
 #endif
 
 	// Starts the game

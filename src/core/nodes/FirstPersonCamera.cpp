@@ -77,7 +77,7 @@ void FirstPersonCamera::handle_event(SDL_Event sdl_event, SEM_EVENT event, SEM_E
 
 void FirstPersonCamera::update(const time_t& delta){
 
-	const float speed = 2.0f;
+	const float speed = 8.0f;
 
 	float sec = (float)((double)delta / 1000.0);
 	float x_factor = sec * (m_left - m_right) * speed;
