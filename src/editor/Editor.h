@@ -24,8 +24,7 @@ public:
 	virtual ~Editor();
 
 	// Initialize the editor
-	// Takes a path to the Editor configuration XML file
-	int init(const std::string& config) override;
+	int init() override;
 	// Render the editor on the window
 	void render() override;
 	// Execute the game, starting at the entry scene specified in the config file

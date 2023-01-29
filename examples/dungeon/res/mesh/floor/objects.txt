@@ -1,4 +1,4 @@
-obj_name | obj_id | connections | height_change
+obj_name | obj_id | class | height_change
 ---
 stairs 0
 stairs_wide 1

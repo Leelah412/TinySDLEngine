@@ -17,16 +17,16 @@
 #include <string>
 #include <fstream>
 
-#define TSE_APPLICATION_INIT(config) \
-	tse::Application* app = new tse::Application(); \
-	if(app->init(config) != 0){ \
-		return -1;				\
-	}
-
-#define TSE_APPLICATION_RUN \
-	app->start(); \
-	app->quit(); \
-	delete app;
+#ifndef TSE_USE_EDITOR
+	#define TSE_USE_APP(appname, config) \
+		tse::Application* tse::create_application(){ \
+			tse::Application* app = new appname();	\
+			app->set_config_path(config);	\
+			return new appname();	\
+		}
+#else
+	#define TSE_USE_APP(appname, config)
+#endif
 
 USE_EVENT_MANAGER
 USE_RENDERER
@@ -34,17 +34,22 @@ USE_RENDER_MANAGER
 
 namespace tse{
 
+// Abstract class 
 class Application : public SEMObject{
 
 public:
 	Application();
-	virtual ~Application();
+	virtual ~Application() = 0;
 
 	// Handle interrupts (e.g. quit or pause commands)
 	virtual void handle_event(SDL_Event sdl_event, SEM_EVENT event, SEM_EVENT_EXT ext) override;
 
+	int run();
+
+	// Configure Application
+	virtual void config();
 	// Initialize Application
-	virtual int init(const std::string& config_path);
+	virtual int init();
 
 	/* MAIN LOOP */
 	virtual int loop();
@@ -68,6 +73,9 @@ public:
 	/* WINDOW */
 	const Window* get_window() const;
 
+	const std::string& get_config_path();
+	void set_config_path(const std::string& path);
+
 private:
 	bool m_initialized = false;			//
 	bool m_run = false;					// Loop condition
@@ -80,10 +88,17 @@ private:
 
 	Window* m_window = nullptr;			// Window, on which the Application runs
 
+	std::string m_config_path = "";		// Path to the configuration file
+
 	/* OPEN GL (TODO: variables to be refactored into an own renderer class) */
 
 	bool init_gl();
+
+	// Basic initialization for *all* app types
+	int base_init();
 };
+
+Application* create_application();
 
 }
 
