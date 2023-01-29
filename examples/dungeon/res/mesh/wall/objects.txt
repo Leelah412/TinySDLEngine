@@ -1,0 +1,28 @@
+obj_name | obj_id | connections
+---
+pillar 0 0
+pillar_broken 1 0
+wall 2
+wall_broken 3
+wall_door 4
+wall_end 5
+wall_end_broken 6
+wall_gate 7
+wall_gateCorner 8
+wall_gateDoor 9
+wall_window 10
+wall_windowGate 11
+wallCorner 12
+wallDecorationA 13
+wallDecorationB 14
+wallIntersection 15
+wallSingle 16
+wallSingle_broken 17
+wallSingle_corner 18
+wallSingle_decorationA 19
+wallSingle_decorationB 20
+wallSingle_door 21
+wallSingle_split 22
+wallSingle_window 23
+wallSingle_windowGate 24
+wallSplit 25

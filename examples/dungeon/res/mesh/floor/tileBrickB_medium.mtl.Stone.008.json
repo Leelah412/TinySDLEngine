@@ -1,0 +1,27 @@
+{
+    "body": {
+        "name": "Stone.008",
+        "path": "examples/dungeon/res/mesh/floor/tileBrickB_medium.mtl.Stone.008.json",
+        "uniforms": {
+            "ambient_color": {
+                "a": 1.0,
+                "b": 1.0,
+                "g": 1.0,
+                "r": 1.0
+            },
+            "diffuse_color": {
+                "a": 1.0,
+                "b": 0.2461950033903122,
+                "g": 0.228192999958992,
+                "r": 0.19232800602912903
+            },
+            "specular_color": {
+                "a": 1.0,
+                "b": 0.5,
+                "g": 0.5,
+                "r": 0.5
+            }
+        }
+    },
+    "type": "material"
+}

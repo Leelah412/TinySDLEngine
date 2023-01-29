@@ -1,0 +1,9 @@
+{
+    "body": {
+        "mesh": "examples/dungeon/res/mesh/floor/stairs_wide.obj.msh",
+        "vertex_materials": [
+            "examples/dungeon/res/mesh/floor/stairs_wide.mtl.Stone.001.json"
+        ]
+    },
+    "type": "model"
+}

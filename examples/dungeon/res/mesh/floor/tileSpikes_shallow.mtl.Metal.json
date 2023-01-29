@@ -1,0 +1,27 @@
+{
+    "body": {
+        "name": "Metal",
+        "path": "examples/dungeon/res/mesh/floor/tileSpikes_shallow.mtl.Metal.json",
+        "uniforms": {
+            "ambient_color": {
+                "a": 1.0,
+                "b": 0.20000000298023224,
+                "g": 0.20000000298023224,
+                "r": 0.20000000298023224
+            },
+            "diffuse_color": {
+                "a": 1.0,
+                "b": 0.517333984375,
+                "g": 0.47849199175834656,
+                "r": 0.4012640118598938
+            },
+            "specular_color": {
+                "a": 1.0,
+                "b": 0.5,
+                "g": 0.5,
+                "r": 0.5
+            }
+        }
+    },
+    "type": "material"
+}

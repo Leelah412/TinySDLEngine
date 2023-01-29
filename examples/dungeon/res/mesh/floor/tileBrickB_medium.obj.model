@@ -1,0 +1,9 @@
+{
+    "body": {
+        "mesh": "examples/dungeon/res/mesh/floor/tileBrickB_medium.obj.msh",
+        "vertex_materials": [
+            "examples/dungeon/res/mesh/floor/tileBrickB_medium.mtl.Stone.008.json"
+        ]
+    },
+    "type": "model"
+}

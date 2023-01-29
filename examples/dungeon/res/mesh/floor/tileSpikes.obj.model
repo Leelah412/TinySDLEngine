@@ -1,0 +1,11 @@
+{
+    "body": {
+        "mesh": "examples/dungeon/res/mesh/floor/tileSpikes.obj.msh",
+        "vertex_materials": [
+            "examples/dungeon/res/mesh/floor/tileSpikes.mtl.Stone.010.json",
+            "examples/dungeon/res/mesh/floor/tileSpikes.mtl.WoodDark.001.json",
+            "examples/dungeon/res/mesh/floor/tileSpikes.mtl.Metal.json"
+        ]
+    },
+    "type": "model"
+}

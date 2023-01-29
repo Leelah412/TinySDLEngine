@@ -44,6 +44,7 @@ public:
 		std::vector<std::string> mat_pths;
 	};
 
+	// TODO: triangulate non-triangulated faces
 	static std::vector<Obj> load(const std::string& path);
 	// Get the paths to a Models Mesh and its Materials
 	static ModelProps load_model_paths(const std::string& path);

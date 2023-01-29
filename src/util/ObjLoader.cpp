@@ -416,9 +416,6 @@ std::map<std::string, JSON> ObjLoader::mtl_to_material(const std::string& path){
 
 		// New material
 		if(first == "newmtl"){
-			sscanf_s(line.c_str(), "newmtl %64s\n", name_buf, 64);
-			mat_files.insert(std::pair<std::string, JSON>(name_buf, {}));
-
 			if(first_done){
 				// create material from uniforms and reset
 				mat_files[name_buf] = {
@@ -435,6 +432,9 @@ std::map<std::string, JSON> ObjLoader::mtl_to_material(const std::string& path){
 			else{
 				first_done = true;
 			}
+
+			sscanf_s(line.c_str(), "newmtl %64s\n", name_buf, 64);
+			mat_files.insert(std::pair<std::string, JSON>(name_buf, {}));
 		}
 		// Ambient color
 		else if(first == "Ka"){

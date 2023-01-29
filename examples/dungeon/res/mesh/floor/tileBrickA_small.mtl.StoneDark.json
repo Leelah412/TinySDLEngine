@@ -1,0 +1,27 @@
+{
+    "body": {
+        "name": "StoneDark",
+        "path": "examples/dungeon/res/mesh/floor/tileBrickA_small.mtl.StoneDark.json",
+        "uniforms": {
+            "ambient_color": {
+                "a": 1.0,
+                "b": 1.0,
+                "g": 1.0,
+                "r": 1.0
+            },
+            "diffuse_color": {
+                "a": 1.0,
+                "b": 0.12790599465370178,
+                "g": 0.11823300272226334,
+                "r": 0.10092200338840485
+            },
+            "specular_color": {
+                "a": 1.0,
+                "b": 0.5,
+                "g": 0.5,
+                "r": 0.5
+            }
+        }
+    },
+    "type": "material"
+}

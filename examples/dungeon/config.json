@@ -1,0 +1,15 @@
+{
+  "type": "config",
+  "body": {
+    "entry_scene": "",
+    "title": "Dungeon",
+    "window_x": 536805376,
+    "window_y": 536805376,
+    "window_w": 1280,
+    "window_h": 720,
+    "max_fps": 60,
+    "gl_config": {
+      "vsync_on": true
+    }
+  }
+}

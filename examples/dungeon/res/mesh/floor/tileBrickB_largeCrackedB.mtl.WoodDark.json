@@ -1,0 +1,27 @@
+{
+    "body": {
+        "name": "WoodDark",
+        "path": "examples/dungeon/res/mesh/floor/tileBrickB_largeCrackedB.mtl.WoodDark.json",
+        "uniforms": {
+            "ambient_color": {
+                "a": 1.0,
+                "b": 1.0,
+                "g": 1.0,
+                "r": 1.0
+            },
+            "diffuse_color": {
+                "a": 1.0,
+                "b": 0.10591199994087219,
+                "g": 0.11656700074672699,
+                "r": 0.15377800166606903
+            },
+            "specular_color": {
+                "a": 1.0,
+                "b": 0.5,
+                "g": 0.5,
+                "r": 0.5
+            }
+        }
+    },
+    "type": "material"
+}

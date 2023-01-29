@@ -1,0 +1,9 @@
+{
+    "body": {
+        "mesh": "examples/dungeon/res/mesh/floor/tileBrickB_largeCrackedA.obj.msh",
+        "vertex_materials": [
+            "examples/dungeon/res/mesh/floor/tileBrickB_largeCrackedA.mtl.Stone.006.json"
+        ]
+    },
+    "type": "model"
+}

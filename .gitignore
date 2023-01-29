@@ -2,4 +2,3 @@
 doc/TODO
 src/res/shader/light_shader.glsl
 examples/marbles
-examples/dungeon

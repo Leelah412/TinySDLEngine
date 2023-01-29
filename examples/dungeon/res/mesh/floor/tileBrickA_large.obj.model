@@ -1,0 +1,10 @@
+{
+    "body": {
+        "mesh": "examples/dungeon/res/mesh/floor/tileBrickA_large.obj.msh",
+        "vertex_materials": [
+            "examples/dungeon/res/mesh/floor/tileBrickA_large.mtl.StoneDark.json",
+            "examples/dungeon/res/mesh/floor/tileBrickA_large.mtl.Stone.002.json"
+        ]
+    },
+    "type": "model"
+}

@@ -1,0 +1,15 @@
+obj_name | obj_id | connections | height_change
+---
+stairs 0
+stairs_wide 1
+tileBrickA_large 2
+tileBrickA_medium 3
+tileBrickA_small 4
+tileBrickB_large 5
+tileBrickB_largeCrackedA 6
+tileBrickB_largeCrackedB 7
+tileBrickB_medium 8
+tileBrickB_small 9
+tileSpikes 10
+tileSpikes_large 11
+tileSpikes_shallow 12

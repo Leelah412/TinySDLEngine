@@ -90,7 +90,7 @@ Node::Node(){
 		// just add the id multiple times, if default name is given somehow
 		name_extender += to_string(m_ID);
 	}
-	cout << "node with unique name " << m_unique_name << " initialized" << endl;
+	//cout << "node with unique name " << m_unique_name << " initialized" << endl;
 	m_parent = NULL;
 	m_children = {};
 }
