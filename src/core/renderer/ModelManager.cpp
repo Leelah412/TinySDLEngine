@@ -44,7 +44,7 @@ void ModelManager::init_world(){
 	add_free_ibo_space( DisjointInterval(0, m_expected_max_indices - 1) );
 
 	// Light UBO
-	// TODO: implement dingens
+	// TODO: implement uniform buffer
 	m_light_ubo = new UniformBuffer(0);
 }
 

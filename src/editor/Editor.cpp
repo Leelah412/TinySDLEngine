@@ -1,5 +1,6 @@
 #include "Editor.h"
 
+
 namespace tse{
 
 #ifdef TSE_USE_EDITOR
@@ -17,7 +18,7 @@ Editor::Editor(){
 Editor::~Editor(){
 }
 
-int Editor::init(){	
+int Editor::init(){
 	// Initialize ImGui
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
@@ -25,9 +26,15 @@ int Editor::init(){
 	ImGui_ImplSDL2_InitForOpenGL(get_window()->window(), get_window()->context());
 	ImGui_ImplOpenGL3_Init("#version 420");
 
+	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 	cout << "ImGui initialized" << endl;
 
 	// TODO: read XML file to create GUI
+	m_widgets.insert(new ToolbarWidget());
+	m_widgets.insert(new SceneTreeWidget());
+	m_widgets.insert(new SceneWidget(Config::window_w, Config::window_h));
+
 	return 0;
 }
 
@@ -37,30 +44,31 @@ static bool show_demo_window = true;
 
 void Editor::render(){
 	IRenderer->clear();
-	IRenderer->draw();
-
-	// Scene is rendered in Application
 
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	if(show_demo_window)
-		ImGui::ShowDemoWindow(&show_demo_window);
-
-	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-	if(open){
-		static float f = 0.0f;
-
-		ImGui::Begin("Hello, world!", &open);                          // Create a window called "Hello, world!" and append into it.
-
-		ImGui::Checkbox("Show Demo", &show_demo_window);
-		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
-		ImGui::End();
+	for(auto w : m_widgets){
+		w->render();
 	}
+
+	//if(show_demo_window)
+	//	ImGui::ShowDemoWindow(&show_demo_window);
+	//
+	//// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+	//if(open){
+	//	static float f = 0.0f;
+	//
+	//	ImGui::Begin("Hello, world!", &open);                          // Create a window called "Hello, world!" and append into it.
+	//
+	//	ImGui::Checkbox("Show Demo", &show_demo_window);
+	//	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+	//	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	//
+	//	ImGui::End();
+	//}
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

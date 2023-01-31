@@ -45,8 +45,14 @@
     <ClCompile Include="src\core\world\shapes\CollisionShape.cpp" />
     <ClCompile Include="src\core\world\WorldObject.cpp" />
     <ClCompile Include="src\editor\Editor.cpp" />
+    <ClCompile Include="src\editor\nodes\EditorCamera.cpp" />
+    <ClCompile Include="src\editor\widgets\SceneTreeWidget.cpp" />
+    <ClCompile Include="src\editor\widgets\ToolbarWidget.cpp" />
+    <ClCompile Include="src\editor\widgets\SceneWidget.cpp" />
+    <ClCompile Include="src\editor\widgets\Widget.cpp" />
     <ClCompile Include="src\Main.h" />
     <ClCompile Include="src\util\Config.cpp" />
+    <ClCompile Include="src\util\random_string.h" />
     <ClCompile Include="src\util\SDLEventManager.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\core\nodes\CameraNode.cpp" />
@@ -83,6 +89,11 @@
     <ClInclude Include="src\core\world\shapes\collision_shapes.h" />
     <ClInclude Include="src\core\world\WorldObject.h" />
     <ClInclude Include="src\editor\Editor.h" />
+    <ClInclude Include="src\editor\nodes\EditorCamera.h" />
+    <ClInclude Include="src\editor\widgets\SceneTreeWidget.h" />
+    <ClInclude Include="src\editor\widgets\ToolbarWidget.h" />
+    <ClInclude Include="src\editor\widgets\SceneWidget.h" />
+    <ClInclude Include="src\editor\widgets\Widget.h" />
     <ClInclude Include="src\math\Interval.h" />
     <ClInclude Include="src\core\renderer\Buffer.h" />
     <ClInclude Include="src\core\renderer\Camera.h" />

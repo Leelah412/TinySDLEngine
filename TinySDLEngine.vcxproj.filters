@@ -162,6 +162,24 @@
     <ClCompile Include="src\Main.h">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="src\editor\widgets\Widget.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\widgets\SceneTreeWidget.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\widgets\ToolbarWidget.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\random_string.h">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\widgets\SceneWidget.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\nodes\EditorCamera.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -1200,6 +1218,21 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="examples\dungeon\app.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\widgets\SceneTreeWidget.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\widgets\Widget.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\widgets\ToolbarWidget.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\widgets\SceneWidget.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\nodes\EditorCamera.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

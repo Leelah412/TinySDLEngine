@@ -18,12 +18,12 @@ public:
 	FirstPersonCamera(PROJECTION type, float viewport_width, float viewport_height);
 	virtual ~FirstPersonCamera();
 
-	// TODO: delete
 	virtual void handle_event(SDL_Event sdl_event, SEM_EVENT event, SEM_EVENT_EXT ext) override;
 	virtual void update(const time_t& delta) override;
 
 	virtual std::string get_class_name() override;
-private:
+
+protected:
 	bool m_left = false;
 	bool m_right = false;
 	bool m_up = false;

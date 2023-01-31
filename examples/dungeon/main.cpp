@@ -8,10 +8,9 @@
 
 using namespace tse;
 
-int main(int argc, char* args[]){
+// TODO: replaced by app.h, remove
 
-	// Initializes the application
-	TSE_APPLICATION_INIT("examples/dungeon/config.json");
+int main(int argc, char* args[]){
 
 	// Put your scene initializer code here
 
@@ -60,9 +59,6 @@ int main(int argc, char* args[]){
 #ifdef testload
 	SceneLoader::load_scene("examples/dungeon/res/scenes/dungeon.json");
 #endif
-
-	// Starts the game
-	TSE_APPLICATION_RUN;
 
 
 	return 0;

@@ -72,7 +72,11 @@ namespace tse{
 		float get_roll() const;
 		virtual void set_roll(float roll);
 
+		GLuint get_framebuffer_id();
+		virtual void set_framebuffer(GLuint id);
+	
 	private:
+		GLuint m_framebuffer_id = 0;
 		PROJECTION m_type = PERSPECTIVE;
 
 		glm::mat4 m_projection;

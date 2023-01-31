@@ -191,5 +191,13 @@ void Camera::set_roll(float roll){
 	m_roll = roll;
 }
 
+GLuint Camera::get_framebuffer_id(){
+	return m_framebuffer_id;
+}
+
+void Camera::set_framebuffer(GLuint id){
+	m_framebuffer_id = id;
+}
+
 }
 

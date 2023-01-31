@@ -2,9 +2,12 @@
 #define __EDITOR_H__
 
 #include "Application.h"
+#include "widgets/Widget.h"
 
-#include "nodes/Node.h"
-#include "SceneLoader.h"
+#include "widgets/ToolbarWidget.h"
+#include "widgets/SceneTreeWidget.h"
+#include "widgets/SceneWidget.h"
+
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl.h>
 #include <imgui/imgui_impl_opengl3.h>
@@ -13,7 +16,6 @@
 #include <string>
 #include <map>
 #include <iostream>
-#include <thread>
 
 namespace tse{
 
@@ -37,8 +39,9 @@ public:
 	void switch_scene(const std::string& path);
 
 private:
-	std::string m_cur_scene;						// Path to the current scene
+	Node* m_app_root_node = nullptr;				// Root of current scene in app
 	std::map<std::string, Node*> m_scene_trees;		// List of scene trees currently opened in the editor; key is path to/name of scene
+	std::set<Widget*> m_widgets;					
 };
 
 }

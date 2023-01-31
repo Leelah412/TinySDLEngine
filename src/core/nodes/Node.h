@@ -98,7 +98,7 @@ public:
 	// TODO: create on_create, on_tree_enter, on_destroy... functions
 
 	virtual void input(const SDL_Event& event);			// input passed through the node tree, until a child "eats" it; return remaining event queue
-	virtual void draw();								// directly draws on the screen
+	virtual void draw();								// TODO: remove; directly draws on the screen
 	virtual void update(const time_t& delta);			// updates physics n stuff
 
 	virtual const glm::vec2& get_position_2d() const;
