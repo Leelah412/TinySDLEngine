@@ -2,8 +2,15 @@
 
 #include <iostream>
 
-Texture::Texture(const std::string& file){
-	m_filepath = file;
+namespace tse{
+
+Texture::Texture(int width, int height, TSETextureType type)
+	: m_width{width}, m_height{height}, m_type{type}{
+	gl_load();
+}
+
+Texture::Texture(const std::string& path, TSETextureType type) : m_type{type}{
+	m_filepath = path;
 	stbi_set_flip_vertically_on_load(1);
 	if((m_buffer = stbi_load(m_filepath.c_str(), &m_width, &m_height, &m_bpp, 4)) == nullptr){
 		std::cerr << "ERROR: Couldn't load texture!" << std::endl;
@@ -72,8 +79,25 @@ void Texture::gl_load(){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	// no tiling
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	// give data to opengl
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
-	// unbind
+
+	switch(m_type){
+		case TSETextureType::COLOR:
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
+			break;
+		// TODO: look deeper into depth and stencil textures
+		//case TSETextureType::DEPTH:
+		//	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, m_buffer);
+		//	break;
+		//case TSETextureType::STENCIL:
+		//	glTexImage2D(GL_TEXTURE_2D, 0, GL_STENCIL_INDEX, m_width, m_height, 0, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, m_buffer);
+		//	break;
+		default:
+			std::cerr << "ERROR: Couldn't create Texture: Invalid texture type!" << std::endl;
+			break;
+	}
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+}
+

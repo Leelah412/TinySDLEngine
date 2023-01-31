@@ -21,6 +21,7 @@ public:
 
 private:
 	EditorCamera* m_editor_cam;
+	Framebuffer* m_framebuffer;
 	PROJECTION m_projection_type;
 };
 

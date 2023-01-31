@@ -7,12 +7,18 @@
 #include <GL/glew.h>
 #include <string>
 
-// Bind textures to draw them on screen, when needed
+namespace tse{
 
+enum class TSETextureType {COLOR, DEPTH, STENCIL};
+
+// Texture class holding information about textures (possibly) drawn onto Framebuffers
 class Texture : public Resource{
 
 public:
-	Texture(const std::string& file);
+	// Create an empty Texture with the given width and height
+	Texture(int width, int height, TSETextureType type = TSETextureType::COLOR);
+	// Create a Texture from the file in the given path
+	Texture(const std::string& path, TSETextureType type = TSETextureType::COLOR);
 	Texture(const Texture& texture);		// Copy constructor
 	Texture& operator=(const Texture& texture);
 	virtual ~Texture();
@@ -31,6 +37,7 @@ private:
 	// WARNING: if loaded into resource manager, any changes to any of these values will also affect every mesh using this texture!
 	uint32_t m_texture_id = 0;
 	unsigned char* m_buffer = nullptr;
+	TSETextureType m_type;
 	int m_width = 0;
 	int m_height = 0;
 	int m_bpp = 0;
@@ -39,5 +46,9 @@ private:
 	void gl_load();								// Load texture into OpenGl
 
 };
+
+}
+
+
 
 #endif // !__TEXTURE_H__

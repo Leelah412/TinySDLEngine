@@ -2,7 +2,6 @@
 #define __CAMERA_H__
 
 #include "Framebuffer.h"
-//#include "BufferEntity.h"
 #include "Shader.h"
 #include "util/Config.h"
 
