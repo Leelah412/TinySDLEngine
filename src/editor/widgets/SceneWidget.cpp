@@ -28,7 +28,7 @@ void SceneWidget::draw(){
 	if(!ImGui::Begin("Scene", &m_show)) return;
 	// Using a Child allow to fill all the space of the window.
 	// It also alows customization
-	ImGui::BeginChild("GameRender");
+	ImGui::BeginChild("Viewport");
 	// Get the size of the child (i.e. the whole draw size of the windows).
 	ImVec2 wsize = ImGui::GetWindowSize();
 	// Set viewport width/height of framebuffer to fit window

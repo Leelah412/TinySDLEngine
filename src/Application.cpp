@@ -33,7 +33,7 @@ namespace tse{
 Application::Application(){}
 
 Application::~Application(){
-	if(m_initialized) quit();
+	if(m_initialized) base_quit();
 }
 
 void Application::handle_event(SDL_Event sdl_event, SEM_EVENT event, SEM_EVENT_EXT ext){
@@ -44,7 +44,7 @@ int Application::run(){
 	config();
 	base_init();
 	start();
-	quit();
+	base_quit();
 	return 0;
 }
 
@@ -161,24 +161,6 @@ int Application::resume(){
 	return true;
 }
 int Application::quit(){
-
-	std::cout << "Quitting loop" << std::endl;
-
-	// Stop ImGui
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
-
-	drop_event(SEM_QUIT);
-	drop_event(SEM_KEY_PRESSED);
-
-	delete ICollisionHandler;
-	delete INodeTree;
-	delete m_window;
-
-	SDL_Quit();
-
-	m_initialized = false;
 	return 0;
 }
 
@@ -298,7 +280,6 @@ int Application::base_init(){
 
 	cout << "OpenGL initialized" << endl;
 
-
 	// Init derived app
 	init();
 
@@ -306,6 +287,22 @@ int Application::base_init(){
 
 	std::cout << "Application initialized" << std::endl;
 	return 0;
+}
+
+int Application::base_quit(){
+	std::cout << "Quitting loop" << std::endl;
+
+	drop_event(SEM_QUIT);
+
+	delete ICollisionHandler;
+	delete INodeTree;
+	delete m_window;
+
+	SDL_Quit();
+
+	m_initialized = false;
+
+	return quit();
 }
 
 

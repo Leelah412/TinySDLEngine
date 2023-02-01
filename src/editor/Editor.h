@@ -25,8 +25,11 @@ public:
 	Editor();
 	virtual ~Editor();
 
-	// Initialize the editor
+	// Initialize the Editor
 	int init() override;
+	// Quit the Editor
+	int quit() override;
+
 	// Render the editor on the window
 	void render() override;
 	// Execute the game, starting at the entry scene specified in the config file

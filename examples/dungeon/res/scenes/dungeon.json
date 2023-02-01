@@ -2,7 +2,7 @@
     "body": {
         "nodes": {
             "fps_camera": {
-                "active": false,
+              "active": true,
                 "camera": {
                     "aspect_ratio": 1.7777777910232544,
                     "far_plane": 1000.0,

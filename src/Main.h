@@ -1,6 +1,9 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+// TODO: remove, for testing purposes!
+#undef TSE_USE_EDITOR
+
 #include <Application.h>
 
 #include "nodes/FirstPersonCamera.h"

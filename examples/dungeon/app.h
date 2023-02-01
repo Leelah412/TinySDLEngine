@@ -13,6 +13,7 @@ public:
 
 	void handle_event(SDL_Event sdl_event, SEM_EVENT event, SEM_EVENT_EXT ext) override;
 	int init() override;
+	int quit() override;
 
 private:
 

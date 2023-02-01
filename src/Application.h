@@ -94,8 +94,10 @@ private:
 
 	bool init_gl();
 
-	// Basic initialization for *all* app types
+	// Basic initialization for all apps
 	int base_init();
+	// Basic quit instruction for all apps
+	int base_quit();
 };
 
 Application* create_application();
