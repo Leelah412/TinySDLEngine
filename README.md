@@ -14,4 +14,5 @@ Make sure to set the Visual Studio configuration to `Debug` and the platform to 
 ## Running the program
 The first (and only) thing you will see right now is a placeholder scene with a bunch of 3D models.
 You can move freely with the mouse and the WASD or the arrow keys. To quit the game, press the ESC key (note: the mouse is captured by the application).
+
 ![Screenshot](doc/example_screenshot.PNG)
