@@ -108,8 +108,12 @@ std::vector<WorldGenerator::PathNode> WorldGenerator::generate_path(){
 		if(!done) created.insert(cur_pn);
 	}
 
-	// create paths
+	// create paths with sweep delaunay (nodes are ordered by x, then y position)
+	std::vector<PathNode> processed;
+	for(auto& pn : created){
 
+		processed.push_back(pn);
+	}
 
 	return nodes;
 }

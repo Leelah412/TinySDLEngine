@@ -1,6 +1,6 @@
 #include "app.h"
 
-TSE_USE_APP(Dungeon, "example/dungeon/config.json")
+TSE_USE_APP(Dungeon, "examples/dungeon/config.json")
 
 Dungeon::Dungeon(){}
 Dungeon::~Dungeon(){}

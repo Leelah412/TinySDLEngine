@@ -22,7 +22,7 @@
 		tse::Application* tse::create_application(){ \
 			tse::Application* app = new appname();	\
 			app->set_config_path(config);	\
-			return new appname();	\
+			return app;	\
 		}
 #else
 	#define TSE_USE_APP(appname, config)
