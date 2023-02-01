@@ -1,15 +1,15 @@
-obj_name | obj_id | class | height_change
+obj_name | obj_id | class | tile_size_x | tile_size_y
 ---
-stairs 0
-stairs_wide 1
-tileBrickA_large 2
-tileBrickA_medium 3
-tileBrickA_small 4
-tileBrickB_large 5
-tileBrickB_largeCrackedA 6
-tileBrickB_largeCrackedB 7
-tileBrickB_medium 8
-tileBrickB_small 9
-tileSpikes 10
-tileSpikes_large 11
-tileSpikes_shallow 12
+stairs 0 0 1 3
+stairs_wide 1 1 2 3
+tileBrickA_large 2 2 3 3
+tileBrickA_medium 3 2 2 2
+tileBrickA_small 4 2 1 1
+tileBrickB_large 5 3 3 3
+tileBrickB_largeCrackedA 6 3 3 3
+tileBrickB_largeCrackedB 7 3 3 3
+tileBrickB_medium 8 3 2 2
+tileBrickB_small 9 3 1 1
+tileSpikes 10 4 1 1
+tileSpikes_large 11 4 2 2
+tileSpikes_shallow 12 4 1 1
