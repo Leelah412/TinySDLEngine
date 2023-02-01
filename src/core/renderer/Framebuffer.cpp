@@ -32,7 +32,7 @@ Texture* Framebuffer::get_color_target() const{
 void Framebuffer::create_color_target(){
 	// delete previous target
 	remove_color_target();
-	m_color_target = new Texture(m_width, m_height);
+	m_color_target = new Texture(m_width, m_height, TSETextureType::COLOR);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_color_target->get_texture_id(), 0);
 }
 
@@ -47,7 +47,7 @@ Texture* Framebuffer::get_depth_target() const{
 
 void Framebuffer::create_depth_target(){
 	remove_depth_target();
-	m_depth_target = new Texture(m_width, m_height);
+	m_depth_target = new Texture(m_width, m_height, TSETextureType::DEPTH);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depth_target->get_texture_id(), 0);	
 }
 
@@ -62,7 +62,7 @@ Texture* Framebuffer::get_stencil_target() const{
 
 void Framebuffer::create_stencil_target(){
 	remove_stencil_target();
-	m_stencil_target = new Texture(m_width, m_height);
+	m_stencil_target = new Texture(m_width, m_height, TSETextureType::STENCIL);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_stencil_target->get_texture_id(), 0);
 }
 
@@ -112,10 +112,7 @@ unsigned int Framebuffer::get_width() const{
 }
 
 void Framebuffer::set_width(unsigned int width){
-	if(m_width == width) return;
-	m_width = width;
-	// resize framebuffer
-	update_targets();
+	set_size(width, m_height);
 }
 
 unsigned int Framebuffer::get_height() const{
@@ -123,7 +120,12 @@ unsigned int Framebuffer::get_height() const{
 }
 
 void Framebuffer::set_height(unsigned int height){
-	if(m_height == height) return;
+	set_size(m_width, height);
+}
+
+void Framebuffer::set_size(unsigned int width, unsigned int height){
+	if((m_width == width) && (m_height == height)) return;
+	m_width = width;
 	m_height = height;
 	// resize framebuffer
 	update_targets();

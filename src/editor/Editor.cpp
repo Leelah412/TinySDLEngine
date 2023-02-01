@@ -11,6 +11,7 @@ namespace tse{
 	}
 #endif // TSE_USE_EDITOR
 
+
 Editor::Editor(){
 
 }
@@ -25,7 +26,7 @@ int Editor::init(){
 
 	ImGui_ImplSDL2_InitForOpenGL(get_window()->window(), get_window()->context());
 	ImGui_ImplOpenGL3_Init("#version 420");
-
+	
 	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	cout << "ImGui initialized" << endl;
@@ -38,38 +39,19 @@ int Editor::init(){
 	return 0;
 }
 
-// TODO: remove
-static bool open = true;
-static bool show_demo_window = true;
-
 void Editor::render(){
-	IRenderer->clear();
 
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
+	ImGui::ShowDemoWindow();
 	for(auto w : m_widgets){
 		w->render();
 	}
 
-	//if(show_demo_window)
-	//	ImGui::ShowDemoWindow(&show_demo_window);
-	//
-	//// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-	//if(open){
-	//	static float f = 0.0f;
-	//
-	//	ImGui::Begin("Hello, world!", &open);                          // Create a window called "Hello, world!" and append into it.
-	//
-	//	ImGui::Checkbox("Show Demo", &show_demo_window);
-	//	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-	//	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	//
-	//	ImGui::End();
-	//}
-
+	IRenderer->clear();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

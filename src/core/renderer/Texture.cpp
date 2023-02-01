@@ -68,8 +68,6 @@ void Texture::copy(const Texture& texture){
 }
 
 void Texture::gl_load(){
-	if(!m_buffer) return;
-
 	glGenTextures(1, &m_texture_id);
 	glBindTexture(GL_TEXTURE_2D, m_texture_id);
 

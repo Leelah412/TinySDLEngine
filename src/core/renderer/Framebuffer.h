@@ -44,6 +44,7 @@ public:
 	virtual void set_width(unsigned int width);
 	unsigned int get_height() const;
 	virtual void set_height(unsigned int height);
+	virtual void set_size(unsigned int width, unsigned int height);
 
 private:
 	GLuint m_buffer_id;
