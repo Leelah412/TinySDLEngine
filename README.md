@@ -2,8 +2,8 @@
 #### A small SDL- and OpenGL-based game engine currently in progress.
 
 ## Setup
-Wrap the contents of this project into a folder named `TinySDLEngine` (if downloading as ZIP, just rename `TinySDLEngine-master`) and
-move that folder into another empty folder, such that the contents are now inside `<new folder>/TinySDLEngine`.
+Wrap the contents of this project inside a folder named `TinySDLEngine` (if downloading as ZIP, just unzip and rename `TinySDLEngine-master`) and
+move it into another empty folder, such that the contents are now inside `<new folder>/TinySDLEngine`.
 Move `TinySDLEngine.sln_` (now in `<new folder>/TinySDLEngine`) into the new folder and rename it to `TinySDLEngine.sln`.
 Start the project in Visual Studio by opening the `TinySDLEngine.sln` file.
 
